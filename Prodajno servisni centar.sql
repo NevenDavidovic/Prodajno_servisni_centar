@@ -36,7 +36,9 @@ CREATE TABLE auto(
     godina_proizvodnje VARCHAR (20) NOT NULL,
     dostupnost VARCHAR (20) NOT NULL,
     snaga_motora VARCHAR (20) NOT NULL,
-    tip_goriva VARCHAR (20) NOT NULL
+    tip_goriva VARCHAR (20) NOT NULL,
+	servis/prodaja VARCHAR(10) NOT NULL
+	
 );
 
 CREATE TABLE klijent(
