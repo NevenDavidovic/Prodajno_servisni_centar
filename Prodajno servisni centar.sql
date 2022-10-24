@@ -13,7 +13,7 @@ CREATE TABLE auto(
     	dostupnost VARCHAR (20) NOT NULL,
     	snaga_motora VARCHAR (20) NOT NULL,
     	tip_motora VARCHAR (20) NOT NULL,
-	servis/prodaja VARCHAR(10) NOT NULL
+	servis/prodaja VARCHAR(7) NOT NULL
 	
 );
 
@@ -98,7 +98,7 @@ CREATE TABLE servis(
 	id_narudzbenica INTEGER NOT NULL,
 	id_usluge_servisa INTEGER NOT NULL,
 	id_mehanicar INTEGER NOT NULL,
-    	utroseni_sati INTEGER (20) NOT NULL,
+    	utroseni_sati INTEGER NOT NULL,
 	komentar VARCHAR (100) NOT NULL,
 	FOREIGN KEY (id_usluge_servisa) REFERENCES usluge_servisa (id),
 	FOREIGN KEY (id_mehanicar) REFERENCES mehanicar (id),
