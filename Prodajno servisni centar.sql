@@ -3,8 +3,10 @@ CREATE DATABASE Prodajno_servisni_centar;
 USE Prodajno_servisni_centar;
 
 
-CREATE TABLE auto(
-	id INTEGER PRIMARY KEY AUTO_INCREMENT,
+
+
+CREATE TABLE auto (
+	id INTEGER AUTO_INCREMENT,
 	broj_sasije VARCHAR (20) NOT NULL,
 	marka_automobila VARCHAR (20) NOT NULL,
     	model VARCHAR (20) NOT NULL,
@@ -13,13 +15,14 @@ CREATE TABLE auto(
     	dostupnost VARCHAR (20) NOT NULL,
     	snaga_motora VARCHAR (20) NOT NULL,
     	tip_motora VARCHAR (20) NOT NULL,
-	servis/prodaja VARCHAR(7) NOT NULL
+	servis_prodaja VARCHAR(7) NOT NULL,
+	PRIMARY KEY (id)
 	
 );
 
 
 CREATE TABLE prodavac(
-	id INTEGER PRIMARY KEY AUTO_INCREMENT, 
+	id INTEGER AUTO_INCREMENT, 
     	ime VARCHAR (20) NOT NULL,
     	prezime VARCHAR (20) NOT NULL,
     	datum_rodenja DATETIME NOT NULL,
@@ -27,39 +30,42 @@ CREATE TABLE prodavac(
     	spol CHAR (1) NOT NULL,
     	broj_telefona VARCHAR (20) NOT NULL UNIQUE,
     	OIB CHAR (11) NOT NULL UNIQUE,
-    	datum_zaposlenja DATE NOT NULL
+    	datum_zaposlenja DATE NOT NULL,
+    	PRIMARY KEY (id)
 
 
 );
 
 CREATE TABLE klijent(
-	id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	id INTEGER AUTO_INCREMENT,
     	ime VARCHAR (20) NOT NULL,
     	prezime VARCHAR (30) NOT NULL,
     	broj_telefona VARCHAR (20) NOT NULL UNIQUE,
     	adresa VARCHAR (40) NOT NULL,
     	grad VARCHAR (20) NOT NULL,
-    	spol CHAR (1) NOT NULL
+    	spol CHAR (1) NOT NULL,
+    	PRIMARY KEY (id)
 
 );
 
 CREATE TABLE racun_prodaje(
-	id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	id INTEGER AUTO_INCREMENT,
     	broj_racuna VARCHAR (20) NOT NULL,
     	datum DATE NOT NULL,
 	id_auto INTEGER NOT NULL,
 	id_klijent INTEGER NOT NULL,
-	id_prodavac INTEGER NOT NULL
+	id_prodavac INTEGER NOT NULL,
     	cijena DECIMAL(10,2) NOT NULL,
 	FOREIGN KEY (id_auto) REFERENCES auto (id),
 	FOREIGN KEY (id_klijent) REFERENCES klijent (id),
-	FOREIGN KEY (id_prodavac) REFERENCES prodavac (id)
+	FOREIGN KEY (id_prodavac) REFERENCES prodavac (id),
+	PRIMARY KEY (id)
 
 );
 
 
 CREATE TABLE narudzbenica(
-	id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	id INTEGER AUTO_INCREMENT,
     	broj_narudzbe VARCHAR (20) NOT NULL,
 	id_auto INTEGER NOT NULL,
 	id_klijent INTEGER NOT NULL,
@@ -67,67 +73,69 @@ CREATE TABLE narudzbenica(
     	komentar VARCHAR (100) NOT NULL,
     	datum_povratka DATETIME NOT NULL,
     	FOREIGN KEY (id_auto) REFERENCES auto (id),
-    	FOREIGN KEY (id_klijent) REFERENCES klijent (id)
+    	FOREIGN KEY (id_klijent) REFERENCES klijent (id),
+    	PRIMARY KEY (id)
 );
 
 
 CREATE TABLE mehanicar(
-	id INTEGER PRIMARY KEY AUTO_INCREMENT,
-    	ime  VARCHAR (20) NOT NULL,
+	id INTEGER AUTO_INCREMENT,
+        ime  VARCHAR (20) NOT NULL,
    	prezime  VARCHAR (20) NOT NULL,
     	datum_rodenja  DATE NOT NULL,
     	adresa  VARCHAR (20) NOT NULL,
     	spol  VARCHAR (20) NOT NULL,
     	broj_telefona  VARCHAR (20) NOT NULL UNIQUE,
     	OIB  CHAR (11) NOT NULL UNIQUE, 
-    	datum_zaposlenja DATETIME NOT NULL
+    	datum_zaposlenja DATETIME NOT NULL,
+    	PRIMARY KEY (id)
 	
 
 );
 
 CREATE TABLE usluge_servisa(
-	id INTEGER PRIMARY KEY,
+	id INTEGER AUTO_INCREMENT,
 	ime_servisa VARCHAR(30) NOT NULL,
-	ukupna_cijena DECIMAL(10,2) NOT NULL
+	ukupna_cijena DECIMAL(10,2) NOT NULL,
+	PRIMARY KEY (id)
 
 );
 
 
 CREATE TABLE servis(
-	id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	id INTEGER AUTO_INCREMENT,
 	id_narudzbenica INTEGER NOT NULL,
 	id_usluge_servisa INTEGER NOT NULL,
 	id_mehanicar INTEGER NOT NULL,
-    	utroseni_sati INTEGER NOT NULL,
+   	utroseni_sati INTEGER NOT NULL,
 	komentar VARCHAR (100) NOT NULL,
 	FOREIGN KEY (id_usluge_servisa) REFERENCES usluge_servisa (id),
 	FOREIGN KEY (id_mehanicar) REFERENCES mehanicar (id),
-	FOREIGN KEY (id_narudzbenica) REFERENCES narudzbenica (id)
+	FOREIGN KEY (id_narudzbenica) REFERENCES narudzbenica (id),
+	PRIMARY KEY (id)
 
 
 );
 
 CREATE TABLE stavka_dijelovi(
-	id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	id INTEGER AUTO_INCREMENT,
     	serijski_broj  VARCHAR (20) NOT NULL,
     	opis  VARCHAR (20) NOT NULL,
-    	nabavna_cijena  DECIMAL10,2)  NOT NULL,
-	prodajna_cijena DECIMAL(10,2)  NOT NULL
+    	nabavna_cijena  DECIMAL(10,2)  NOT NULL,
+	prodajna_cijena DECIMAL(10,2)  NOT NULL,
+	PRIMARY KEY (id)
     
         );
 
 CREATE TABLE dijelovi(
-	id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	id INTEGER AUTO_INCREMENT,
 	id_servis INTEGER NOT NULL,
 	id_stavka_dijelovi INTEGER NOT NULL,
     	kolicina INTEGER NOT NULL,
    	cijena DECIMAL(10,2) NOT NULL,
     	FOREIGN KEY (id_servis) REFERENCES servis (id),
-    	FOREIGN KEY (id_stavka_dijelovi) REFERENCES stavka_dijelovi (id)
+    	FOREIGN KEY (id_stavka_dijelovi) REFERENCES stavka_dijelovi (id),
+    	PRIMARY KEY (id)
     
 
 );
-
-
-
-
