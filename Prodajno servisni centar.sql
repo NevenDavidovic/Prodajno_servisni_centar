@@ -111,7 +111,7 @@ CREATE TABLE narudzbenica(
 CREATE TABLE servis(
 	id INTEGER AUTO_INCREMENT,
 	naziv VARCHAR (50) NOT NULL,
-	cijena DECIMAL (8,2) NOT NULL,
+	ukupna_cijena DECIMAL (8,2) NOT NULL,
 	PRIMARY KEY (id)
 );
 
