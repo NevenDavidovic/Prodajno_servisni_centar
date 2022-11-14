@@ -46,6 +46,7 @@ CREATE TABLE auto(
 CREATE TABLE oprema(
 	id INTEGER AUTO_INCREMENT,
 	naziv VARCHAR (20) NOT NULL,
+	cijena DECIMAL (8,2) NOT NULL,
 	PRIMARY KEY (id)
 );
 
@@ -55,7 +56,6 @@ CREATE TABLE sadrzi(
 	id INTEGER AUTO_INCREMENT,
 	id_auto INTEGER NOT NULL,
 	id_oprema INTEGER NOT NULL,
-	cijena DECIMAL (8,2) NOT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (id_auto) REFERENCES auto (id),
 	FOREIGN KEY (id_oprema) REFERENCES oprema (id)
