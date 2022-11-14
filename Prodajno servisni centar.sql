@@ -12,12 +12,15 @@ CREATE TABLE zaposlenik(
 	adresa VARCHAR (40) NOT NULL,
 	spol CHAR (1) NOT NULL,
 	broj_telefona VARCHAR (20) NOT NULL UNIQUE,
+    datum_zaposlenja DATE NOT NULL,
 	e_mail VARCHAR (30) NOT NULL UNIQUE,
 	placa DECIMAL (8,2) NOT NULL,
 	radno_mjesto VARCHAR (20) NOT NULL,
 	PRIMARY KEY (id),
 	CHECK (spol='Ž' OR spol='M')
 );
+
+
 
 
 -- DONE
@@ -30,7 +33,7 @@ CREATE TABLE auto(
 	godina_proizvodnje DATE NOT NULL,
 	dostupnost CHAR (2) NOT NULL,
 	snaga_motora VARCHAR (20) NOT NULL,
-	kilometraza INTEGER NOT NULL,
+    kilometraza INTEGER NOT NULL,
 	tip_motora VARCHAR (20) NOT NULL,
 	servis_prodaja CHAR(1) NOT NULL,
 	PRIMARY KEY (id),
@@ -161,4 +164,3 @@ CREATE TABLE stavka_dio(
 	PRIMARY KEY (id),
 	FOREIGN KEY (id_dio) REFERENCES dio (id)
 );
-
