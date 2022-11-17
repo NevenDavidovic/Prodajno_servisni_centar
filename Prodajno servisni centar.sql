@@ -83,9 +83,9 @@ CREATE TABLE klijent(
 CREATE TABLE racun_prodaje(
 	id INTEGER AUTO_INCREMENT,
 	id_zaposlenik INTEGER NOT NULL,
-	id_auto INTEGER NOT NULL,
+	id_auto INTEGER NOT NULL UNIQUE,
 	id_klijent INTEGER NOT NULL,
-	broj_racuna INTEGER,
+	broj_racuna INTEGER UNIQUE,
 	datum DATE NOT NULL,
 	cijena DECIMAL (8,2),
 	PRIMARY KEY (id),
