@@ -45,7 +45,9 @@ CREATE TABLE auto(
 -- DONE
 CREATE TABLE oprema(
 	id INTEGER AUTO_INCREMENT,
-	naziv VARCHAR (20) NOT NULL,
+	naziv VARCHAR (40) NOT NULL,
+   	marka VARCHAR (40) NOT NULL,
+    	model VARCHAR (40) NOT NULL,
 	cijena DECIMAL (8,2) NOT NULL,
 	PRIMARY KEY (id)
 );
