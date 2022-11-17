@@ -60,7 +60,8 @@ CREATE TABLE sadrzi(
 	id_oprema INTEGER NOT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (id_auto) REFERENCES auto (id),
-	FOREIGN KEY (id_oprema) REFERENCES oprema (id)
+	FOREIGN KEY (id_oprema) REFERENCES oprema (id),
+    	UNIQUE KEY (id_auto, id_oprema)
 );
 
 
