@@ -110,23 +110,23 @@ CREATE TABLE narudzbenica(
 
 
 -- DONE
-CREATE TABLE servis(
+CREATE TABLE usluga_servis(
 	id INTEGER AUTO_INCREMENT,
 	naziv VARCHAR (50) NOT NULL,
-	ukupna_cijena DECIMAL (8,2) NOT NULL,
+	cijena DECIMAL (8,2) NOT NULL,
 	PRIMARY KEY (id)
 );
 
 
 -- DONE
-CREATE TABLE usluga_servisa(
+CREATE TABLE servis(
 	id INTEGER AUTO_INCREMENT,
-	id_servis INTEGER NOT NULL,
+	id_usluga_servis INTEGER NOT NULL,
 	id_zaposlenik INTEGER NOT NULL,
 	id_narudzbenica INTEGER NOT NULL,
 	komentar TINYTEXT DEFAULT "Servis uredno izvrsen",
 	PRIMARY KEY (id),
-	FOREIGN KEY (id_servis) REFERENCES servis (id),
+	FOREIGN KEY (id_usluga_servis) REFERENCES usluga_servis (id),
 	FOREIGN KEY (id_zaposlenik) REFERENCES zaposlenik (id),
 	FOREIGN KEY (id_narudzbenica) REFERENCES narudzbenica (id)
 );
@@ -144,11 +144,11 @@ CREATE TABLE dio(
 -- DONE
 CREATE TABLE ima(
 	id INTEGER AUTO_INCREMENT,
-	id_usluga_servisa INTEGER NOT NULL,
+	id_servis INTEGER NOT NULL,
 	id_dio INTEGER NOT NULL,
 	kolicina INTEGER NOT NULL,
 	PRIMARY KEY (id),
-	FOREIGN KEY (id_usluga_servisa) REFERENCES usluga_servisa (id),
+	FOREIGN KEY (id_servis) REFERENCES servis (id),
 	FOREIGN KEY (id_dio) REFERENCES dio (id)
 );
 
