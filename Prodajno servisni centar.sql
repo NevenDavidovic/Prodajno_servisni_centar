@@ -124,7 +124,7 @@ CREATE TABLE servis(
 	id_usluga_servis INTEGER NOT NULL,
 	id_zaposlenik INTEGER NOT NULL,
 	id_narudzbenica INTEGER NOT NULL,
-	komentar TINYTEXT DEFAULT "Servis uredno izvrsen",
+	komentar VARCHAR(100) DEFAULT "Servis uredno izvrsen",
 	PRIMARY KEY (id),
 	FOREIGN KEY (id_usluga_servis) REFERENCES usluga_servis (id),
 	FOREIGN KEY (id_zaposlenik) REFERENCES zaposlenik (id),
