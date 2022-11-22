@@ -128,7 +128,8 @@ CREATE TABLE servis(
 	PRIMARY KEY (id),
 	FOREIGN KEY (id_usluga_servis) REFERENCES usluga_servis (id),
 	FOREIGN KEY (id_zaposlenik) REFERENCES zaposlenik (id),
-	FOREIGN KEY (id_narudzbenica) REFERENCES narudzbenica (id)
+	FOREIGN KEY (id_narudzbenica) REFERENCES narudzbenica (id),
+	UNIQUE KEY (id_usluga_servis, id_narudzbenica)
 );
 
 
