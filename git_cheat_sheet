@@ -1,0 +1,3 @@
+ dodaje sve fileove koji nisu navedeni u gitignore u staging: 'git add *'
+ commita: 'git commit -m  "poruka o updateu"'
+ unstagea sve dodane fileove (suprotno od git add *): 'git reset HEAD --'
