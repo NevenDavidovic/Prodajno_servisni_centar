@@ -2,7 +2,7 @@
 
 import mysql.connector
 
-# Definiranje baze i kursora
+# Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
 db = mysql.connector.connect(host="localhost",user="root",passwd="root",database="Prodajno_servisni_centar")
 mycursor = db.cursor(dictionary=True) # da vraća rezultate tj. rows kao dictionaryje
 
@@ -11,9 +11,13 @@ mycursor = db.cursor(dictionary=True) # da vraća rezultate tj. rows kao diction
 ############################################################
 # funkcija kojom pronalazimo npr zadnji id ili zadnji broj narudžbe (najveći broj je zadnji)
 def get_last_record_identificator(table:str, column:str)->int:
-    qstring = f'SELECT MAX({column}) as last_val FROM {table}'
+    
+    # qstring = f'SELECT MAX({column}) as last_val FROM {table}' -> prebaceno u SQL funkciju
+    qstring1 = f'CALL get_last_record_identificator("{table}","{column}",@last_record);'
+    qstring2 = f'SELECT @last_record AS last_val;'
     try:
-        mycursor.execute(qstring)
+        mycursor.execute(qstring1)
+        mycursor.execute(qstring2)
     except Exception as err:
         print("Došlo je do greške!") 
         print(err)
@@ -167,7 +171,9 @@ update_auto1 = {
 # delete_item("zaposlenik",680)
 # delete_item("auto",575)
 
-
+### dobivanje zadnjeg identifikatora
+# print(get_last_record_identificator("narudzbenica","broj_narudzbe")) # daje zadnji broj_narudzbe u tablici
+# print(get_last_record_identificator("auto","id")) # daje id zadnjeg auta u tablici
 
 db.commit()
 mycursor.close()
