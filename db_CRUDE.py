@@ -50,7 +50,8 @@ def add_item(table: str,data: dict) -> int: # vraća id unesenog itema
         print("Došlo je do greške!") 
         print(err)
         return {"error_message" : err}
-    return data["id"]
+    db.commit()
+    return get_last_record_identificator(table,"id")
 
 ############################################################
 
@@ -113,7 +114,6 @@ def edit_table(table, data):
 ############################################################
 ####### PODACI ZA TESTIRANJE FUNKCIJA
 zaposlenik_1 = {
-    "id" : 680,  # sve što nije string mora biti bez ""
 	"ime" : "John",
 	"prezime": "Doe",
 	"datum_rodenja" : "1998-05-12",
@@ -126,16 +126,28 @@ zaposlenik_1 = {
 	"placa" : "12500",
 	"radno_mjesto" : "mehanicar",
 }
+zaposlenik_2 = {
+	"ime" : "Srki",
+	"prezime": "Bućac",
+	"datum_rodenja" : "1991-07-12",
+	"adresa" : "Školska 18",
+    "grad" : "Pula",
+	"spol" : "m",
+	"broj_telefona" : "091669413",
+    "datum_zaposlenja" : "2012-07-13",
+	"e_mail" : "srke@gmail.com" ,
+	"placa" : "10500",
+	"radno_mjesto" : "prodavac",
+}
 
 update_z1 = {
-"id": 680,  # vazno je da je id uvijek prisutan u dictionaryju sa podacima za update(kako bi se moglo pronaci koji record treba updateat) i da je tipa int
+"id": 680,  # vazno je da je id uvijek prisutan u dictionaryju sa podacima za UPDATE(kako bi se moglo pronaci koji record treba updateat) i da je tipa int
 "adresa":"Marca Garbina 2",
 "placa":"14200",
 "radno_mjesto":"prodavac"}
 
 
 narudzbenica_31 = {
-    "id" : get_last_record_identificator("narudzbenica", "id") + 1,
 	"id_klijent": 10,
 	"id_auto": 3,
 	"broj_narudzbe": get_last_record_identificator("narudzbenica", "broj_narudzbe") + 1,
@@ -152,6 +164,7 @@ update_auto1 = {
 #### POZIVI FUNKCIJA #####
 ### dodavanje itema
 # add_item("zaposlenik",zaposlenik_1)
+# add_item("zaposlenik",zaposlenik_2)
 # add_item("narudzbenica",narudzbenica_31)
 
 ### update itema
