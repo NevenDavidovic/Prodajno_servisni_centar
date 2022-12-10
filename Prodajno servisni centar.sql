@@ -178,7 +178,8 @@ SELECT *
 	FROM narudzbenica
     WHERE id_auto IN (
 		SELECT id_auto
-			FROM racun_prodaje);
+			FROM racun_prodaje
+    );
 
 SELECT *
 	FROM zaposlenik
