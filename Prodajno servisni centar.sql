@@ -168,3 +168,45 @@ CREATE TABLE stavka_dio(
 	PRIMARY KEY (id),
 	FOREIGN KEY (id_dio) REFERENCES dio (id)
 );
+
+
+-- MARIJA start
+-- 1. upit: Popis zaposlenika koji su servisirali aute kupljene u PSC
+
+CREATE VIEW narudzbenica_kupljeni AS
+SELECT *
+	FROM narudzbenica
+    WHERE id_auto IN (
+		SELECT id_auto
+			FROM racun_prodaje);
+
+SELECT *
+	FROM zaposlenik
+    WHERE id IN (
+		SELECT DISTINCT id_zaposlenik
+			FROM servis, narudzbenica_kupljeni
+			WHERE servis.id_narudzbenica=narudzbenica_kupljeni.id
+			ORDER BY id_zaposlenik ASC
+    );
+
+
+-- 2. upit: Marke auta sevisirane od strane mehaničara
+
+CREATE VIEW narudzbenica_mehanicar AS
+SELECT narudzbenica.*
+	FROM servis, narudzbenica
+    WHERE servis.id_narudzbenica=narudzbenica.id
+    AND servis.id_zaposlenik IN (
+		SELECT id
+			FROM zaposlenik
+			WHERE radno_mjesto='mehanicar'
+    );
+
+SELECT DISTINCT marka_automobila
+	FROM auto
+    WHERE id IN (
+		SELECT id_auto
+			FROM narudzbenica_mehanicar
+    )
+    ORDER BY marka_automobila ASC;
+-- MARIJA end
