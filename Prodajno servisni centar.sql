@@ -244,7 +244,36 @@ ORDER BY ukupno_po_servisu DESC;
 SELECT AVG(ukupno_po_servisu) FROM servisirano;
 -- Zaposlenici koji su obavili manje servisa od prosjeka
 SELECT * FROM servisirano WHERE ukupno_po_servisu <(SELECT AVG(ukupno_po_servisu) FROM servisirano);
---Zaposlenici koji su obavili više servisa od prosjeka
+-- Zaposlenici koji su obavili više servisa od prosjeka
 SELECT * FROM servisirano WHERE ukupno_po_servisu >(SELECT AVG(ukupno_po_servisu) FROM servisirano);
 
 -- neven kraj upita
+
+-- TIN UPITI
+## Top 5 modela auta sa najviše utrošenih djelova na servisima u zadnjih 6 mjeseci?
+
+SELECT a.marka_automobila, a.model,SUM(kolicina) AS broj_ugradjenih_djelova
+FROM auto a INNER JOIN narudzbenica n ON a.id = n.id_auto
+INNER JOIN servis s ON n.id = s.id_narudzbenica
+INNER JOIN ima i ON s.id = i.id_servis
+WHERE datum_zaprimanja > DATE(DATE_sub(NOW(), INTERVAL 6 MONTH))
+GROUP BY model
+ORDER BY broj_ugradjenih_djelova DESC
+LIMIT 5;
+
+## Koliko je usluga servisa bilo izvrseno na benzinskim, dizelskim i elektricnim autima u zadnjih 6 mj?
+
+CREATE TEMPORARY TABLE usluge_po_narudzbenici
+SELECT id_narudzbenica, COUNT(id_usluga_servis) AS broj_izvrsenih_usluga
+FROM servis s
+GROUP by id_narudzbenica;
+
+SELECT a.tip_motora, SUM(broj_izvrsenih_usluga) as ukupno_izvrsenih_usluga
+FROM usluge_po_narudzbenici upn
+INNER JOIN narudzbenica n ON upn.id_narudzbenica = n.id
+INNER JOIN auto a ON a.id = n.id_auto
+WHERE datum_zaprimanja > DATE(DATE_sub(NOW(), INTERVAL 6 MONTH))
+GROUP BY tip_motora
+ORDER BY ukupno_izvrsenih_usluga DESC;
+
+-- TIN KRAJ UPITA
