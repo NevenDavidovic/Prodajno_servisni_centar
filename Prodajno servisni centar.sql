@@ -213,20 +213,20 @@ SELECT DISTINCT marka_automobila
 -- MARIJA end
 
 -- NEVEN UPITI
--- Prva tri zaposlenika koja imaju najviše servisa 
+-- Prva tri zaposlenika koja imaju najviše servisa
 
-SELECT CONCAT(z.ime ,' ', z.prezime) AS Ime_i_prezime, u.naziv,COUNT(z.id) as broj_servisa 
-FROM servis AS s, usluga_servis AS u, zaposlenik AS z 
-WHERE z.id=id_zaposlenik AND u.id=id_usluga_servis 
-GROUP BY z.id 
-ORDER BY broj_servisa 
+SELECT CONCAT(z.ime ,' ', z.prezime) AS Ime_i_prezime, u.naziv,COUNT(z.id) as broj_servisa
+FROM servis AS s, usluga_servis AS u, zaposlenik AS z
+WHERE z.id=id_zaposlenik AND u.id=id_usluga_servis
+GROUP BY z.id
+ORDER BY broj_servisa
 DESC LIMIT 3;
 
--- Zaposlenici(prva 3) sa najvišom kumulativnom cijenom svih obavljenih servisa servisa. 
+-- Zaposlenici(prva 3) sa najvišom kumulativnom cijenom svih obavljenih servisa servisa.
 
-SELECT CONCAT(z.ime ,' ', z.prezime)as Ime_i_prezime, u.naziv,SUM(u.cijena) AS ukupno_po_servisu 
-FROM servis AS s, usluga_servis AS u, zaposlenik AS z 
-WHERE z.id=id_zaposlenik AND u.id=id_usluga_servis 
+SELECT CONCAT(z.ime ,' ', z.prezime)as Ime_i_prezime, u.naziv,SUM(u.cijena) AS ukupno_po_servisu
+FROM servis AS s, usluga_servis AS u, zaposlenik AS z
+WHERE z.id=id_zaposlenik AND u.id=id_usluga_servis
 GROUP BY z.id
 ORDER BY ukupno_po_servisu DESC
 LIMIT 3;
@@ -234,9 +234,9 @@ LIMIT 3;
 -- Pogled pomoću kojeg saznajemo
 
 CREATE VIEW servisirano AS
-SELECT CONCAT(z.ime ,' ', z.prezime)as Ime_i_prezime, u.naziv,SUM(u.cijena) AS ukupno_po_servisu 
-FROM servis AS s, usluga_servis AS u, zaposlenik AS z 
-WHERE z.id=id_zaposlenik AND u.id=id_usluga_servis 
+SELECT CONCAT(z.ime ,' ', z.prezime)as Ime_i_prezime, u.naziv,SUM(u.cijena) AS ukupno_po_servisu
+FROM servis AS s, usluga_servis AS u, zaposlenik AS z
+WHERE z.id=id_zaposlenik AND u.id=id_usluga_servis
 GROUP BY z.id
 ORDER BY ukupno_po_servisu DESC;
 
@@ -277,3 +277,41 @@ GROUP BY tip_motora
 ORDER BY ukupno_izvrsenih_usluga DESC;
 
 -- TIN KRAJ UPITA
+
+
+-- DARJAN UPITI + POGLED
+
+# Selektiraj sve automobile koji za dodatnu opremu imaju parkirnu kameru marke Garmin, kako bi se na istima ažurirao softver
+
+select  a.id, marka_automobila, upper(naziv) as " Dodatna oprema ", upper(marka) as "Marka"
+from auto a
+inner join sadrzi s on a.id = s.id_auto
+inner join oprema o on s.id_oprema = o.id
+where naziv = "parkirna kamera" and marka = "Garmin";
+
+# Prikaži sve klijente (kupce) sa ukupnim brojem računa (koliko su auta kupili kod nas)
+
+select k.*, count(r.id) as "Ukupan broj računa"
+from klijent k
+inner join racun_prodaje r on k.id = r.id_klijent
+group by k.id;
+
+# Napravi pogled koji prikazuje skupe dijelove (prodajna cijena > 1000), pritom se kroz pogled mogu unositi samo podaci koji zadovoljavaju uvjet
+
+# drop view skup_dio;
+
+create view skup_dio as
+select *
+from stavka_dio
+where prodajna_cijena > 1000
+with check option;
+
+# Prikaz skupih dijelova
+
+select * from skup_dio;
+
+# Unos nije moguć zbog uvjeta
+
+INSERT INTO skup_dio VALUES (40, 40, "55032099911", "set zupcasti remen + pumpa", "pogon", 945.1871943242245, 980.2079936935827, 8);
+
+-- DARJAN KRAJ
