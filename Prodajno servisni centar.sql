@@ -315,3 +315,49 @@ select * from skup_dio;
 INSERT INTO skup_dio VALUES (40, 40, "55032099911", "set zupcasti remen + pumpa", "pogon", 945.1871943242245, 980.2079936935827, 8);
 
 -- DARJAN KRAJ
+
+-- SARA UPITI
+
+-- prihodi po mjesecima od prodaje automobila u 2022. godini
+
+CREATE VIEW prihod_po_mjesecima AS
+SELECT SUM(cijena) AS prihodi , EXTRACT(MONTH FROM datum) AS mjesec
+FROM racun_prodaje
+WHERE EXTRACT(YEAR FROM datum)="2022"
+GROUP BY CAST(DATE_SUB(datum, INTERVAL DAYOFMONTH(datum)-1 DAY) AS DATE);
+
+-- mjesec sa najmanje prihoda i iznos prihoda od prodaje automobila
+SELECT *
+FROM  prihod_po_mjesecima
+WHERE prihodi IN ( SELECT MIN(prihodi) FROM prihod_po_mjesecima);
+
+-- mjesec sa najvise prihoda od prodje automobila
+SELECT *
+FROM  prihod_po_mjesecima
+WHERE prihodi IN ( SELECT MAX(prihodi) FROM prihod_po_mjesecima);
+
+-- prosječan iznos prihoda za 2022. godinu od prodaje automobila
+SELECT AVG(prihodi)
+FROM prihodi_po_mjesecima;
+
+-- ukupan prihod servisa po mjesecima 2022
+CREATE TEMPORARY TABLE cijena__servisa
+SELECT id_narudzbenica, SUM(cijena) AS cijena_servisa, datum_povratka, s.id
+FROM narudzbenica n, servis s,usluga_servis u
+WHERE n.id=s.id_narudzbenica AND u.id=s.id_usluga_servis
+GROUP BY id_narudzbenica;
+
+CREATE TEMPORARY TABLE cijena__dijelova
+SELECT id_narudzbenica, SUM(kolicina*prodajna_cijena) AS cijena_dijelova, id_servis
+FROM ima i
+INNER JOIN stavka_dio sd ON i.id_dio=sd.id_dio
+RIGHT JOIN servis s ON s.id=i.id_servis
+GROUP BY id_narudzbenica;
+
+SELECT SUM((IFNULL(cijena_dijelova, 0)+cijena_servisa)) AS ukupna_cijena_servisa, EXTRACT(MONTH FROM datum_povratka) AS mjesec 
+FROM cijena__dijelova cd, cijena__servisa cs
+WHERE cd.id_narudzbenica=cs.id_narudzbenica AND EXTRACT(YEAR FROM datum_povratka)="2022"
+GROUP BY CAST(DATE_SUB(datum_povratka, INTERVAL DAYOFMONTH(datum_povratka)-1 DAY) AS DATE)
+ORDER BY mjesec ASC;
+
+--SARA KRAJ
