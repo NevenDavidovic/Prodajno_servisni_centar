@@ -361,3 +361,56 @@ GROUP BY CAST(DATE_SUB(datum_povratka, INTERVAL DAYOFMONTH(datum_povratka)-1 DAY
 ORDER BY mjesec ASC;
 
 --SARA KRAJ
+
+-- NOEL UPITI
+
+-- prikaži sve klijente koji su u prodajno servisnom centru kupili automobil "MITSUBISHI OUTLANDER"
+
+/*
+
+SELECT klijent.ime, klijent.prezime
+FROM klijent
+INNER JOIN racun_prodaje ON klijent.id = racun_prodaje.id_klijent
+INNER JOIN auto ON racun_prodaje.id_auto = auto.id
+WHERE marka_automobila = "MITSUBISHI" AND model = "OUTLANDER";
+
+*/
+
+-- prikazi sve automobile marke 'BMW'  sa godinom proizvodnje starijom od 2015.
+
+/*
+
+CREATE VIEW stariji_modeli_automobila AS
+SELECT *
+FROM auto
+WHERE YEAR (godina_proizvodnje) < 2018
+ORDER BY godina_proizvodnje ASC;
+SELECT marka_automobila, model, godina_proizvodnje
+FROM stariji_modeli_automobila
+HAVING marka_automobila ='BMW';
+
+*/
+
+-- prikaz broja zaposlenika ali samo onih koji rade kao mehanicari i prikaz imena, prezimena i broja godina najmladeg i najstarijeg mehanicara
+
+/*
+
+CREATE VIEW godine_mehanicara AS
+SELECT *, CURDATE() as sadasnji_datum, TIMESTAMPDIFF(YEAR, datum_rodenja, CURDATE())AS age FROM zaposlenik
+WHERE radno_mjesto = 'mehanicar'
+ORDER BY datum_rodenja ;
+
+-- ime prezime i broj godina najstarijeg mehaničara
+SELECT ime, prezime, MAX(age)
+FROM godine_mehanicara;
+
+-- broj mehaničara
+SELECT COUNT(*) as broj_mehanicara
+FROM godine_mehanicara;
+
+-- ime prezime i broj godina najmlađeg mehaničara
+SELECT ime, prezime, MIN(age) FROM godine_mehanicara;
+
+*/
+
+-- NOEL KRAJ
