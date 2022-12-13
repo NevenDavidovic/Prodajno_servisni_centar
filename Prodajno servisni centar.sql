@@ -263,7 +263,7 @@ LIMIT 5;
 
 ## Koliko je usluga servisa bilo izvrseno na benzinskim, dizelskim i elektricnim autima u zadnjih 6 mj?
 
-CREATE TEMPORARY TABLE usluge_po_narudzbenici
+CREATE VIEW usluge_po_narudzbenici AS
 SELECT id_narudzbenica, COUNT(id_usluga_servis) AS broj_izvrsenih_usluga
 FROM servis s
 GROUP by id_narudzbenica;
