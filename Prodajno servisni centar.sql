@@ -309,9 +309,6 @@ RETURN ((SELECT MAX(cijena) FROM racun_prodaje) - (SELECT MIN(cijena) FROM racun
 END//
 DELIMITER ;
 
- DROP VIEW najprodavaniji_jefitni_auti;
- DROP VIEW najprodavaniji_srednje_skupi_auti;
- DROP VIEW najprodavaniji_skupi_auti;
 
 ## jefitni  auti
 CREATE VIEW najprodavaniji_jefitni_auti AS
