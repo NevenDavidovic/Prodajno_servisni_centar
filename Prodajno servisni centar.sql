@@ -276,6 +276,78 @@ WHERE datum_zaprimanja > DATE(DATE_sub(NOW(), INTERVAL 6 MONTH))
 GROUP BY tip_motora
 ORDER BY ukupno_izvrsenih_usluga DESC;
 
+##  Koji se automobili najviše prodaju u kojem cjenovnom rangu (jeftini, srednji, skupi)?
+
+-- FUNKCIJE ZA ODREĐIVANJE CIJENE PRODANIH AUTOMOBILA
+DELIMITER //
+CREATE FUNCTION min_cijena() RETURNS INTEGER
+DETERMINISTIC
+BEGIN
+
+RETURN (SELECT MIN(cijena) FROM racun_prodaje);
+
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE FUNCTION max_cijena() RETURNS INTEGER
+DETERMINISTIC
+BEGIN
+
+RETURN (SELECT MAX(cijena) FROM racun_prodaje);
+
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE FUNCTION raspon_cijena() RETURNS INTEGER
+DETERMINISTIC
+BEGIN
+
+RETURN ((SELECT MAX(cijena) FROM racun_prodaje) - (SELECT MIN(cijena) FROM racun_prodaje));
+
+END//
+DELIMITER ;
+
+ DROP VIEW najprodavaniji_jefitni_auti;
+ DROP VIEW najprodavaniji_srednje_skupi_auti;
+ DROP VIEW najprodavaniji_skupi_auti;
+
+## jefitni  auti
+CREATE VIEW najprodavaniji_jefitni_auti AS
+SELECT a.marka_automobila,a.model,COUNT(*) AS br_prodanih_auta
+FROM racun_prodaje rp
+INNER JOIN auto a ON rp.id_auto = a.id
+WHERE cijena BETWEEN (SELECT min_cijena() FROM DUAL) AND ((SELECT raspon_cijena() FROM DUAL)/3)
+GROUP BY a.model
+ORDER BY br_prodanih_auta DESC;
+
+SELECT * FROM najprodavaniji_jefitni_auti;
+
+
+## srednje skupi auti
+CREATE VIEW najprodavaniji_srednje_skupi_auti AS
+SELECT a.marka_automobila,a.model,COUNT(*) AS br_prodanih_auta
+FROM racun_prodaje rp
+INNER JOIN auto a ON rp.id_auto = a.id
+WHERE cijena BETWEEN ((SELECT raspon_cijena() FROM DUAL)/3) AND (((SELECT raspon_cijena() FROM DUAL)/3) * 2)
+GROUP BY a.model
+ORDER BY br_prodanih_auta DESC;
+
+SELECT * FROM najprodavaniji_srednje_skupi_auti;
+
+
+## skupi auti
+CREATE VIEW najprodavaniji_skupi_auti AS
+SELECT a.marka_automobila,a.model,COUNT(*) AS br_prodanih_auta
+FROM racun_prodaje rp
+INNER JOIN auto a ON rp.id_auto = a.id
+WHERE cijena BETWEEN (((SELECT raspon_cijena() FROM DUAL)/3) * 2) AND (SELECT max_cijena() FROM DUAL)
+GROUP BY a.model
+ORDER BY br_prodanih_auta DESC;
+
+SELECT * FROM najprodavaniji_skupi_auti;
+
 -- TIN KRAJ UPITA
 
 
