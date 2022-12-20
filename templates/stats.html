@@ -38,9 +38,9 @@
               </thead>
               <tbody>
                 {% block content %}
-                {% for d in data1 %}
+                {% for d in data[0] %}
                 <tr>
-                  <th scope="row">{{data1.index(d)+1}}</th>
+                  <th scope="row">{{data[0].index(d)+1}}</th>
                   <td>{{d.tip_motora}}</td>
                   <td>{{d.ukupno_izvrsenih_usluga}}</td>
                 </tr>
@@ -64,9 +64,9 @@
                 </tr>
               </thead>
               <tbody>
-                {% for d in data2 %}
+                {% for d in data[1] %}
                 <tr>
-                  <th scope="row">{{data2.index(d)+1}}</th>
+                  <th scope="row">{{data[1].index(d)+1}}</th>
                   <td>{{d.marka_automobila}}</td>
                   <td>{{d.model}}</td>
                   <td>{{d.broj_ugradjenih_djelova}}</td>
@@ -90,9 +90,9 @@
                 </tr>
               </thead>
               <tbody>
-                {% for d in data3 %}
+                {% for d in data[2] %}
                 <tr>
-                  <th scope="row">{{data3.index(d)+1}}</th>
+                  <th scope="row">{{data[2].index(d)+1}}</th>
                   <td>{{d.Ime_i_prezime}}</td>
                   <td>{{d.broj_servisa}}</td>
                 </tr>
@@ -119,9 +119,9 @@
                 </tr>
               </thead>
               <tbody>
-                {% for d in data4 %}
+                {% for d in data[3] %}
                 <tr>
-                  <th scope="row">{{data4.index(d)+1}}</th>
+                  <th scope="row">{{data[3].index(d)+1}}</th>
                   <td>{{d.Ime_i_prezime}}</td>
                   <td>{{d.ukupno_po_servisu}}</td>
                 </tr>
@@ -145,7 +145,7 @@
                 </tr>
               </thead>
               <tbody>
-                {% for d in data5 %}
+                {% for d in data[4] %}
                 <tr>
                   <th scope="row">{{d.id}}</th>
                   <td>{{d.ime}}</td>
@@ -172,9 +172,9 @@
                 </tr>
               </thead>
               <tbody>
-                {% for d in data6 %}
+                {% for d in data[5] %}
                 <tr>
-                  <th scope="row">{{data6.index(d)+1}}</th>
+                  <th scope="row">{{data[5].index(d)+1}}</th>
                   <td>{{d.serijski_broj}}</td>
                   <td>{{d.opis}}</td>
                   <td>{{d.nabavna_cijena}}</td>
@@ -201,9 +201,9 @@
                 </tr>
               </thead>
               <tbody>
-                {% for d in data4 %}
+                {% for d in data[3] %}
                 <tr>
-                  <th scope="row">{{data4.index(d)+1}}</th>
+                  <th scope="row">{{data[3].index(d)+1}}</th>
                   <td>{{d.Ime_i_prezime}}</td>
                   <td>{{d.ukupno_po_servisu}}</td>
                 </tr>
@@ -227,9 +227,9 @@
                 </tr>
               </thead>
               <tbody>
-                {% for d in data4 %}
+                {% for d in data[3] %}
                 <tr>
-                  <th scope="row">{{data4.index(d)+1}}</th>
+                  <th scope="row">{{data[3].index(d)+1}}</th>
                   <td>{{d.Ime_i_prezime}}</td>
                   <td>{{d.ukupno_po_servisu}}</td>
                 </tr>
@@ -253,9 +253,9 @@
                 </tr>
               </thead>
               <tbody>
-                {% for d in data4 %}
+                {% for d in data[3] %}
                 <tr>
-                  <th scope="row">{{data4.index(d)+1}}</th>
+                  <th scope="row">{{data[3].index(d)+1}}</th>
                   <td>{{d.Ime_i_prezime}}</td>
                   <td>{{d.ukupno_po_servisu}}</td>
                 </tr>
@@ -282,9 +282,9 @@
                 </tr>
               </thead>
               <tbody>
-                {% for d in data4 %}
+                {% for d in data[3] %}
                 <tr>
-                  <th scope="row">{{data4.index(d)+1}}</th>
+                  <th scope="row">{{data[3].index(d)+1}}</th>
                   <td>{{d.Ime_i_prezime}}</td>
                   <td>{{d.ukupno_po_servisu}}</td>
                 </tr>
@@ -307,9 +307,9 @@
                 </tr>
               </thead>
               <tbody>
-                {% for d in data4 %}
+                {% for d in data[3] %}
                 <tr>
-                  <th scope="row">{{data4.index(d)+1}}</th>
+                  <th scope="row">{{data[3].index(d)+1}}</th>
                   <td>{{d.Ime_i_prezime}}</td>
                   <td>{{d.ukupno_po_servisu}}</td>
                 </tr>
@@ -332,9 +332,9 @@
                 </tr>
               </thead>
               <tbody>
-                {% for d in data4 %}
+                {% for d in data[3] %}
                 <tr>
-                  <th scope="row">{{data4.index(d)+1}}</th>
+                  <th scope="row">{{data[3].index(d)+1}}</th>
                   <td>{{d.Ime_i_prezime}}</td>
                   <td>{{d.ukupno_po_servisu}}</td>
                 </tr>

@@ -26,11 +26,11 @@
         <div class="row min-height100vh justify-content-center align-items-center text-center">
             <div class="col-6">
                 <div class="icon-wrapper">
-                    <img class="success-icon" src="{{ url_for('static',filename='ok_icon.png') }}" alt="success-icon">
+                    <img class="success-icon" src="{{ url_for('static',filename='images/ok_icon.png') }}" alt="success-icon">
                     {% block content %}
                     <h4 class="mb-5">{{data.msg}}</h4>
                     {% endblock %}
-                    <a href="{{ url_for('home') }}" class="btn d-inline-block btn-finish px-5">Finish</a>
+                    <a href="{{ url_for('naslovnica') }}" class="btn d-inline-block btn-finish px-5">Finish</a>
                 </div>
             </div>
         </div>
