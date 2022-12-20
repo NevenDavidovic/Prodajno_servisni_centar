@@ -1,0 +1,10 @@
+#hp-bg {
+    height: 100vh;
+    min-height: 100vh;
+    background-image: url('images/PSC-banner.jpg');
+    background-size: cover;
+}
+
+.mask {
+    height: 100vh;
+}

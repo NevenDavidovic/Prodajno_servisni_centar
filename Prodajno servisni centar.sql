@@ -276,6 +276,75 @@ WHERE datum_zaprimanja > DATE(DATE_sub(NOW(), INTERVAL 6 MONTH))
 GROUP BY tip_motora
 ORDER BY ukupno_izvrsenih_usluga DESC;
 
+##  Koji se automobili najviše prodaju u kojem cjenovnom rangu (jeftini, srednji, skupi)?
+
+-- FUNKCIJE ZA ODREĐIVANJE CIJENE PRODANIH AUTOMOBILA
+DELIMITER //
+CREATE FUNCTION min_cijena() RETURNS INTEGER
+DETERMINISTIC
+BEGIN
+
+RETURN (SELECT MIN(cijena) FROM racun_prodaje);
+
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE FUNCTION max_cijena() RETURNS INTEGER
+DETERMINISTIC
+BEGIN
+
+RETURN (SELECT MAX(cijena) FROM racun_prodaje);
+
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE FUNCTION raspon_cijena() RETURNS INTEGER
+DETERMINISTIC
+BEGIN
+
+RETURN ((SELECT MAX(cijena) FROM racun_prodaje) - (SELECT MIN(cijena) FROM racun_prodaje));
+
+END//
+DELIMITER ;
+
+
+## jefitni  auti
+CREATE VIEW najprodavaniji_jefitni_auti AS
+SELECT a.marka_automobila,a.model,COUNT(*) AS br_prodanih_auta
+FROM racun_prodaje rp
+INNER JOIN auto a ON rp.id_auto = a.id
+WHERE cijena BETWEEN (SELECT min_cijena() FROM DUAL) AND ((SELECT raspon_cijena() FROM DUAL)/3)
+GROUP BY a.model
+ORDER BY br_prodanih_auta DESC;
+
+SELECT * FROM najprodavaniji_jefitni_auti;
+
+
+## srednje skupi auti
+CREATE VIEW najprodavaniji_srednje_skupi_auti AS
+SELECT a.marka_automobila,a.model,COUNT(*) AS br_prodanih_auta
+FROM racun_prodaje rp
+INNER JOIN auto a ON rp.id_auto = a.id
+WHERE cijena BETWEEN ((SELECT raspon_cijena() FROM DUAL)/3) AND (((SELECT raspon_cijena() FROM DUAL)/3) * 2)
+GROUP BY a.model
+ORDER BY br_prodanih_auta DESC;
+
+SELECT * FROM najprodavaniji_srednje_skupi_auti;
+
+
+## skupi auti
+CREATE VIEW najprodavaniji_skupi_auti AS
+SELECT a.marka_automobila,a.model,COUNT(*) AS br_prodanih_auta
+FROM racun_prodaje rp
+INNER JOIN auto a ON rp.id_auto = a.id
+WHERE cijena BETWEEN (((SELECT raspon_cijena() FROM DUAL)/3) * 2) AND (SELECT max_cijena() FROM DUAL)
+GROUP BY a.model
+ORDER BY br_prodanih_auta DESC;
+
+SELECT * FROM najprodavaniji_skupi_auti;
+
 -- TIN KRAJ UPITA
 
 
@@ -338,28 +407,83 @@ WHERE prihodi IN ( SELECT MAX(prihodi) FROM prihod_po_mjesecima);
 
 -- prosječan iznos prihoda za 2022. godinu od prodaje automobila
 SELECT AVG(prihodi)
-FROM prihodi_po_mjesecima;
+FROM prihod_po_mjesecima;
 
--- ukupan prihod servisa po mjesecima 2022
-CREATE TEMPORARY TABLE cijena__servisa
+-- ukupan prihod servisa i dijelova po mjesecima 2022
+CREATE VIEW cijena__servisa AS
 SELECT id_narudzbenica, SUM(cijena) AS cijena_servisa, datum_povratka, s.id
 FROM narudzbenica n, servis s,usluga_servis u
 WHERE n.id=s.id_narudzbenica AND u.id=s.id_usluga_servis
 GROUP BY id_narudzbenica;
 
-CREATE TEMPORARY TABLE cijena__dijelova
+CREATE VIEW cijena__dijelova AS
 SELECT id_narudzbenica, SUM(kolicina*prodajna_cijena) AS cijena_dijelova, id_servis
 FROM ima i
 INNER JOIN stavka_dio sd ON i.id_dio=sd.id_dio
 RIGHT JOIN servis s ON s.id=i.id_servis
 GROUP BY id_narudzbenica;
 
+CREATE VIEW dio_servis_po_mj AS 
 SELECT SUM((IFNULL(cijena_dijelova, 0)+cijena_servisa)) AS ukupna_cijena_servisa, EXTRACT(MONTH FROM datum_povratka) AS mjesec 
 FROM cijena__dijelova cd, cijena__servisa cs
 WHERE cd.id_narudzbenica=cs.id_narudzbenica AND EXTRACT(YEAR FROM datum_povratka)="2022"
 GROUP BY CAST(DATE_SUB(datum_povratka, INTERVAL DAYOFMONTH(datum_povratka)-1 DAY) AS DATE)
 ORDER BY mjesec ASC;
 
+-- ukupni prihodi u godini 2022
+
+CREATE VIEW svi_prihodi_u_godini AS
+SELECT SUM((IFNULL(prihodi, 0)+ukupna_cijena_servisa)) AS prihodi
+FROM prihod_po_mjesecima pm
+RIGHT JOIN dio_servis_po_mj ds ON pm.mjesec=ds.mjesec;
+
+-- ukupan rashod od placa zaposlenika
+CREATE VIEW rashod_placa AS
+SELECT SUM(placa*12) AS ukupni_trosak_placa
+FROM zaposlenik;
+
+-- ukupan rashod od kupnje dijelova
+
+CREATE VIEW rashod_dijelova AS
+SELECT SUM((nabavna_cijena*dostupna_kolicina)) AS ukupan_trosak_dijelova
+FROM stavka_dio;
+
+-- ukupan rashod u godini 2022
+
+CREATE VIEW ukupni_rashodi AS
+SELECT (ukupan_trosak_dijelova+ukupni_trosak_placa) AS rashodi
+FROM rashod_dijelova rd, rashod_placa rp;
+
+-- prihodi-rashodi
+
+SELECT (prihodi-rashodi) AS racun_dobiti_ili_gubitka
+FROM ukupni_rashodi ur,svi_prihodi_u_godini pr;
+
+-- tablica sa rashodima i prihodima da se može uspostaviti dobit ili gubitak
+
+CREATE VIEW rash_prih AS
+SELECT prihodi , rashodi
+FROM ukupni_rashodi ur,svi_prihodi_u_godini pr;
+
+-- funkcija za određivanje dobiti ili gubitka
+
+DELIMITER //
+CREATE FUNCTION d_ili_g(rashod INTEGER, prihod INTEGER) RETURNS VARCHAR(90)
+DETERMINISTIC
+BEGIN
+	DECLARE rj VARCHAR(90);
+
+	IF rashod>prihod THEN
+    SET rj="Ostvarili ste gubitak u tekućoj godini";
+    ELSE
+    SET rj ="Ostvarili ste dobit u tekućoj godini";
+    END IF;
+
+ RETURN rj;
+END//
+DELIMITER ;
+
+SELECT d_ili_g(rashodi, prihodi) FROM rash_prih;
 --SARA KRAJ
 
 -- NOEL UPITI
