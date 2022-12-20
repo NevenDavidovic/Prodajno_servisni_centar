@@ -215,7 +215,7 @@ SELECT DISTINCT marka_automobila
 -- NEVEN UPITI
 -- Prva tri zaposlenika koja imaju najviše servisa
 
-SELECT CONCAT(z.ime ,' ', z.prezime) AS Ime_i_prezime, u.naziv,COUNT(z.id) as broj_servisa
+SELECT CONCAT(z.ime ,' ', z.prezime) AS Ime_i_prezime,COUNT(z.id) as broj_servisa
 FROM servis AS s, usluga_servis AS u, zaposlenik AS z
 WHERE z.id=id_zaposlenik AND u.id=id_usluga_servis
 GROUP BY z.id
