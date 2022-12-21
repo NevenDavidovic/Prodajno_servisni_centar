@@ -25,7 +25,7 @@ def showStats():
     except Exception as err:
         return make_response(render_template("fail.html", error=err), 400)
 
-    return make_response(render_template("stats.html", data=responses), 200)
+    return make_response(render_template("administracija-statistika.html", data=responses), 200)
 
 # ruta za dodavanje novog zaposlenika
 
