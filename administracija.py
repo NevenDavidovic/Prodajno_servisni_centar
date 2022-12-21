@@ -35,9 +35,6 @@ def addEmployer():
     if request.method == "POST":
         try:
             table = 'zaposlenik'
-            #keys = ["ime", "prezime", "datum_rodenja", "adresa", "grad", "spol",
-                    #"broj_telefona", "datum_zaposlenja", "e_mail", "placa", "radno_mjesto"]
-            # data = {key: request.form.items() for key in keys}
             data = {}
             for key,value in request.form.items(): 
                 data[key] = value
