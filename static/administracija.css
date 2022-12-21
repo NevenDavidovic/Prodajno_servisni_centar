@@ -1,0 +1,22 @@
+#h-global {
+    margin-top: 3vw;
+    margin-bottom: 3vw;
+}
+
+#c-global {
+    margin-bottom: 6vw;
+}
+
+#input-global {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.fs-3 {
+    border-bottom: 2px solid #86b7fe;
+    margin-top: 1vw;
+}
+
+#form-button {
+    margin-top: 10px;
+}
