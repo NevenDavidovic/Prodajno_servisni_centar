@@ -32,7 +32,7 @@ def najviseUtrosenihDjelova():
         qstring = f'''SELECT a.marka_automobila, a.model,SUM(kolicina) AS broj_ugradjenih_djelova
         FROM auto a INNER JOIN narudzbenica n ON a.id = n.id_auto
         INNER JOIN servis s ON n.id = s.id_narudzbenica
-        INNER JOIN ima i ON s.id = i.id_servis
+        INNER JOIN dio_na_servisu i ON s.id = i.id_servis
         WHERE datum_zaprimanja > DATE(DATE_sub(NOW(), INTERVAL 6 MONTH))
         GROUP BY model
         ORDER BY broj_ugradjenih_djelova DESC
