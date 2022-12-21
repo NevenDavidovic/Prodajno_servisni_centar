@@ -36,12 +36,12 @@ def addEmployer():
         try:
             table = 'zaposlenik'
             data = {}
-            for key,value in request.form.items(): 
+            for key, value in request.form.items():
                 data[key] = value
-            
+
             response = add_item(table, data)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("success.html",data={"msg":"Uspješno dodano u bazu"}), 200)
+        return make_response(render_template("success.html", data={"msg": "Uspješno dodano u bazu"}), 200)
     else:
         return make_response(render_template("dodavanje-novog-zaposlenika.html"), 200)
