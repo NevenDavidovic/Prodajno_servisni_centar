@@ -20,3 +20,12 @@
 #form-button {
     margin-top: 10px;
 }
+
+.credit {
+    opacity: 0;
+    transition: all .5s;
+}
+
+.col:hover .credit {
+    opacity: 1;
+}
