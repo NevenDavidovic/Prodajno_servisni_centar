@@ -9,7 +9,7 @@ administracija = Blueprint("administracija", __name__)
 # RUTE
 
 # ruta za statistiku
-@administracija.route("/stats", methods=['GET'])
+@administracija.route("/administracija/statistika", methods=['GET'])
 def showStats():
     # pozivi bazi podataka
     responses = []
