@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistike</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+<style>
+  * {
+    font-size: 0.9rem;
+  }
+  .credit {
+    opacity:0;
+    transition:all .5s;
+  }
+  .col:hover .credit {
+    opacity: 1;
+  }
+</style>
+</head>
+<body>
+    <div class="container pt-5">
+        <h1 class="display-4"> Poslovne statistike</h1>
+        <!-- ROW 1 -->
+        <div class="row py-5">
+          <!-- table 1 -->
+          <div class="col">
+            <h5>Usluge po tipu motora</h5>
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Tip motora</th>
+                  <th scope="col">Ukupno izvršenih usluga</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% block content %}
+                {% for d in data[0] %}
+                <tr>
+                  <th scope="row">{{data[0].index(d)+1}}</th>
+                  <td>{{d.tip_motora}}</td>
+                  <td>{{d.ukupno_izvrsenih_usluga}}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <p class="text-muted credit">autor: Tin Pritišanac</p>
+          </div>
+          <!-- end of table 1 -->
+
+          <!-- table 2 -->
+          <div class="col">
+            <h5>Utrošeni dijelovi po marki automobila</h5>
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Marka</th>
+                  <th scope="col">Model</th>
+                  <th scope="col">Br. ugrađenih dijelova</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for d in data[1] %}
+                <tr>
+                  <th scope="row">{{data[1].index(d)+1}}</th>
+                  <td>{{d.marka_automobila}}</td>
+                  <td>{{d.model}}</td>
+                  <td>{{d.broj_ugradjenih_djelova}}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <p class="text-muted credit">autor: Tin Pritišanac</p>
+          </div>
+          <!-- end of table 2 -->
+
+          <!-- table 3 -->
+          <div class="col">
+            <h5>Zaposlenici sa najviše servisa</h5>
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Ime i prezime</th>
+                  <th scope="col">broj servisa</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for d in data[2] %}
+                <tr>
+                  <th scope="row">{{data[2].index(d)+1}}</th>
+                  <td>{{d.Ime_i_prezime}}</td>
+                  <td>{{d.broj_servisa}}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <p class="text-muted credit">autor: Neven Davidović</p>
+          </div>
+          <!-- end of table 3 -->
+        </div>
+        <!-- END OF ROW 1 -->
+
+        <!-- ROW 2 -->
+        <div class="row">
+          <!-- table 4 -->
+          <div class="col">
+            <h5>Zaposlenici po ukupnoj cijeni servisa </h5>
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Ime i prezime</th>
+                  <th scope="col">ukupno_po_servisu</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for d in data[3] %}
+                <tr>
+                  <th scope="row">{{data[3].index(d)+1}}</th>
+                  <td>{{d.Ime_i_prezime}}</td>
+                  <td>{{d.ukupno_po_servisu}}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <p class="text-muted credit">autor: Neven Davidović</p>
+          </div>
+          <!-- end of table 4 -->
+
+          <!-- table 5 -->
+          <div class="col">
+            <h5>Top 5 kupaca po broju računa</h5>
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Ime</th>
+                  <th scope="col">Prezime</th>
+                  <th scope="col">Ukupno računa</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for d in data[4] %}
+                <tr>
+                  <th scope="row">{{d.id}}</th>
+                  <td>{{d.ime}}</td>
+                  <td>{{d.prezime}}</td>
+                  <td>{{d.Ukupan_broj_računa}}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <p class="text-muted credit">autor: Darjan Jurjanović</p>
+          </div>
+          <!-- end of table 5 -->
+
+          <!-- table 6 -->
+          <div class="col">
+            <h5>Top 5 skupih dijelova</h5>
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Serijski broj</th>
+                  <th scope="col">Opis</th>
+                  <th scope="col">Nabavna cijena</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for d in data[5] %}
+                <tr>
+                  <th scope="row">{{data[5].index(d)+1}}</th>
+                  <td>{{d.serijski_broj}}</td>
+                  <td>{{d.opis}}</td>
+                  <td>{{d.nabavna_cijena}}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <p class="text-muted credit">autor: Darjan Jurjanović</p>
+          <!-- end of table 6 -->
+        </div>
+        <!-- END OF ROW 2 -->
+
+        <!-- ROW 3 -->
+        <div class="row py-5">
+          <!-- table 7 -->
+          <div class="col">
+            <h5>Table 7</h5>
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Ime i prezime</th>
+                  <th scope="col">ukupno_po_servisu</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for d in data[3] %}
+                <tr>
+                  <th scope="row">{{data[3].index(d)+1}}</th>
+                  <td>{{d.Ime_i_prezime}}</td>
+                  <td>{{d.ukupno_po_servisu}}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <p class="text-muted credit">autor: Marija Ilić</p>
+
+          </div>
+          <!-- end of table 7 -->
+
+          <!-- table 8 -->
+          <div class="col">
+            <h5>Table 8</h5>
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Ime i prezime</th>
+                  <th scope="col">ukupno_po_servisu</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for d in data[3] %}
+                <tr>
+                  <th scope="row">{{data[3].index(d)+1}}</th>
+                  <td>{{d.Ime_i_prezime}}</td>
+                  <td>{{d.ukupno_po_servisu}}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <p class="text-muted credit">autor: Marija Ilić</p>
+
+          </div>
+          <!-- end of table 8 -->
+
+          <!-- table 9 -->
+          <div class="col">
+            <h5>Table 9</h5>
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Ime i prezime</th>
+                  <th scope="col">ukupno_po_servisu</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for d in data[3] %}
+                <tr>
+                  <th scope="row">{{data[3].index(d)+1}}</th>
+                  <td>{{d.Ime_i_prezime}}</td>
+                  <td>{{d.ukupno_po_servisu}}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <p class="text-muted credit">autor: Noel Modrušan</p>
+          </div>
+          <!-- end of table 9 -->
+        </div>
+        <!-- END OF ROW 3 -->
+
+        <!-- ROW 4 -->
+        <div class="row py-5">
+          <!-- table 10 -->
+          <div class="col">
+            <h5>Table 10</h5>
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Ime i prezime</th>
+                  <th scope="col">ukupno_po_servisu</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for d in data[3] %}
+                <tr>
+                  <th scope="row">{{data[3].index(d)+1}}</th>
+                  <td>{{d.Ime_i_prezime}}</td>
+                  <td>{{d.ukupno_po_servisu}}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <p class="text-muted credit">autor: Noel Modrušan</p>
+          </div>
+          <!-- end of table 10 -->
+
+          <!-- table 11 -->
+          <div class="col">
+            <h5>Table 11</h5>
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Ime i prezime</th>
+                  <th scope="col">ukupno_po_servisu</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for d in data[3] %}
+                <tr>
+                  <th scope="row">{{data[3].index(d)+1}}</th>
+                  <td>{{d.Ime_i_prezime}}</td>
+                  <td>{{d.ukupno_po_servisu}}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <p class="text-muted credit">autor: Sara Mauko</p>
+          </div>
+          <!-- end of table 11 -->
+
+          <!-- table 12 -->
+          <div class="col">
+            <h5>Table 12</h5>
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Ime i prezime</th>
+                  <th scope="col">ukupno_po_servisu</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for d in data[3] %}
+                <tr>
+                  <th scope="row">{{data[3].index(d)+1}}</th>
+                  <td>{{d.Ime_i_prezime}}</td>
+                  <td>{{d.ukupno_po_servisu}}</td>
+                </tr>
+                {% endfor %}
+                {% endblock %}
+              </tbody>
+            </table>
+            <p class="text-muted credit">autor: Sara Mauko</p>
+          </div>
+          <!-- end of table 12 -->
+        </div>
+    </div>
+    <!-- end of container -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+</body>
+</html>
