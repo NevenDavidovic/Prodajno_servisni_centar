@@ -44,4 +44,4 @@ def addEmployer():
             return make_response(render_template("fail.html", error=err), 400)
         return make_response(render_template("success.html", data={"msg": "Uspješno dodano u bazu"}), 200)
     else:
-        return make_response(render_template("dodavanje-novog-zaposlenika.html"), 200)
+        return make_response(render_template("administracija-dodavanje-novog-zaposlenika.html"), 200)
