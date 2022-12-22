@@ -20,6 +20,8 @@
         .btn.btn-outline-success {
             border-color: #f34235;
             color: #f34235;
+            margin-top: 3vw;
+            margin-bottom: 3vw;
         }
 
         .btn.btn-outline-success:hover {
@@ -46,10 +48,9 @@
                         alt="fail-icon">
 
                     <h1>Došlo je do greške...</h1>
-                    <p class="fs-4">Error message:</p>
-                    {% block content %}
-                    <p class="fs-5">{{ error }}</p>
                     <a href="javascript:history.back()" class="btn btn-outline-success">Vrati se natrag</a>
+                    {% block content %}
+                    <p class="fs-5">Error message: {{ error }}</p>
                     {% endblock %}
                 </div>
             </div>
