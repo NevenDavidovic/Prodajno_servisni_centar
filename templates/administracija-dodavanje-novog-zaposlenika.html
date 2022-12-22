@@ -5,13 +5,19 @@
 
 {% block body %}
 
-<div class="container" id="c-global">
-    <div class="row" id="h-global">
-        <div class="col">
-            <h1>Dodavanje zaposlenika</h1>
-            <p class="fs-4">Pomoću forme unesite podatke o novom zaposleniku</p>
+<div class="text-center bg-image" id="h-global">
+    <div class="mask" style="background-color: rgba(255, 255, 255, 0.7);">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div>
+                <h1>Dodavanje zaposlenika</h1>
+                <p class="fs-4">Pomoću forme unesite podatke o novom zaposleniku</p>
+            </div>
         </div>
     </div>
+</div>
+
+<div class="container" id="c-global">
+
 
     {% block content %}
     <form method="post">

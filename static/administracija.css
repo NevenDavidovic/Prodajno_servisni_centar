@@ -1,6 +1,14 @@
 #h-global {
-    margin-top: 3vw;
-    margin-bottom: 3vw;
+    height: 30vh;
+    min-height: 30vh;
+    background-image: url('images/PSC-banner.jpg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    margin-bottom: 10vh;
+}
+
+.mask {
+    height: 30vh;
 }
 
 #c-global {
