@@ -123,8 +123,9 @@
                 <div class="row" id="input-global">
                     <div class="col">
                         <label for="radno_mjesto" class="form-label">Radno mjesto</label>
-                        <select class="form-control" required>
-                            <option value="autoelektricar">Autoelektričar</option>
+                        <select name="radno_mjesto" class="form-control" value="{{request.form['radno_mjesto']}}"
+                            required>
+                            <option selected value="autoelektricar">Autoelektričar</option>
                             <option value="mehanicar">Mehaničar</option>
                             <option value="prodavac">Prodavač</option>
                             <option value="recepcionar">Recepcionar</option>
