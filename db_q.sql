@@ -293,25 +293,7 @@ CREATE VIEW rash_prih AS
 SELECT prihodi , rashodi
 FROM ukupni_rashodi ur,svi_prihodi_u_godini pr;
 
--- funkcija za određivanje dobiti ili gubitka
 
-DELIMITER //
-CREATE FUNCTION d_ili_g(rashod INTEGER, prihod INTEGER) RETURNS VARCHAR(90)
-DETERMINISTIC
-BEGIN
-	DECLARE rj VARCHAR(90);
-
-	IF rashod>prihod THEN
-    SET rj="Ostvarili ste gubitak u tekućoj godini";
-    ELSE
-    SET rj ="Ostvarili ste dobit u tekućoj godini";
-    END IF;
-
- RETURN rj;
-END//
-DELIMITER ;
-
-SELECT d_ili_g(rashodi, prihodi) FROM rash_prih;
 -- SARA KRAJ
 
 -- NOEL UPITI
