@@ -114,8 +114,8 @@
                 <div class="row" id="input-global">
                     <div class="col">
                         <label for="e_mail" class="form-label">E-mail</label>
-                        <input name="e_mail" value="{{request.form['e_mail']}}" type="e_mail" class="form-control"
-                            id="e_mail" required>
+                        <input name="e_mail" value="{{request.form['e_mail']}}" type="e_mail"
+                            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" class="form-control" id="e_mail" required>
                     </div>
                 </div>
 
@@ -123,8 +123,15 @@
                 <div class="row" id="input-global">
                     <div class="col">
                         <label for="radno_mjesto" class="form-label">Radno mjesto</label>
-                        <input name="radno_mjesto" value="{{request.form['radno_mjesto']}}" type="text"
-                            class="form-control" required>
+                        <select class="form-control" required>
+                            <option value="autoelektricar">Autoelektričar</option>
+                            <option value="mehanicar">Mehaničar</option>
+                            <option value="prodavac">Prodavač</option>
+                            <option value="recepcionar">Recepcionar</option>
+                            <option value="skladistar">Skladištar</option>
+                            <option value="tajnik">Tajnik</option>
+                            <option value="vulkanizer">Vulkanizer</option>
+                        </select>
                     </div>
                 </div>
 
@@ -139,7 +146,8 @@
                 <div class="row" id="input-global">
                     <div class="col">
                         <label for="placa" class="form-label">Plaća</label>
-                        <input name="placa" value="{{request.form['placa']}}" type="text" class="form-control" required>
+                        <input name="placa" value="{{request.form['placa']}}" type="text" pattern="^\d+(\.\d{1,2})?$"
+                            class="form-control" required>
                     </div>
                 </div>
 
