@@ -22,7 +22,7 @@
     {% block content %}
     <form method="post">
 
-        <div class="row">
+        <div class="row" id="end-form">
             <div class="col">
 
 
@@ -30,14 +30,15 @@
                 <div class="row" id="input-global">
                     <div class="col">
                         <label for="ime" class="form-label">Ime</label>
-                        <input name="ime" value="{{request.form['ime']}}" type="text" class="form-control">
+                        <input name="ime" value="{{request.form['ime']}}" type="text" class="form-control" required>
                     </div>
                 </div>
 
                 <div class="row" id="input-global">
                     <div class="col">
                         <label for="prezime" class="form-label">Prezime</label>
-                        <input name="prezime" value="{{request.form['prezime']}}" type="text" class="form-control">
+                        <input name="prezime" value="{{request.form['prezime']}}" type="text" class="form-control"
+                            required>
                     </div>
                 </div>
 
@@ -48,7 +49,7 @@
                             <div class="col">
                                 <label for="datum_rodenja" class="form-label">Datum rođenja</label>
                                 <input name="datum_rodenja" value="{{request.form['datum_rodenja']}}" type="date"
-                                    class="form-control">
+                                    class="form-control" required>
                             </div>
                         </div>
 
@@ -60,13 +61,15 @@
                             <div class="col">
                                 <label for="spol" class="form-label">Spol</label>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="spol" value="M" id="musko">
+                                    <input class="form-check-input" type="radio" name="spol" value="M" id="musko"
+                                        required>
                                     <label class="form-check-label" for="musko">
                                         Muško
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="spol" value="Ž" id="zensko">
+                                    <input class="form-check-input" type="radio" name="spol" value="Ž" id="zensko"
+                                        required>
                                     <label class="form-check-label" for="zensko">
                                         Žensko
                                     </label>
@@ -80,14 +83,15 @@
                 <div class="row" id="input-global">
                     <div class="col">
                         <label for="adresa" class="form-label">Adresa</label>
-                        <input name="adresa" value="{{request.form['adresa']}}" type="text" class="form-control">
+                        <input name="adresa" value="{{request.form['adresa']}}" type="text" class="form-control"
+                            required>
                     </div>
                 </div>
 
                 <div class="row" id="input-global">
                     <div class="col">
                         <label for="grad" class="form-label">Grad</label>
-                        <input name="grad" value="{{request.form['grad']}}" type="text" class="form-control">
+                        <input name="grad" value="{{request.form['grad']}}" type="text" class="form-control" required>
                     </div>
                 </div>
 
@@ -103,7 +107,7 @@
                     <div class="col">
                         <label for="broj_telefona" class="form-label">Broj telefona</label>
                         <input name="broj_telefona" value="{{request.form['broj_telefona']}}" type="text"
-                            class="form-control">
+                            class="form-control" required>
                     </div>
                 </div>
 
@@ -111,7 +115,7 @@
                     <div class="col">
                         <label for="e_mail" class="form-label">E-mail</label>
                         <input name="e_mail" value="{{request.form['e_mail']}}" type="e_mail" class="form-control"
-                            id="e_mail">
+                            id="e_mail" required>
                     </div>
                 </div>
 
@@ -120,7 +124,7 @@
                     <div class="col">
                         <label for="radno_mjesto" class="form-label">Radno mjesto</label>
                         <input name="radno_mjesto" value="{{request.form['radno_mjesto']}}" type="text"
-                            class="form-control">
+                            class="form-control" required>
                     </div>
                 </div>
 
@@ -128,14 +132,14 @@
                     <div class="col">
                         <label for="datum_zaposlenja" class="form-label">Datum zaposlenja</label>
                         <input name="datum_zaposlenja" value="{{request.form['datum_zaposlenja']}}" type="date"
-                            class="form-control">
+                            class="form-control" required>
                     </div>
                 </div>
 
                 <div class="row" id="input-global">
                     <div class="col">
                         <label for="placa" class="form-label">Plaća</label>
-                        <input name="placa" value="{{request.form['placa']}}" type="text" class="form-control">
+                        <input name="placa" value="{{request.form['placa']}}" type="text" class="form-control" required>
                     </div>
                 </div>
 

@@ -10,7 +10,6 @@
     background-image: url('images/PSC-banner.jpg');
     background-position: center center;
     background-repeat: no-repeat;
-    margin-bottom: 10vh;
 }
 
 .mask {
@@ -18,21 +17,22 @@
 }
 
 #c-global {
+    margin-top: 6vw;
     margin-bottom: 6vw;
 }
 
 #input-global {
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 1vw;
+    margin-bottom: 1vw;
 }
 
 .fs-3 {
-    border-bottom: 2px solid #86b7fe;
+    border-bottom: 2px solid #212529;
     margin-top: 1vw;
 }
 
 #form-button {
-    margin-top: 10px;
+    margin-top: 2vw;
 }
 
 .credit {
@@ -42,4 +42,14 @@
 
 .col:hover .credit {
     opacity: 1;
+}
+
+.form-label:before {
+    content: "* ";
+    color: red;
+}
+
+#end-form {
+    padding-bottom: 3vw;
+    border-bottom: 2px solid #212529;
 }
