@@ -13,6 +13,7 @@
         integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/static/index.css">
+    <link rel="shortcut icon" href="/static/images/favicon.png">
 
     <title>Prodajno servisni centar | PSC</title>
 
@@ -39,9 +40,9 @@
     <!-- za ukloniti samo obrisi cijeli script tag -->
     <script>
         const elHTML = '<div onclick="hide();" class="christmas d-flex justify-content-center align-items-center" style="color:yellow;width:100%;height:100%;position:absolute;z-index:2;top:0;left:0;background-color:brown;transition:all 2s;overflow:hidden;flex-direction:column;cursor:pointer;"><h1 class="display-4">Sretan Božić i Nova godina!</h1><img style="height: 300px;" src="https://static.vecteezy.com/system/resources/previews/011/016/451/original/christmas-decoration-with-balls-and-bell-free-png.png" alt=""></div>';
-        document.querySelector('body').insertAdjacentHTML('beforeend',elHTML);
+        document.querySelector('body').insertAdjacentHTML('beforeend', elHTML);
         const el = document.querySelector(".christmas");
-        function hide(){
+        function hide() {
             el.style.height = '0%';
         }
     </script>
