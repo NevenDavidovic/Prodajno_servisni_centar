@@ -19,6 +19,13 @@
 <div class="container" id="c-global">
 
 
+    <form method="post">
+        <div class="d-flex">
+            <input name="ime" value="{{request.form['ime']}}" type="text" class="form-control">
+            <input type="submit" class="btn btn-outline-success" value="Pretraži">
+        </div>
+    </form>
+
     {% block content %}
 
     <!-- table -->

@@ -49,14 +49,24 @@ def addEmployer():
 # ruta za ispis svih zaposlenika
 
 
-@administracija.route("/administracija/ispis-svih-zaposlenika", methods=['GET'])
+@administracija.route("/administracija/ispis-svih-zaposlenika", methods=['POST', 'GET'])
 def getEmployers():
-    try:
-        table = 'zaposlenik'
-        response = get_all_items(table)
-    except Exception as err:
-        return make_response(render_template("fail.html", error=err), 400)
-    return make_response(render_template("administracija-ispis-svih-zaposlenika.html", data=response), 200)
+    if request.method == "POST":
+        try:
+            table = 'zaposlenik'
+            attribut = 'ime'
+            value = request.form.get('ime')
+            response = find_item(table, attribut, value)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("administracija-ispis-svih-zaposlenika.html", data=response), 200)
+    else:
+        try:
+            table = 'zaposlenik'
+            response = get_all_items(table)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("administracija-ispis-svih-zaposlenika.html", data=response), 200)
 
 
 # ruta za prikaz određenog zaposlenika
