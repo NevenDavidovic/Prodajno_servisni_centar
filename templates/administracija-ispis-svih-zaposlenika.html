@@ -52,8 +52,11 @@
             {% endfor %}
         </tbody>
     </table>
-
     <!-- end of table -->
+    
+    {% if not data %}
+        <p class="text-muted">Nije pronađen niti jedan zaposlenik.</p>
+    {% endif %}
 
     {% endblock %}
 
