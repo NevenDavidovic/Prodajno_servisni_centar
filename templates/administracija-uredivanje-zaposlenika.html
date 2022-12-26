@@ -131,7 +131,7 @@
                 <div class="row" id="input-global">
                     <div class="col">
                         <label for="radno_mjesto" class="form-label">Radno mjesto</label>
-                        <select name="radno_mjesto" class="form-control" id="radno_mjesto" value="{{data.radno_mjesto}}">
+                        <select name="radno_mjesto" class="form-control" id="radno_mjesto" data-zanimanje="{{data.radno_mjesto}}" value="{{data.radno_mjesto}}">
                             <option value="autoelektricar">Autoelektričar</option>
                             <option value="mehanicar">Mehaničar</option>
                             <option value="prodavac">Prodavač</option>
@@ -169,15 +169,11 @@
     {% endblock %}
 </div>
 <script defer>
-    setTimeout(() =>{
-        const jinjaValue = document.getElementById('radno_mjesto').value;
-        console.warn(jinjaValue)
-        const selectedElement = document.querySelector(`option[value="${jinjaValue}"`);
-        console.dir(selectedElement);
+    // skripta za postavljanje dropdown vrijednosti
+        const el = document.getElementById('radno_mjesto');
+        const zanimanje = el.dataset.zanimanje;
+        const selectedElement = document.querySelector(`option[value="${zanimanje}"`);
         selectedElement.setAttribute('selected', true);
-    },3000)
-    
-
 </script>
 {% endblock %}
 
