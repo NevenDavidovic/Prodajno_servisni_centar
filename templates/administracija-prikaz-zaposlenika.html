@@ -21,29 +21,31 @@
 
     {% block content %}
 
-    <!-- table -->
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col">Ime</th>
-                <th scope="col">Prezime</th>
-                <th scope="col">Datum rođenja</th>
-                <th scope="col">Adresa</th>
-                <th scope="col"></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>{{data.ime}}</td>
-                <td>{{data.prezime}}</td>
-                <td>{{data.datum_rodenja}}</td>
-                <td>{{data.adresa}}</td>
-                <td><a href="#" class="btn btn-outline-success"> Više informacija </a></td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="row" id="end">
+        <div class="col">
+            <p class="fs-3">Opće informacije</p>
+            <p><b>Ime:</b> {{data.ime}}</p>
+            <p><b>Prezime:</b> {{data.prezime}}</p>
+            <p><b>Datum rođenja:</b> {{data.datum_rodenja}}</p>
+            <p><b>Spol:</b> {{data.spol}}</p>
+            <p><b>Adresa:</b> {{data.adresa}}</p>
+            <p><b>Grad:</b> {{data.grad}}</p>
+        </div>
+        <div class="col">
+            <p class="fs-3">Kontakt informacije</p>
+            <p><b>Broj telefona:</b> {{data.broj_telefona}}</p>
+            <p><b>E-mail:</b> {{data.e_mail}}</p>
 
-    <!-- end of table -->
+            <p class="fs-3">Informacije o radnom mjestu</p>
+            <p><b>Radno mjesto:</b> {{data.radno_mjesto}}</p>
+            <p><b>Datum zaposlenja:</b> {{data.datum_zaposlenja}}</p>
+            <p><b>Plaća:</b> {{data.placa}}</p>
+        </div>
+    </div>
+
+    <a href="#" class="btn btn-outline-success" id="button"> Uredi </a>
+    <a href="#" class="btn btn-outline-success" id="button"> Ukloni </a>
+
 
     {% endblock %}
 
