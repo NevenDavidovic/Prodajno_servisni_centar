@@ -45,3 +45,15 @@ def addEmployer():
         return make_response(render_template("success.html", data={"msg": "Uspješno dodano u bazu"}), 200)
     else:
         return make_response(render_template("administracija-dodavanje-novog-zaposlenika.html"), 200)
+
+# ruta za ispis svih zaposlenika
+
+
+@administracija.route("/administracija/ispis-svih-zaposlenika", methods=['GET'])
+def getEmployers():
+    try:
+        table = 'zaposlenik'
+        response = get_all_items(table)
+    except Exception as err:
+        return make_response(render_template("fail.html", error=err), 400)
+    return make_response(render_template("administracija-ispis-svih-zaposlenika.html", data=response), 200)
