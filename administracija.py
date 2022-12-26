@@ -42,7 +42,7 @@ def addEmployer():
             add_item(table, data)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("success.html", data={"msg": "Uspješno dodano u bazu"}), 200)
+        return make_response(render_template("success.html", data={"msg": "Zaposlenik uspješno dodan!"}), 200)
     else:
         return make_response(render_template("administracija-dodavanje-novog-zaposlenika.html"), 200)
 
@@ -70,3 +70,15 @@ def getEmployer(id):
     except Exception as err:
         return make_response(render_template("fail.html", error=err), 400)
     return make_response(render_template("administracija-prikaz-zaposlenika.html", data=response), 200)
+
+# ruta za brisanje određenog zaposlenika
+
+
+@administracija.route("/administracija/brisanje-zaposlenika/<int:id>", methods=['GET'])
+def deleteEmployer(id):
+    try:
+        table = 'zaposlenik'
+        delete_item(table, id)
+    except Exception as err:
+        return make_response(render_template("fail.html", error=err), 400)
+    return make_response(render_template("success.html", data={"msg": "Uspješno izbrisan zaposlenik!"}), 200)
