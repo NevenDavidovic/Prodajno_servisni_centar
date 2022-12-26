@@ -76,6 +76,7 @@ def getEmployer(id):
     try:
         table = 'zaposlenik'
         response = get_item(table, id)
+        
     except Exception as err:
         return make_response(render_template("fail.html", error=err), 400)
     return make_response(render_template("administracija-prikaz-zaposlenika.html", data=response), 200)
@@ -103,6 +104,8 @@ def editEmployer(id):
             data = {}
             for key, value in request.form.items():
                 data[key] = value
+            data["id"] = id    
+            
             edit_table(table, data)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
@@ -111,6 +114,7 @@ def editEmployer(id):
         try:
             table = 'zaposlenik'
             response = get_item(table, id)
+            print(response)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
         return make_response(render_template("administracija-uredivanje-zaposlenika.html", data=response), 200)

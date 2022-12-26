@@ -100,9 +100,11 @@ def get_item(table, id) -> dict:
 
         try:
             mycursor.execute(qstring)
+            myresult = mycursor.fetchone()
+            if myresult == None:
+                raise Exception("Zaposlenik nije pronađen u bazi!") 
         except Exception as err:
             raise Exception(err)
-        myresult = mycursor.fetchone()
         return myresult
 ############################################################
 
@@ -140,6 +142,7 @@ def edit_table(table, data):
                 qstring = f'UPDATE {table} SET {key} = "{val}" WHERE id = {data["id"]};'
             try:
                 mycursor.execute(qstring)
+                db.commit()
             except Exception as err:
                 raise Exception(err)
 

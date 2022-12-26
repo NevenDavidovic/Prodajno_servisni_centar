@@ -1,6 +1,8 @@
 {% extends "administracija-base.html" %}
 {% block head %}
 <title>Uređivanje zaposlenika | PSC</title>
+
+
 {% endblock %}
 
 {% block body %}
@@ -60,13 +62,25 @@
                             <div class="col">
                                 <label for="spol" class="form-label">Spol</label>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="spol" value="M" id="musko">
+                                    {% if data.spol == 'm' %}
+                                    <input class="form-check-input" checked type="radio" name="spol" value="m" id="musko">
+                                
+                                    {% else %}
+                                    <input class="form-check-input" type="radio" name="spol" value="m" id="musko">
+                                    
+                                    {% endif %}
                                     <label class="form-check-label" for="musko">
                                         Muško
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="spol" value="Ž" id="zensko">
+                                    {% if data.spol == 'ž' %}
+                                    <input class="form-check-input" checked type="radio" name="spol" value="ž" id="zensko">
+                                    
+                                    {% else %}
+                                    <input class="form-check-input" type="radio" name="spol" value="ž" id="zensko">
+                                    
+                                    {% endif %}
                                     <label class="form-check-label" for="zensko">
                                         Žensko
                                     </label>
@@ -117,8 +131,8 @@
                 <div class="row" id="input-global">
                     <div class="col">
                         <label for="radno_mjesto" class="form-label">Radno mjesto</label>
-                        <select name="radno_mjesto" class="form-control" value="{{data.radno_mjesto}}">
-                            <option selected value="autoelektricar">Autoelektričar</option>
+                        <select name="radno_mjesto" class="form-control" id="radno_mjesto" value="{{data.radno_mjesto}}">
+                            <option value="autoelektricar">Autoelektričar</option>
                             <option value="mehanicar">Mehaničar</option>
                             <option value="prodavac">Prodavač</option>
                             <option value="recepcionar">Recepcionar</option>
@@ -154,4 +168,16 @@
     </form>
     {% endblock %}
 </div>
+<script defer>
+    setTimeout(() =>{
+        const jinjaValue = document.getElementById('radno_mjesto').value;
+        console.warn(jinjaValue)
+        const selectedElement = document.querySelector(`option[value="${jinjaValue}"`);
+        console.dir(selectedElement);
+        selectedElement.setAttribute('selected', true);
+    },3000)
+    
+
+</script>
 {% endblock %}
+
