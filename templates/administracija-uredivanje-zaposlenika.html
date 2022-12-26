@@ -1,0 +1,157 @@
+{% extends "administracija-base.html" %}
+{% block head %}
+<title>Uređivanje zaposlenika | PSC</title>
+{% endblock %}
+
+{% block body %}
+
+<div class="text-center bg-image" id="h-global">
+    <div class="mask" style="background-color: rgba(255, 255, 255, 0.7);">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div>
+                <h1>Uređivanje zaposlenika</h1>
+                <p class="fs-4">Pomoću forme uredite podatke o zaposleniku {{data.ime}} {{data.prezime}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" id="c-global">
+
+
+    {% block content %}
+    <form method="post">
+
+        <div class="row" id="end">
+            <div class="col">
+
+
+                <p class="fs-3">Opće informacije</p>
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="ime" class="form-label">Ime</label>
+                        <input name="ime" value="{{data.ime}}" type="text" class="form-control">
+                    </div>
+                </div>
+
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="prezime" class="form-label">Prezime</label>
+                        <input name="prezime" value="{{data.prezime}}" type="text" class="form-control">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-8">
+
+                        <div class="row" id="input-global">
+                            <div class="col">
+                                <label for="datum_rodenja" class="form-label">Datum rođenja</label>
+                                <input name="datum_rodenja" value="{{data.datum_rodenja}}" type="date"
+                                    class="form-control">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-4">
+
+                        <div class="row" id="input-global">
+                            <div class="col">
+                                <label for="spol" class="form-label">Spol</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="spol" value="M" id="musko">
+                                    <label class="form-check-label" for="musko">
+                                        Muško
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="spol" value="Ž" id="zensko">
+                                    <label class="form-check-label" for="zensko">
+                                        Žensko
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="adresa" class="form-label">Adresa</label>
+                        <input name="adresa" value="{{data.adresa}}" type="text" class="form-control">
+                    </div>
+                </div>
+
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="grad" class="form-label">Grad</label>
+                        <input name="grad" value="{{data.grad}}" type="text" class="form-control">
+                    </div>
+                </div>
+
+
+            </div>
+
+
+            <div class="col">
+
+
+                <p class="fs-3">Kontakt informacije</p>
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="broj_telefona" class="form-label">Broj telefona</label>
+                        <input name="broj_telefona" value="{{data.broj_telefona}}" type="text" class="form-control">
+                    </div>
+                </div>
+
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="e_mail" class="form-label">E-mail</label>
+                        <input name="e_mail" value="{{data.e_mail}}" type="e_mail" class="form-control" id="e_mail">
+                    </div>
+                </div>
+
+                <p class="fs-3">Informacije o radnom mjestu</p>
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="radno_mjesto" class="form-label">Radno mjesto</label>
+                        <select name="radno_mjesto" class="form-control" value="{{data.radno_mjesto}}">
+                            <option selected value="autoelektricar">Autoelektričar</option>
+                            <option value="mehanicar">Mehaničar</option>
+                            <option value="prodavac">Prodavač</option>
+                            <option value="recepcionar">Recepcionar</option>
+                            <option value="skladistar">Skladištar</option>
+                            <option value="tajnik">Tajnik</option>
+                            <option value="vulkanizer">Vulkanizer</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="datum_zaposlenja" class="form-label">Datum zaposlenja</label>
+                        <input name="datum_zaposlenja" value="{{data.datum_zaposlenja}}" type="date"
+                            class="form-control">
+                    </div>
+                </div>
+
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="placa" class="form-label">Plaća</label>
+                        <input name="placa" value="{{data.placa}}" type="text" pattern="^\d+(\.\d{1,2})?$"
+                            class="form-control">
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <button class="btn btn-outline-success" id="button" type="submit">Uredi zaposlenika</button>
+
+    </form>
+    {% endblock %}
+</div>
+{% endblock %}

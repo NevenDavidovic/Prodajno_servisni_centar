@@ -91,3 +91,26 @@ def deleteEmployer(id):
     except Exception as err:
         return make_response(render_template("fail.html", error=err), 400)
     return make_response(render_template("success.html", data={"msg": "Uspješno izbrisan zaposlenik!"}), 200)
+
+# ruta za uredivanje podataka o zaposleniku
+
+
+@administracija.route("/administracija/uredivanje-zaposlenika/<int:id>", methods=['POST', 'GET'])
+def editEmployer(id):
+    if request.method == "POST":
+        try:
+            table = 'zaposlenik'
+            data = {}
+            for key, value in request.form.items():
+                data[key] = value
+            edit_table(table, data)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("success.html", data={"msg": "Podaci o zaposleniku uspješno promjenjeni!"}), 200)
+    else:
+        try:
+            table = 'zaposlenik'
+            response = get_item(table, id)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("administracija-uredivanje-zaposlenika.html", data=response), 200)
