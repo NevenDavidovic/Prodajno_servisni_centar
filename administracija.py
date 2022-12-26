@@ -1,6 +1,6 @@
 from flask import Flask, Blueprint, render_template, request, make_response, jsonify
 from statsFunctions import uslugePoTipuMotora, najviseUtrosenihDjelova, zaspoleniciSaNajviseServisa, zaposleniciPoNajvisojCijeni, racuniPoKupcu, topSkupiDijelovi
-from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table
+from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_item
 
 
 administracija = Blueprint("administracija", __name__)
@@ -57,3 +57,16 @@ def getEmployers():
     except Exception as err:
         return make_response(render_template("fail.html", error=err), 400)
     return make_response(render_template("administracija-ispis-svih-zaposlenika.html", data=response), 200)
+
+
+# ruta za prikaz određenog zaposlenika
+
+@administracija.route("/administracija/prikaz-zaposlenika/<int:id>", methods=['GET'])
+def getEmployer(id):
+    try:
+        table = 'zaposlenik'
+        response = get_item(table, id)
+        print(response)
+    except Exception as err:
+        return make_response(render_template("fail.html", error=err), 400)
+    return make_response(render_template("administracija-prikaz-zaposlenika.html", data=response), 200)
