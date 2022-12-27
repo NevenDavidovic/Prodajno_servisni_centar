@@ -53,3 +53,15 @@
     padding-bottom: 3vw;
     border-bottom: 2px solid #212529;
 }
+
+.search {
+    margin-bottom: 3vw;
+}
+
+th {
+    text-align: center;
+}
+
+td {
+    text-align: center;
+}

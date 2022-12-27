@@ -18,15 +18,19 @@
 
 <div class="container" id="c-global">
 
-
-    <form method="post">
-        <div class="d-flex">
-            <input name="ime" value="{{request.form['ime']}}" type="text" class="form-control" placeholder="Upiši ime: npr. Iva">
-            <input type="submit" class="btn btn-outline-success" value="Pretraži">
-        </div>
-    </form>
+    <div class="search">
+        <form method="post">
+            <div class="d-flex">
+                <input name="ime" value="{{request.form['ime']}}" type="text" class="form-control"
+                    placeholder="Upiši ime: npr. Iva">
+                <input type="submit" class="btn btn-outline-success" value="Pretraži">
+            </div>
+        </form>
+    </div>
 
     {% block content %}
+
+    {% if data %}
 
     <!-- table -->
     <table class="table table-hover">
@@ -53,9 +57,9 @@
         </tbody>
     </table>
     <!-- end of table -->
-    
-    {% if not data %}
-        <p class="text-muted">Nije pronađen niti jedan zaposlenik.</p>
+
+    {% else %}
+    <p class="fs-5 text-center">Nije pronađen niti jedan zaposlenik.</p>
     {% endif %}
 
     {% endblock %}
