@@ -1,13 +1,11 @@
 #hp-bg {
     height: 100vh;
     min-height: 100vh;
-    background-image: url('images/PSC-banner.jpg');
-    background-position: center center;
-    background-repeat: no-repeat;
+    background-color: #212529;
 }
 
-.mask {
-    height: 100vh;
+#headline {
+    color: #ffffff;
 }
 
 /* fail and success */

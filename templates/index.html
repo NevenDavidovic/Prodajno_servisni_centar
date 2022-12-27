@@ -17,20 +17,29 @@
 
     <title>Prodajno servisni centar | PSC</title>
 
+    <style>
+        .btn.btn-outline-success {
+            width: 150px;
+            border-color: #ffffff;
+            color: #ffffff;
+        }
+
+        .btn.btn-outline-success:hover {
+            border-color: #198754;
+        }
+    </style>
 </head>
 
 <body>
 
-    <div class="text-center bg-image" id="hp-bg">
-        <div class="mask" style="background-color: rgba(255, 255, 255, 0.7);">
-            <div class="d-flex justify-content-center align-items-center h-100">
-                <div>
-                    <h1>Prodajno servisni centar</h1>
-                    <p class="fs-4">Odaberite dio aplikacije koji želite koristiti</p>
-                    <a class="btn btn-outline-success" href="#" role="button">Administracija</a>
-                    <a class="btn btn-outline-success" href="#" role="button">Prodaja</a>
-                    <a class="btn btn-outline-success" href="#" role="button">Servis</a>
-                </div>
+    <div class="text-center" id="hp-bg">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div>
+                <img src="/static/images/PSC-logo.png" width="300px">
+                <p class="fs-4" id="headline">Odaberite dio aplikacije koji želite koristiti</p>
+                <a class="btn btn-outline-success" href="#" role="button">Administracija</a>
+                <a class="btn btn-outline-success" href="#" role="button">Prodaja</a>
+                <a class="btn btn-outline-success" href="#" role="button">Servis</a>
             </div>
         </div>
     </div>
@@ -47,6 +56,7 @@
         }
     </script>
     <!-- end of christmas stuff -->
+
 </body>
 
 </html>

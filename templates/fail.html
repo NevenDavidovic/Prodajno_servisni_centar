@@ -19,13 +19,15 @@
 
     <style>
         .btn.btn-outline-success {
-            border-color: #f34235;
-            color: #f34235;
+            width: 200px;
+            border-color: #ffffff;
+            color: #ffffff;
             margin-top: 3vw;
             margin-bottom: 3vw;
         }
 
         .btn.btn-outline-success:hover {
+            border-color: #f34235;
             background-color: #f34235;
             color: #fff;
         }
@@ -41,20 +43,18 @@
 
 <body>
 
-    <div class="text-center bg-image" id="hp-bg">
-        <div class="mask" style="background-color: rgba(255, 255, 255, 0.7);">
-            <div class="d-flex justify-content-center align-items-center h-100">
-                <div class="container">
-                    <div class="icon-wrapper">
-                        <img class="fail-icon" src="{{ url_for('static',filename='images/fail_icon.png') }}"
-                            alt="fail-icon">
+    <div class="text-center" id="hp-bg">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div class="container">
+                <div class="icon-wrapper">
+                    <img class="fail-icon" src="{{ url_for('static',filename='images/fail_icon.png') }}"
+                        alt="fail-icon">
 
-                        <h1>Došlo je do greške...</h1>
-                        <a href="javascript:history.back()" class="btn btn-outline-success">Vrati se natrag</a>
-                        {% block content %}
-                        <p class="fs-5">Error message: {{ error }}</p>
-                        {% endblock %}
-                    </div>
+                    <h1 id="headline">Došlo je do greške...</h1>
+                    <a href="javascript:history.back()" class="btn btn-outline-success">Vrati se natrag</a>
+                    {% block content %}
+                    <p class="fs-5" id="headline">Error message: {{ error }}</p>
+                    {% endblock %}
                 </div>
             </div>
         </div>
