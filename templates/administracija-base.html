@@ -92,11 +92,31 @@
 </head>
 
 <body>
-    {% block body %}
-    {% endblock %}
-    <div class="text-center p-3" style="background-color: #212529; color: white;">
-        Projekt iz kolegija Baze podataka 2 | Prodajno servisni centar
+    <div class="content">
+        {% block body %}
+        {% endblock %}
     </div>
+    <div class="footer">
+        <div class="text-center p-3" style="background-color: #212529; color: white;">
+            Projekt iz kolegija Baze podataka 2 | Prodajno servisni centar
+        </div>
+    </div>
+
+    <script>
+        // rjesava problem kolicine contenta i pozicije footera
+        var content = document.querySelector('.content');
+        var footer = document.querySelector('.footer');
+
+        if (content.offsetHeight < window.innerHeight) {
+            footer.style.position = 'fixed';
+            footer.style.bottom = '0';
+            footer.style.width = '100%';
+        } else {
+            footer.style.position = 'relative';
+            footer.style.width = '100%';
+        }
+    </script>
+
 </body>
 
 </html>
