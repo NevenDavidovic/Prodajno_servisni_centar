@@ -22,7 +22,7 @@
         <form method="post">
             <div class="d-flex">
                 <input name="ime" value="{{request.form['ime']}}" type="text" class="form-control"
-                    placeholder="Upiši ime: npr. Iva">
+                    placeholder="Upisati ime (npr. Iva)">
                 <input type="submit" class="btn btn-outline-success" value="Pretraži">
             </div>
         </form>
@@ -59,7 +59,7 @@
     <!-- end of table -->
 
     {% else %}
-    <p class="fs-5 text-center">Nije pronađen niti jedan zaposlenik.</p>
+    <p class="fs-4 text-center">Nije pronađen niti jedan zaposlenik.</p>
     {% endif %}
 
     {% endblock %}
