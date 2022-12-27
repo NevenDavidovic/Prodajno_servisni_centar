@@ -44,15 +44,17 @@
     <div class="text-center bg-image" id="hp-bg">
         <div class="mask" style="background-color: rgba(255, 255, 255, 0.7);">
             <div class="d-flex justify-content-center align-items-center h-100">
-                <div class="icon-wrapper">
-                    <img class="fail-icon" src="{{ url_for('static',filename='images/fail_icon.png') }}"
-                        alt="fail-icon">
+                <div class="container">
+                    <div class="icon-wrapper">
+                        <img class="fail-icon" src="{{ url_for('static',filename='images/fail_icon.png') }}"
+                            alt="fail-icon">
 
-                    <h1>Došlo je do greške...</h1>
-                    <a href="javascript:history.back()" class="btn btn-outline-success">Vrati se natrag</a>
-                    {% block content %}
-                    <p class="fs-5">Error message: {{ error }}</p>
-                    {% endblock %}
+                        <h1>Došlo je do greške...</h1>
+                        <a href="javascript:history.back()" class="btn btn-outline-success">Vrati se natrag</a>
+                        {% block content %}
+                        <p class="fs-5">Error message: {{ error }}</p>
+                        {% endblock %}
+                    </div>
                 </div>
             </div>
         </div>

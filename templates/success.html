@@ -43,14 +43,16 @@
     <div class="text-center bg-image" id="hp-bg">
         <div class="mask" style="background-color: rgba(255, 255, 255, 0.7);">
             <div class="d-flex justify-content-center align-items-center h-100">
-                <div class="icon-wrapper">
-                    <img class="success-icon" src="{{ url_for('static',filename='images/ok_icon.png') }}"
-                        alt="success-icon">
+                <div class="container">
+                    <div class="icon-wrapper">
+                        <img class="success-icon" src="{{ url_for('static',filename='images/ok_icon.png') }}"
+                            alt="success-icon">
 
-                    {% block content %}
-                    <h1>{{data.msg}}</h1>
-                    {% endblock %}
-                    <a href="/" class="btn btn-outline-success">Završi</a>
+                        {% block content %}
+                        <h1>{{data.msg}}</h1>
+                        {% endblock %}
+                        <a href="/" class="btn btn-outline-success">Završi</a>
+                    </div>
                 </div>
             </div>
         </div>
