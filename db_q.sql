@@ -38,6 +38,44 @@ SELECT DISTINCT marka_automobila
 			FROM narudzbenica_mehanicar
     )
     ORDER BY marka_automobila ASC;
+
+
+-- UPITI ZA ADMINISTRACIJA - STATISTIKA
+
+-- 1. UPIT: Kolicina prodanih automobila prema tipu motora i godini proizvodnje
+-- /tip motora - x os, godina proizvodnje - y os: graf sa stupcima/
+
+# popis tipova motora automobila
+SELECT DISTINCT tip_motora AS vrsta_vozila
+	FROM auto;
+
+# kolicina prodanih benzinskih automobila prema godini proizvodnje
+SELECT godina_proizvodnje, COUNT(godina_proizvodnje) AS kolicina
+	FROM racun_prodaje, auto
+    WHERE racun_prodaje.id_auto=auto.id AND tip_motora='benzinski'
+    GROUP BY godina_proizvodnje
+    ORDER BY godina_proizvodnje ASC;
+
+
+-- 2. UPIT: Kolicina automobila prema markama koji nisu prodani
+-- (niti jedan automobil navedenih marki nije prodan)
+-- /marka automobila - x os, kolicina - y os: graf sa stupcima/
+
+# popis marki automobila koji su se prodali
+SELECT DISTINCT marka_automobila
+	FROM racun_prodaje, auto
+    WHERE racun_prodaje.id_auto=auto.id
+    ORDER BY marka_automobila ASC;
+
+# kolicina automobila prema markama koji nisu prodani
+SELECT marka_automobila, COUNT(marka_automobila) AS kolicina
+	FROM auto
+    WHERE auto.marka_automobila NOT IN
+    (SELECT DISTINCT marka_automobila
+			FROM racun_prodaje, auto
+			WHERE racun_prodaje.id_auto=auto.id)
+    GROUP BY marka_automobila
+    ORDER BY marka_automobila ASC;
 -- MARIJA end
 
 -- NEVEN UPITI
