@@ -1,0 +1,118 @@
+{% extends "prodaja-base.html" %}
+{% block head %}
+<title>Uređivanje klijenata | PSC</title>
+
+
+{% endblock %}
+
+{% block body %}
+
+<div class="text-center bg-image" id="h-global">
+    <div class="mask" style="background-color: rgba(255, 255, 255, 0.7);">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div>
+                <h1>Uređivanje klijenata</h1>
+                <p class="fs-4">Pomoću forme uredite podatke o klijentu {{data.ime}} {{data.prezime}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" id="c-global">
+
+
+    {% block content %}
+    <!-- form -->
+    <form method="post">
+        <!-- main row -->
+        <div class="row" id="end">
+            <!-- col 1 -->
+            <div class="col">
+
+                <p class="fs-3">Opće informacije</p>
+                
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="ime" class="form-label">Ime</label>
+                        <input name="ime" value="{{data.ime}}" type="text" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="prezime" class="form-label">Prezime</label>
+                        <input name="prezime" value="{{data.prezime}}" type="text" class="form-control"
+                            required>
+                    </div>
+                </div>
+
+                <!-- spol -->
+                <label for="spol" class="form-label">Spol</label>
+                <div class="form-check">
+                    {% if data.spol == 'm' %}
+                    <input class="form-check-input" checked type="radio" name="spol" value="m" id="musko">
+                
+                    {% else %}
+                    <input class="form-check-input" type="radio" name="spol" value="m" id="musko">
+                    
+                    {% endif %}
+                    <label class="form-check-label" for="musko">
+                        Muško
+                    </label>
+                </div>
+                <div class="form-check">
+                    {% if data.spol == 'ž' %}
+                    <input class="form-check-input" checked type="radio" name="spol" value="ž" id="zensko">
+                    
+                    {% else %}
+                    <input class="form-check-input" type="radio" name="spol" value="ž" id="zensko">
+                    
+                    {% endif %}
+                    <label class="form-check-label" for="zensko">
+                        Žensko
+                    </label>
+                </div>
+                <!-- end of spol -->
+                    
+            </div>
+            <!-- end of col1 -->
+
+            <!-- col 2 -->
+            <div class="col">
+                <p class="fs-3">Kontakt</p>
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="adresa" class="form-label">Adresa</label>
+                        <input name="adresa" value="{{data.adresa}}" type="text" class="form-control"
+                            required>
+                    </div>
+                </div>
+
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="grad" class="form-label">Grad</label>
+                        <input name="grad" value="{{data.grad}}" type="text" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="broj_telefona" class="form-label">Broj telefona</label>
+                        <input name="broj_telefona" value="{{data.broj_telefona}}" type="text"
+                            class="form-control" required>
+                    </div>
+                </div>
+
+            </div>
+            <!-- end of col2 -->
+        </div>
+        <!-- end of main row -->
+
+        <button class="btn btn-outline-success" id="button" type="submit">Završi uređivanje</button>
+
+    </form>
+    <!-- end of form -->
+    {% endblock %}
+</div>
+{% endblock %}
+

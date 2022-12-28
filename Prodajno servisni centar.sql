@@ -13,7 +13,7 @@ CREATE TABLE zaposlenik(
 	grad VARCHAR (20) NOT NULL,
 	spol CHAR (1) NOT NULL,
 	broj_telefona VARCHAR (20) NOT NULL UNIQUE,
-        datum_zaposlenja DATE NOT NULL,
+    datum_zaposlenja DATE NOT NULL,
 	e_mail VARCHAR (30) NOT NULL UNIQUE,
 	placa DECIMAL (8,2) NOT NULL,
 	radno_mjesto VARCHAR (20) NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE oprema(
 	id INTEGER AUTO_INCREMENT,
 	naziv VARCHAR (40) NOT NULL,
    	marka VARCHAR (40) NOT NULL,
-    	model VARCHAR (40) NOT NULL,
+    model VARCHAR (40) NOT NULL,
 	cijena DECIMAL (8,2) NOT NULL,
 	PRIMARY KEY (id)
 );
@@ -62,7 +62,7 @@ CREATE TABLE oprema_vozila(
 	PRIMARY KEY (id),
 	FOREIGN KEY (id_auto) REFERENCES auto (id),
 	FOREIGN KEY (id_oprema) REFERENCES oprema (id),
-    	UNIQUE KEY (id_auto, id_oprema)
+    UNIQUE KEY (id_auto, id_oprema)
 );
 
 
