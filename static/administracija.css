@@ -10,6 +10,7 @@
     background-image: url('images/PSC-banner.jpg');
     background-position: center center;
     background-repeat: no-repeat;
+    background-position-y: 63%;
 }
 
 .mask {
