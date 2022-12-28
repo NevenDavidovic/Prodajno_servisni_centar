@@ -104,38 +104,6 @@ WHERE datum_zaprimanja > DATE(DATE_sub(NOW(), INTERVAL 6 MONTH))
 GROUP BY tip_motora
 ORDER BY ukupno_izvrsenih_usluga DESC;
 
-##  Koji se automobili najviše prodaju u kojem cjenovnom rangu (jeftini, srednji, skupi)?
-
--- FUNKCIJE ZA ODREĐIVANJE CIJENE PRODANIH AUTOMOBILA
-DELIMITER //
-CREATE FUNCTION min_cijena() RETURNS INTEGER
-DETERMINISTIC
-BEGIN
-
-RETURN (SELECT MIN(cijena) FROM racun_prodaje);
-
-END//
-DELIMITER ;
-
-DELIMITER //
-CREATE FUNCTION max_cijena() RETURNS INTEGER
-DETERMINISTIC
-BEGIN
-
-RETURN (SELECT MAX(cijena) FROM racun_prodaje);
-
-END//
-DELIMITER ;
-
-DELIMITER //
-CREATE FUNCTION raspon_cijena() RETURNS INTEGER
-DETERMINISTIC
-BEGIN
-
-RETURN ((SELECT MAX(cijena) FROM racun_prodaje) - (SELECT MIN(cijena) FROM racun_prodaje));
-
-END//
-DELIMITER ;
 
 
 ## jefitni  auti
