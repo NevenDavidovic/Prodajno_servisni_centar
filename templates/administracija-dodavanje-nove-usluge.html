@@ -1,0 +1,55 @@
+{% extends "administracija-base.html" %}
+{% block head %}
+<title>Dodavanje usluge | PSC</title>
+{% endblock %}
+
+{% block body %}
+
+<div class="text-center bg-image" id="h-global">
+    <div class="mask" style="background-color: rgba(255, 255, 255, 0.7);">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div>
+                <h1>Dodavanje usluge</h1>
+                <p class="fs-4">Pomoću forme unesite podatke o novoj usluzi</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" id="c-global">
+
+
+    {% block content %}
+    <form method="post">
+
+        <div class="row" id="end">
+
+            <p class="fs-3">Informacije o usluzi</p>
+
+            <div class="col-8">
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="naziv" class="form-label">Naziv</label>
+                        <input name="naziv" value="{{request.form['naziv']}}" type="text" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-4">
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="cijena" class="form-label">Cijena</label>
+                        <input name="cijena" value="{{request.form['cijena']}}" type="text" pattern="^\d+(\.\d{1,2})?$"
+                            class="form-control" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn btn-outline-success" id="button" type="submit">Dodaj uslugu</button>
+
+    </form>
+    {% endblock %}
+</div>
+{% endblock %}

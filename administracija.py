@@ -120,6 +120,47 @@ def editEmployer(id):
         return make_response(render_template("administracija-uredivanje-zaposlenika.html", data=response), 200)
 
 
+# ruta za ispis svih usluga
+
+@administracija.route("/administracija/ispis-svih-usluga", methods=['POST', 'GET'])
+def getServices():
+    if request.method == "POST":
+        try:
+            table = 'usluga_servis'
+            attribut = 'naziv'
+            value = request.form.get('naziv')
+            response = find_item(table, attribut, value)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("administracija-ispis-svih-usluga.html", data=response), 200)
+    else:
+        try:
+            table = 'usluga_servis'
+            response = get_all_items(table)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("administracija-ispis-svih-usluga.html", data=response), 200)
+
+
+# ruta za dodavanje nove usluge
+
+@administracija.route("/administracija/dodavanje-nove-usluge", methods=['POST', 'GET'])
+def addService():
+    if request.method == "POST":
+        try:
+            table = 'usluga_servis'
+            data = {}
+            for key, value in request.form.items():
+                data[key] = value
+
+            add_item(table, data)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("success.html", data={"msg": "Usluga uspješno dodana!"}), 200)
+    else:
+        return make_response(render_template("administracija-dodavanje-nove-usluge.html"), 200)
+
+
 # ruta za ispis svih automobila
 
 @administracija.route("/administracija/ispis-svih-automobila", methods=['POST', 'GET'])
