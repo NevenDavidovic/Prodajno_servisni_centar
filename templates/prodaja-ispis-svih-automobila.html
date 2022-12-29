@@ -1,6 +1,6 @@
 {% extends "prodaja-base.html" %}
 {% block head %}
-<title>Klijenti | PSC</title>
+<title>Automobili | PSC</title>
 {% endblock %}
 
 {% block body %}
@@ -9,8 +9,8 @@
     <div class="mask" style="background-color: rgba(255, 255, 255, 0.7);">
         <div class="d-flex justify-content-center align-items-center h-100">
             <div>
-                <h1>Klijenti</h1>
-                <p class="fs-4">Pomoću forme pretražite klijente</p>
+                <h1>Automobili</h1>
+                <p class="fs-4">Pomoću forme pretražite automobile</p>
             </div>
         </div>
     </div>
@@ -36,25 +36,22 @@
     <table class="table table-hover">
         <thead>
             <tr>
-                <th scope="col">Ime</th>
-                <th scope="col">Prezime</th>
-                <th scope="col">Spol</th>
-                <th scope="col">Adresa</th>
-                <th scope="col">Grad</th>
-                <th scope="col">Broj telefona</th>
+                <th scope="col">Marka</th>
+                <th scope="col">Model</th>
+                <th scope="col">Godina proizvodnje</th>
+                <th scope="col">Kilometraza</th>
                 <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
             {% for d in data %}
             <tr>
-                <td>{{d.ime}}</td>
-                <td>{{d.prezime}}</td>
-                <td>{{d.spol}}</td>
-                <td>{{d.adresa}}</td>
-                <td>{{d.grad}}</td>
-                <td>{{d.broj_telefona}}</td>
-                <td><a href="/prodaja/uredivanje-klijenta/{{d.id}}" class="btn btn-outline-success"> Uredi </a></td>
+                <td>{{d.marka_automobila}}</td>
+                <td>{{d.model}}</td>
+                <td>{{d.godina_proizvodnje.strftime('%Y.')}}</td>
+                <td>{{d.kilometraza}}</td>
+                <td><a href="/prodaja/prikaz-auta/{{d.id}}" class="btn btn-outline-success"> Više
+                    informacija </a></td>
             </tr>
             {% endfor %}
         </tbody>
