@@ -1,6 +1,6 @@
 from flask import Flask, Blueprint, render_template, request, make_response, jsonify
 from statsFunctions import uslugePoTipuMotora, najviseUtrosenihDjelova, zaspoleniciSaNajviseServisa, zaposleniciPoNajvisojCijeni, racuniPoKupcu, topSkupiDijelovi
-from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_item
+from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_item,get_all_cars_for_sale
 
 
 prodaja = Blueprint("prodaja", __name__)
@@ -95,7 +95,7 @@ def getCars():
     else:
         try:
             table = 'auto'
-            response = get_all_items(table)
+            response = get_all_cars_for_sale(table)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
         return make_response(render_template("prodaja-ispis-svih-automobila.html", data=response), 200)
