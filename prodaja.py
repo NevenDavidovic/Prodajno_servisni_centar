@@ -70,4 +70,37 @@ def editClient(id):
             return make_response(render_template("fail.html", error=err), 400)
         return make_response(render_template("prodaja-uredivanje-klijenta.html", data=response), 200)
 
+### ISPIS SVIH AUTOMOBILA
+@prodaja.route("/prodaja/ispis-svih-automobila", methods=['POST', 'GET'])
+def getCars():
+    if request.method == "POST":
+        try:
+            table = 'auto'
+            attribut = 'ime'
+            value = request.form.get('ime')
+            response = find_item(table, attribut, value)
+            
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("prodaja-ispis-svih-automobila.html", data=response), 200)
+    else:
+        try:
+            table = 'auto'
+            response = get_all_items(table)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("prodaja-ispis-svih-automobila.html", data=response), 200)
+
+### PRIKAZ POJEDINOG AUTOMOBILA
+
+@prodaja.route("/prodaja/prikaz-auta/<int:id>", methods=['GET'])
+def getEmployer(id):
+    try:
+        table = 'auto'
+        response = get_item(table, id)
+        
+    except Exception as err:
+        return make_response(render_template("fail.html", error=err), 400)
+    return make_response(render_template("prodaja-prikaz-auta.html", data=response), 200)
+
 # @prodaja.route

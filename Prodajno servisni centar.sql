@@ -22,8 +22,6 @@ CREATE TABLE zaposlenik(
 );
 
 
-
-
 -- DONE
 CREATE TABLE auto(
 	id INTEGER AUTO_INCREMENT,

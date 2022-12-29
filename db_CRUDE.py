@@ -85,6 +85,7 @@ def get_all_items(table) -> dict:
         except Exception as err:
             raise Exception(err)
         myresult = mycursor.fetchall()
+        print(mycursor.fetchall())
         return myresult
 ############################################################
 
@@ -124,9 +125,7 @@ def find_item(table, attribut: str, value) -> dict:
             mycursor.execute(qstring)
         except Exception as err:
             raise Exception(err)
-
-        myresult = mycursor.fetchall()
-        return myresult
+        return  mycursor.fetchall()
 ############################################################
 
 

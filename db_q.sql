@@ -257,8 +257,8 @@ INNER JOIN stavka_dio sd ON i.id_dio=sd.id_dio
 RIGHT JOIN servis s ON s.id=i.id_servis
 GROUP BY id_narudzbenica;
 
-CREATE VIEW dio_servis_po_mj AS 
-SELECT SUM((IFNULL(cijena_dijelova, 0)+cijena_servisa)) AS ukupna_cijena_servisa, EXTRACT(MONTH FROM datum_povratka) AS mjesec 
+CREATE VIEW dio_servis_po_mj AS
+SELECT SUM((IFNULL(cijena_dijelova, 0)+cijena_servisa)) AS ukupna_cijena_servisa, EXTRACT(MONTH FROM datum_povratka) AS mjesec
 FROM cijena__dijelova cd, cijena__servisa cs
 WHERE cd.id_narudzbenica=cs.id_narudzbenica AND EXTRACT(YEAR FROM datum_povratka)="2022"
 GROUP BY CAST(DATE_SUB(datum_povratka, INTERVAL DAYOFMONTH(datum_povratka)-1 DAY) AS DATE)
@@ -354,3 +354,44 @@ SELECT ime, prezime, MIN(age) FROM godine_mehanicara;
 */
 
 -- NOEL KRAJ
+
+/*-- DARJAN (NOEL) upiti preko pogleda za statistiku
+
+-- Prikaži preko pogleda samo one zaposlenike (prodavače) koji su prodali barem jedan auto (ime, prezime, radno mjesto, ukupno_prodanih_vozila) i poredaj ih prema broju prodanih vozila silazno
+
+create view  prodavaci_sa_najvise_prodanih_automobila as
+select z.ime, z.prezime, z.radno_mjesto, count(z.id) as ukupno_prodanih_vozila
+from zaposlenik z
+inner join racun_prodaje r on z.id = r.id_zaposlenik
+where radno_mjesto = "prodavac"
+group by z.id
+order by ukupno_prodanih_vozila DESC;
+
+-- Prikaz preko pogleda
+
+select *
+from prodavaci_sa_najvise_prodanih_automobila;
+
+-- Brisanje pogleda
+
+drop view prodavaci_sa_najvise_prodanih_automobila;
+
+-- Prikaži preko pogleda statistički podatak koja je marka vozila najprodavanija u PSC-u, podatke poredaj silazno
+
+create view najprodavanija_marka_automobila as
+select marka_automobila, count(a.marka_automobila) as najprodavanija_marka_vozila
+from auto a
+inner join racun_prodaje r on a.id = r.id_auto
+where servis_prodaja = "P" and dostupnost = "NE"
+group by a.marka_automobila
+order by najprodavanija_marka_vozila DESC;
+
+-- Prikaz preko pogleda
+
+select *
+from najprodavanija_marka_automobila;
+
+-- Brisanje pogleda
+
+drop view najprodavanija_marka_automobila;
+*/
