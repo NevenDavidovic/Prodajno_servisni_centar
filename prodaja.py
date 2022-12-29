@@ -1,6 +1,6 @@
 from flask import Flask, Blueprint, render_template, request, make_response, jsonify
 from statsFunctions import uslugePoTipuMotora, najviseUtrosenihDjelova, zaspoleniciSaNajviseServisa, zaposleniciPoNajvisojCijeni, racuniPoKupcu, topSkupiDijelovi
-from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_item,get_all_cars_for_sale
+from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_item,get_all_cars_for_sale,get_all_salesmen, get_last_record_identificator
 
 
 prodaja = Blueprint("prodaja", __name__)
@@ -111,5 +111,70 @@ def getCar(id):
     except Exception as err:
         return make_response(render_template("fail.html", error=err), 400)
     return make_response(render_template("prodaja-prikaz-auta.html", data=response), 200)
+
+### PRIKAZ SVIH PRODAVAČA    
+
+@prodaja.route("/prodaja/ispis-svih-prodavaca", methods=['POST', 'GET'])
+def getSalesmen():
+    if request.method == "POST":
+        try:
+            table = 'zaposlenik'
+            attribut = 'ime'
+            value = request.form.get('ime')
+            response = find_item(table, attribut, value)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("prodaja-ispis-svih-prodavača.html", data=response), 200)
+    else:
+        try:
+            table = 'zaposlenik'
+            response = get_all_salesmen(table)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("prodaja-ispis-svih-prodavača.html", data=response), 200)
+
+### KREIRANJE RAČUNA
+
+@prodaja.route("/prodaja/kreiranje-racuna", methods=['POST', 'GET'])
+def createBill():
+    if request.method == "POST":
+        try:
+
+            # kreiranje dictionary sa svim atributima potrebnim za tablicu racun_prodaje
+            # neki podaci su dobiveni iz argumenata rute, neki iz forme sa stranice, nroj racuna preko funkcije
+            brojRacuna = get_last_record_identificator('racun_prodaje','broj_racuna')+1
+            data = {
+                "id_auto":request.args.get('car_id'),
+                "id_zaposlenik":request.args.get('zaposlenik_id'),
+                "id_klijent":request.args.get('klijent_id'),
+                "broj_racuna":brojRacuna    
+            }
+            # dodavanje podataka iz forme u dictionary data
+            for key,value in request.form.items(): 
+                    data[key] = value
+
+            table = 'racun_prodaje'
+            # dodavanje računa u tablicu račun_prodaje
+            response = add_item(table,data)
+            # označavanje prodanog auta kao nedostupnog
+            dataToEdit = {
+                "id": request.args.get('car_id'),
+                "dostupnost":"NE"
+            }
+            response = edit_table('auto',dataToEdit)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("success.html", data={"msg":"Račun uspješno kreiran!","route":"/prodaja/ispis-svih-automobila"}), 200)
+        
+    else:
+        try: 
+            autoData = get_item('auto',request.args.get('car_id'))
+            zaposlenikData = get_item('zaposlenik',request.args.get('zaposlenik_id'))
+            klijentData = get_item('klijent',request.args.get('klijent_id'))
+            brojRacuna = get_last_record_identificator('racun_prodaje','broj_racuna')+1   
+
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("prodaja-kreiranje-racuna.html", data={"auto":autoData,"zaposlenik":zaposlenikData,"klijent":klijentData,"broj_racuna":brojRacuna}), 200)
 
 # @prodaja.route

@@ -100,7 +100,23 @@ def get_all_cars_for_sale(table) -> dict:
         except Exception as err:
             raise Exception(err)
         myresult = mycursor.fetchall()
-        print(mycursor.fetchall())
+        
+        return myresult
+############################################################
+
+def get_all_salesmen(table) -> dict:
+    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
+        # da vraća rezultate tj. rows kao dictionaryje
+        mycursor = db.cursor(dictionary=True)
+        qstring = f'SELECT * FROM {table} WHERE radno_mjesto = "prodavac";'
+
+        try:
+            mycursor.execute(qstring)
+        except Exception as err:
+            raise Exception(err)
+        myresult = mycursor.fetchall()
+
         return myresult
 ############################################################
 

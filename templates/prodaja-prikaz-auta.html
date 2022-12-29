@@ -48,7 +48,7 @@
     <a href="/administracija/uredivanje-zaposlenika/{{data.id}}" class="btn btn-outline-success" id="button"> Uredi </a> -->
 
     {% if data.dostupnost=='DA' %} 
-    <a href="#" class="btn btn-outline-success" id="button"> Dodaj na račun </a>
+    <a href="/prodaja/ispis-svih-klijenata?car_id={{data.id}}" class="btn btn-success" id="button"> Dodaj na račun </a>
     {% else %} 
     <a href="javascript:history.back()" class="btn btn-outline-success" id="button"> Vrati se nazad </a>
     {% endif %}
