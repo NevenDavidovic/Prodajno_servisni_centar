@@ -38,7 +38,7 @@
             <tr>
                 <th scope="col">Marka automobila</th>
                 <th scope="col">Model</th>
-                <th scope="col">Snaga motora</th>
+                <th scope="col">Tip motora</th>
                 <th scope="col">Godina proizvodnje</th>
                 <th scope="col">Servis/prodaja</th>
                 <th scope="col">Dostupnost</th>
@@ -50,11 +50,22 @@
             <tr>
                 <td>{{d.marka_automobila}}</td>
                 <td>{{d.model}}</td>
-                <td>{{d.snaga_motora}} KW</td>
+                <td>{{d.tip_motora}}</td>
                 <td>{{d.godina_proizvodnje.strftime('%Y.')}}</td>
-                <td>{{d.servis_prodaja}}</td>
-                <td>{{d.dostupnost}}</td>
-                <td><a href="#" class="btn btn-outline-success"> Više
+
+                {% if d.servis_prodaja=='S' %}
+                <td>servis</td>
+                {% else %}
+                <td>prodaja</td>
+                {% endif %}
+
+                {% if d.dostupnost=='DA' %}
+                <td class="text-success">Dostupno</td>
+                {% else %}
+                <td class="text-danger">Nedostupno</td>
+                {% endif %}
+
+                <td><a href="/administracija/prikaz-automobila/{{d.id}}" class="btn btn-outline-success"> Više
                         informacija </a></td>
             </tr>
             {% endfor %}

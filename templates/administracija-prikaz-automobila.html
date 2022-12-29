@@ -1,0 +1,61 @@
+{% extends "administracija-base.html" %}
+{% block head %}
+<title>Automobil | PSC</title>
+{% endblock %}
+
+{% block body %}
+
+<div class="text-center bg-image" id="h-global">
+    <div class="mask" style="background-color: rgba(255, 255, 255, 0.7);">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div>
+                <h1>Automobil</h1>
+                <p class="fs-4">Sve informacije o automobilu {{data.marka_automobila}} {{data.model}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" id="c-global">
+
+
+    {% block content %}
+
+    <div class="row" id="end">
+        <div class="col">
+            <p class="fs-3">Opće informacije</p>
+            <p><b>Marka:</b> {{data.marka_automobila}}</p>
+            <p><b>Model:</b> {{data.model}}</p>
+            <p><b>Godina proizvodnje:</b> {{data.godina_proizvodnje.strftime('%Y.')}}</p>
+            <p><b>Broj šasije:</b> {{data.broj_sasije}}</p>
+
+            <br>
+
+            {% if data.servis_prodaja=='S' %}
+            <p><b>Servis</b></p>
+            {% else %}
+            <p><b>Prodaja</b></p>
+            {% endif %}
+            {% if data.dostupnost=='DA' %}
+            <p><b>Dostupnost:</b> <span class="text-success">Dostupno</span></p>
+            {% else %}
+            <p><b>Dostupnost:</b> <span class="text-danger">Nedostupno</span> </p>
+            {% endif %}
+        </div>
+        <div class="col">
+            <p class="fs-3">Tehničke informacije</p>
+            <p><b>Boja:</b> {{data.boja}}</p>
+            <p><b>Tip motora:</b> {{data.tip_motora}}</p>
+            <p><b>Snaga motora:</b> {{data.snaga_motora}} KW</p>
+            <p><b>Kilometraža:</b> {{data.kilometraza}} km</p>
+        </div>
+    </div>
+
+    <a href="#" class="btn btn-outline-success" id="button">Uredi</a>
+    <a href="#" class="btn btn-outline-success" id="button">Ukloni</a>
+
+    {% endblock %}
+
+
+</div>
+{% endblock %}

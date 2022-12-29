@@ -221,3 +221,16 @@ def getCars():
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
         return make_response(render_template("administracija-ispis-svih-automobila.html", data=response), 200)
+
+# ruta za prikaz određenog automobila
+
+
+@administracija.route("/administracija/prikaz-automobila/<int:id>", methods=['GET'])
+def getCar(id):
+    try:
+        table = 'auto'
+        response = get_item(table, id)
+
+    except Exception as err:
+        return make_response(render_template("fail.html", error=err), 400)
+    return make_response(render_template("administracija-prikaz-automobila.html", data=response), 200)
