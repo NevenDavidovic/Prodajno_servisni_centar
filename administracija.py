@@ -76,7 +76,7 @@ def getEmployer(id):
     try:
         table = 'zaposlenik'
         response = get_item(table, id)
-        
+
     except Exception as err:
         return make_response(render_template("fail.html", error=err), 400)
     return make_response(render_template("administracija-prikaz-zaposlenika.html", data=response), 200)
@@ -104,8 +104,8 @@ def editEmployer(id):
             data = {}
             for key, value in request.form.items():
                 data[key] = value
-            data["id"] = id    
-            
+            data["id"] = id
+
             edit_table(table, data)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
@@ -118,3 +118,25 @@ def editEmployer(id):
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
         return make_response(render_template("administracija-uredivanje-zaposlenika.html", data=response), 200)
+
+
+# ruta za ispis svih automobila
+
+@administracija.route("/administracija/ispis-svih-automobila", methods=['POST', 'GET'])
+def getCars():
+    if request.method == "POST":
+        try:
+            table = 'auto'
+            attribut = 'marka_automobila'
+            value = request.form.get('marka_automobila')
+            response = find_item(table, attribut, value)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("administracija-ispis-svih-automobila.html", data=response), 200)
+    else:
+        try:
+            table = 'auto'
+            response = get_all_items(table)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("administracija-ispis-svih-automobila.html", data=response), 200)

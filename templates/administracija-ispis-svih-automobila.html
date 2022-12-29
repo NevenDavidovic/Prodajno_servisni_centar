@@ -1,0 +1,73 @@
+{% extends "administracija-base.html" %}
+{% block head %}
+<title>Automobili | PSC</title>
+{% endblock %}
+
+{% block body %}
+
+<div class="text-center bg-image" id="h-global">
+    <div class="mask" style="background-color: rgba(255, 255, 255, 0.7);">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div>
+                <h1>Automobili</h1>
+                <p class="fs-4">Pomoću forme pretražite automobile</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" id="c-global">
+
+    <div class="search">
+        <form method="post">
+            <div class="d-flex">
+                <input name="marka_automobila" value="{{request.form['marka_automobila']}}" type="text"
+                    class="form-control" placeholder="Upisati marku automobila (npr. BMW)">
+                <input type="submit" class="btn btn-outline-success" value="Pretraži">
+            </div>
+        </form>
+    </div>
+
+    {% block content %}
+
+    {% if data %}
+
+    <!-- table -->
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Marka automobila</th>
+                <th scope="col">Model</th>
+                <th scope="col">Snaga motora</th>
+                <th scope="col">Godina proizvodnje</th>
+                <th scope="col">Servis/prodaja</th>
+                <th scope="col">Dostupnost</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for d in data %}
+            <tr>
+                <td>{{d.marka_automobila}}</td>
+                <td>{{d.model}}</td>
+                <td>{{d.snaga_motora}}</td>
+                <td>{{d.godina_proizvodnje}}</td>
+                <td>{{d.servis_prodaja}}</td>
+                <td>{{d.dostupnost}}</td>
+                <td><a href="#" class="btn btn-outline-success"> Više
+                        informacija </a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <!-- end of table -->
+
+    {% else %}
+    <p class="fs-4 text-center">Nije pronađen niti jedan automobil.</p>
+    {% endif %}
+
+    {% endblock %}
+
+
+</div>
+{% endblock %}
