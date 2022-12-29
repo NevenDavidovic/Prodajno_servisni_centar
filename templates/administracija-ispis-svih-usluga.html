@@ -48,8 +48,8 @@
                 <td>{{d.naziv}}</td>
                 <td>{{d.cijena}} kn</td>
                 <td>
-                    <a href="#" class="btn btn-outline-success">Uredi</a>
-                    <a href="#" class="btn btn-outline-success">Ukloni</a>
+                    <a href="/administracija/uredivanje-usluge/{{d.id}}" class="btn btn-outline-success">Uredi</a>
+                    <a href="/administracija/brisanje-usluge/{{d.id}}" class="btn btn-outline-success">Ukloni</a>
                 </td>
             </tr>
             {% endfor %}

@@ -161,6 +161,46 @@ def addService():
         return make_response(render_template("administracija-dodavanje-nove-usluge.html"), 200)
 
 
+# ruta za brisanje određene usluge
+
+
+@administracija.route("/administracija/brisanje-usluge/<int:id>", methods=['GET'])
+def deleteService(id):
+    try:
+        table = 'usluga_servis'
+        delete_item(table, id)
+    except Exception as err:
+        return make_response(render_template("fail.html", error=err), 400)
+    return make_response(render_template("success.html", data={"msg": "Uspješno izbrisana usluga!"}), 200)
+
+
+# ruta za uredivanje podataka o usluzi
+
+
+@administracija.route("/administracija/uredivanje-usluge/<int:id>", methods=['POST', 'GET'])
+def editService(id):
+    if request.method == "POST":
+        try:
+            table = 'usluga_servis'
+            data = {}
+            for key, value in request.form.items():
+                data[key] = value
+            data["id"] = id
+
+            edit_table(table, data)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("success.html", data={"msg": "Podaci o usluzi uspješno promjenjeni!"}), 200)
+    else:
+        try:
+            table = 'usluga_servis'
+            response = get_item(table, id)
+            # print(response)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("administracija-uredivanje-usluge.html", data=response), 200)
+
+
 # ruta za ispis svih automobila
 
 @administracija.route("/administracija/ispis-svih-automobila", methods=['POST', 'GET'])
