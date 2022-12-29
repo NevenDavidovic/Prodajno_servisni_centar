@@ -75,9 +75,18 @@ def editClient(id):
 def getCars():
     if request.method == "POST":
         try:
+            queryData = {}
+            for key,value in request.form.items(): 
+                    queryData[key] = value
+    
             table = 'auto'
-            attribut = 'ime'
-            value = request.form.get('ime')
+            attribut = queryData['identificator']
+            value = queryData['query']
+
+            if attribut == 'godina_proizvodnje':
+                value = value + '-01-01'
+
+            
             response = find_item(table, attribut, value)
             
         except Exception as err:
@@ -94,7 +103,7 @@ def getCars():
 ### PRIKAZ POJEDINOG AUTOMOBILA
 
 @prodaja.route("/prodaja/prikaz-auta/<int:id>", methods=['GET'])
-def getEmployer(id):
+def getCar(id):
     try:
         table = 'auto'
         response = get_item(table, id)

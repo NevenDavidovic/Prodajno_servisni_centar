@@ -18,11 +18,19 @@
 
 <div class="container" id="c-global">
 
+    <label for="identificator" class="form-label">Pretraži prema:</label>
     <div class="search">
-        <form method="post">
-            <div class="d-flex">
-                <input name="ime" value="{{request.form['ime']}}" type="text" class="form-control"
-                    placeholder="Upisati ime (npr. Iva)">
+        <form method="post" class="d-flex">
+            <select class="form-select" name="identificator" id="identificator" aria-label="Pretraži po" required value="{{request.form['identificator']}}">
+                <option selected value="broj_sasije">Broj šasije</option>
+                <option value="model">Model</option>
+                <option value="marka_automobila">Marka</option>
+                <option value="godina_proizvodnje">Godina proizvodnje</option>
+    
+            </select>
+            <div class="d-flex search-box">
+                <input name="query" value="{{request.form['query']}}" type="text" class="form-control"
+                    placeholder="Upisati traženi pojam" required>
                 <input type="submit" class="btn btn-outline-success" value="Pretraži">
             </div>
         </form>
@@ -36,10 +44,12 @@
     <table class="table table-hover">
         <thead>
             <tr>
-                <th scope="col">Marka</th>
+                <th scope="col">Marka automobila</th>
                 <th scope="col">Model</th>
+                <th scope="col">Snaga motora</th>
                 <th scope="col">Godina proizvodnje</th>
-                <th scope="col">Kilometraza</th>
+                <th scope="col">Servis/prodaja</th>
+                <th scope="col">Dostupnost</th>
                 <th scope="col"></th>
             </tr>
         </thead>
@@ -48,18 +58,21 @@
             <tr>
                 <td>{{d.marka_automobila}}</td>
                 <td>{{d.model}}</td>
+                <td>{{d.snaga_motora}} KW</td>
                 <td>{{d.godina_proizvodnje.strftime('%Y.')}}</td>
-                <td>{{d.kilometraza}}</td>
+                <td>{{d.servis_prodaja}}</td>
+                <td>{{d.dostupnost}}</td>
                 <td><a href="/prodaja/prikaz-auta/{{d.id}}" class="btn btn-outline-success"> Više
-                    informacija </a></td>
+                        informacija </a></td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
     <!-- end of table -->
 
+
     {% else %}
-    <p class="fs-4 text-center">Nije pronađen niti jedan klijent.</p>
+    <p class="fs-4 text-center">Nije pronađen niti jedan automobil.</p>
     {% endif %}
 
     {% endblock %}

@@ -1,0 +1,13 @@
+#identificator {
+    width: 250px;
+}
+.search{
+    display: flex;
+}
+.search-box {
+    width: 100%;
+    padding-left: 1rem;
+}
+form {
+    width: 100%;
+}

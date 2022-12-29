@@ -38,7 +38,7 @@
         <div class="col">
             <p class="fs-3">Tehničke informacije</p>
             <p><b>Boja:</b> {{data.boja}}</p>
-            <p><b>Snaga motora:</b> {{data.snaga_motora}}</p>
+            <p><b>Snaga motora:</b> {{data.snaga_motora}} KW</p>
             <p><b>Kilometraža:</b> {{data.kilometraza}}</p>
             <p><b>Tip motora:</b> {{data.tip_motora}}</p>
         </div>
@@ -48,7 +48,7 @@
     <a href="/administracija/uredivanje-zaposlenika/{{data.id}}" class="btn btn-outline-success" id="button"> Uredi </a> -->
 
     {% if data.dostupnost=='DA' %} 
-    <a href="/administracija/brisanje-zaposlenika/{{data.id}}" class="btn btn-outline-success" id="button"> Dodaj na račun </a>
+    <a href="#" class="btn btn-outline-success" id="button"> Dodaj na račun </a>
     {% else %} 
     <a href="javascript:history.back()" class="btn btn-outline-success" id="button"> Vrati se nazad </a>
     {% endif %}
