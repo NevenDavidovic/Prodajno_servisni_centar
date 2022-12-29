@@ -5,7 +5,7 @@ from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table
 
 servis = Blueprint("servis", __name__)
 
-
+# NEVEN START
 # rute
 
 
