@@ -21,7 +21,7 @@ def addClient():
             add_item(table, data)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("success.html", data={"msg": "Klijent uspješno dodan!"}), 200)
+        return make_response(render_template("success.html", data={"msg": "Klijent uspješno dodan!","route":"/prodaja/ispis-svih-klijenata"}), 200)
     else:
         return make_response(render_template("prodaja-dodavanje-novog-klijenta.html"), 200)
 
@@ -61,7 +61,7 @@ def editClient(id):
             edit_table(table, data)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("success.html", data={"msg": "Podaci o klijentu uspješno promjenjeni!"}), 200)
+        return make_response(render_template("success.html", data={"msg": "Podaci o klijentu uspješno promjenjeni!","route":"/prodaja/ispis-svih-klijenata"}), 200)
     else:
         try:
             table = 'klijent'
