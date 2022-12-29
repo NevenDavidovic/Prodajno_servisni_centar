@@ -22,6 +22,8 @@ CREATE TABLE zaposlenik(
 );
 
 
+
+
 -- DONE
 CREATE TABLE auto(
 	id INTEGER AUTO_INCREMENT,
@@ -58,8 +60,8 @@ CREATE TABLE oprema_vozila(
 	id_auto INTEGER NOT NULL,
 	id_oprema INTEGER NOT NULL,
 	PRIMARY KEY (id),
-	FOREIGN KEY (id_auto) REFERENCES auto (id),
-	FOREIGN KEY (id_oprema) REFERENCES oprema (id),
+	FOREIGN KEY (id_auto) REFERENCES auto (id) on delete cascade,
+	FOREIGN KEY (id_oprema) REFERENCES oprema (id) on delete cascade,
     UNIQUE KEY (id_auto, id_oprema)
 );
 
@@ -88,9 +90,9 @@ CREATE TABLE racun_prodaje(
 	datum DATE NOT NULL,
 	cijena DECIMAL (8,2),
 	PRIMARY KEY (id),
-	FOREIGN KEY (id_zaposlenik) REFERENCES zaposlenik (id),
-	FOREIGN KEY (id_auto) REFERENCES auto (id),
-	FOREIGN KEY (id_klijent) REFERENCES klijent (id)
+	FOREIGN KEY (id_zaposlenik) REFERENCES zaposlenik (id) on delete cascade,
+	FOREIGN KEY (id_auto) REFERENCES auto (id) on delete cascade,
+	FOREIGN KEY (id_klijent) REFERENCES klijent (id) on delete cascade
 );
 
 
@@ -103,8 +105,8 @@ CREATE TABLE narudzbenica(
 	datum_zaprimanja DATE NOT NULL,
 	datum_povratka DATETIME NOT NULL,
 	PRIMARY KEY (id),
-	FOREIGN KEY (id_klijent) REFERENCES klijent (id),
-	FOREIGN KEY (id_auto) REFERENCES auto (id)
+	FOREIGN KEY (id_klijent) REFERENCES klijent (id) on delete cascade,
+	FOREIGN KEY (id_auto) REFERENCES auto (id) on delete cascade
 );
 
 
@@ -125,9 +127,9 @@ CREATE TABLE servis(
 	id_narudzbenica INTEGER NOT NULL,
 	komentar VARCHAR(100) DEFAULT "Servis uredno izvrsen",
 	PRIMARY KEY (id),
-	FOREIGN KEY (id_usluga_servis) REFERENCES usluga_servis (id),
-	FOREIGN KEY (id_zaposlenik) REFERENCES zaposlenik (id),
-	FOREIGN KEY (id_narudzbenica) REFERENCES narudzbenica (id),
+	FOREIGN KEY (id_usluga_servis) REFERENCES usluga_servis (id) on delete cascade,
+	FOREIGN KEY (id_zaposlenik) REFERENCES zaposlenik (id) on delete cascade,
+	FOREIGN KEY (id_narudzbenica) REFERENCES narudzbenica (id) on delete cascade,
 	UNIQUE KEY (id_usluga_servis, id_narudzbenica)
 );
 
@@ -148,8 +150,8 @@ CREATE TABLE dio_na_servisu(
 	id_dio INTEGER NOT NULL,
 	kolicina INTEGER NOT NULL,
 	PRIMARY KEY (id),
-	FOREIGN KEY (id_servis) REFERENCES servis (id),
-	FOREIGN KEY (id_dio) REFERENCES dio (id)
+	FOREIGN KEY (id_servis) REFERENCES servis (id) on delete cascade,
+	FOREIGN KEY (id_dio) REFERENCES dio (id) on delete cascade
 );
 
 
@@ -164,5 +166,5 @@ CREATE TABLE stavka_dio(
 	prodajna_cijena DECIMAL (8,2) NOT NULL,
     	dostupna_kolicina INTEGER NOT NULL,
 	PRIMARY KEY (id),
-	FOREIGN KEY (id_dio) REFERENCES dio (id)
+	FOREIGN KEY (id_dio) REFERENCES dio (id) on delete cascade
 );
