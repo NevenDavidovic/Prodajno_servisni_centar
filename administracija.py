@@ -42,7 +42,7 @@ def addEmployer():
             add_item(table, data)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("success.html", data={"msg": "Zaposlenik uspješno dodan!"}), 200)
+        return make_response(render_template("success.html", data={"msg": "Zaposlenik uspješno dodan!", "route": "/administracija/ispis-svih-zaposlenika"}), 200)
     else:
         return make_response(render_template("administracija-dodavanje-novog-zaposlenika.html"), 200)
 
@@ -91,7 +91,7 @@ def deleteEmployer(id):
         delete_item(table, id)
     except Exception as err:
         return make_response(render_template("fail.html", error=err), 400)
-    return make_response(render_template("success.html", data={"msg": "Uspješno izbrisan zaposlenik!"}), 200)
+    return make_response(render_template("success.html", data={"msg": "Uspješno izbrisan zaposlenik!", "route": "/administracija/ispis-svih-zaposlenika"}), 200)
 
 # ruta za uredivanje podataka o zaposleniku
 
@@ -109,7 +109,7 @@ def editEmployer(id):
             edit_table(table, data)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("success.html", data={"msg": "Podaci o zaposleniku uspješno promjenjeni!"}), 200)
+        return make_response(render_template("success.html", data={"msg": "Podaci o zaposleniku uspješno promjenjeni!", "route": "/administracija/ispis-svih-zaposlenika"}), 200)
     else:
         try:
             table = 'zaposlenik'
@@ -156,7 +156,7 @@ def addService():
             add_item(table, data)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("success.html", data={"msg": "Usluga uspješno dodana!"}), 200)
+        return make_response(render_template("success.html", data={"msg": "Usluga uspješno dodana!", "route": "/administracija/ispis-svih-usluga"}), 200)
     else:
         return make_response(render_template("administracija-dodavanje-nove-usluge.html"), 200)
 
@@ -171,7 +171,7 @@ def deleteService(id):
         delete_item(table, id)
     except Exception as err:
         return make_response(render_template("fail.html", error=err), 400)
-    return make_response(render_template("success.html", data={"msg": "Uspješno izbrisana usluga!"}), 200)
+    return make_response(render_template("success.html", data={"msg": "Uspješno izbrisana usluga!", "route": "/administracija/ispis-svih-usluga"}), 200)
 
 
 # ruta za uredivanje podataka o usluzi
@@ -190,7 +190,7 @@ def editService(id):
             edit_table(table, data)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("success.html", data={"msg": "Podaci o usluzi uspješno promjenjeni!"}), 200)
+        return make_response(render_template("success.html", data={"msg": "Podaci o usluzi uspješno promjenjeni!", "route": "/administracija/ispis-svih-usluga"}), 200)
     else:
         try:
             table = 'usluga_servis'
