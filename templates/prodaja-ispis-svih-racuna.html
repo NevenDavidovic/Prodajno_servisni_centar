@@ -60,10 +60,8 @@
                 <td>{{d.k_ime}} {{d.k_prezime}}</td>
                 <td>{{d.a_model}}</td>
                 <td>{{d.rp_cijena}}</td>
-                <td><a href="{{d.rp_id}}" class="btn btn-outline-success"> Više informacija </a></td>
-                {% if request.args and data %}
-                <td><a href="/prodaja/ispis-svih-prodavaca?car_id={{request.args.get('car_id')}}&klijent_id={{d.id}}" class="btn btn-outline-success"> Dodaj na račun </a></td>
-                {% endif %}
+                <td><a href="/prodaja/detalji-racuna/{{d.rp_id}}" class="btn btn-outline-success"> Više informacija </a></td>
+                
             </tr>
             {% endfor %}
         </tbody>

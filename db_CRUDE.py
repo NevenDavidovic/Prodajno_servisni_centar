@@ -124,7 +124,7 @@ def get_all_receipts() -> dict:
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
         # da vraća rezultate tj. rows kao dictionaryje
         mycursor = db.cursor(dictionary=True)
-        qstring = f'SELECT * FROM  svi_podaci_sa_racuna;'
+        qstring = f'SELECT * FROM  svi_podaci_sa_racuna ORDER BY rp_datum DESC;'
 
         try:
             mycursor.execute(qstring)
@@ -166,6 +166,22 @@ def get_item(table, id) -> dict:
             myresult = mycursor.fetchone()
             if myresult == None:
                 raise Exception("Zaposlenik nije pronađen u bazi!") 
+        except Exception as err:
+            raise Exception(err)
+        return myresult
+############################################################
+def get_receipt(table, id) -> dict:
+    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
+        # da vraća rezultate tj. rows kao dictionaryje
+        mycursor = db.cursor(dictionary=True)
+        qstring = f'SELECT * FROM {table} WHERE rp_id = {id};'
+
+        try:
+            mycursor.execute(qstring)
+            myresult = mycursor.fetchone()
+            if myresult == None:
+                raise Exception("Račun nije pronađen u bazi!") 
         except Exception as err:
             raise Exception(err)
         return myresult

@@ -10,7 +10,7 @@
         <div class="d-flex justify-content-center align-items-center h-100">
             <div>
                 <h1>Račun</h1>
-                <p class="fs-4">Informacije o računu broj {{data.broj_racuna}}</p>
+                <p class="fs-4">Informacije o računu broj {{data.rp_broj_racuna}}</p>
             </div>
         </div>
     </div>
@@ -24,45 +24,54 @@
     <div class="row" id="end">
         <div class="col">
             <p class="fs-3">Informacije o Klijentu</p>
-            <p><b>Ime:</b> {{data.klijent.ime}}</p>
-            <p><b>Prezime:</b> {{data.klijent.prezime}}</p>
+            <p><b>Ime:</b> {{data.k_ime}}</p>
+            <p><b>Prezime:</b> {{data.k_prezime}}</p>
             <p><b>OIB:</b> PLACEHOLDER</p>
-            <p><b>Broj telefona:</b> {{data.klijent.broj_telefona}}</p>
-            <p><b>Adresa:</b> {{data.klijent.adresa}}</p>
-            <p><b>Grad:</b> {{data.klijent.grad}}</p>
-            <p><b>Spol:</b> {% if data.klijent.spol=='ž' %} Žensko {% else %} Muško {% endif %}</p>
+            <p><b>Broj telefona:</b> {{data.k_broj_telefona}}</p>
+            <p><b>Adresa:</b> {{data.k_adresa}}</p>
+            <p><b>Grad:</b> {{data.k_grad}}</p>
+            <p><b>Spol:</b> {% if data.k_spol=='ž' %} Žensko {% else %} Muško {% endif %}</p>
+            <p class="text-white">_</p>
 
             <p class="fs-3">Zaposlenik</p>
-            <p><b>Ime:</b> {{data.zaposlenik.ime}}</p>
-            <p><b>Prezime:</b> {{data.zaposlenik.prezime}}</p>
+            <p><b>Ime:</b> {{data.z_ime}}</p>
+            <p><b>Prezime:</b> {{data.z_prezime}}</p>
             <p><b>OIB:</b> PLACEHOLDER</p>
         </div>
         <div class="col">
             
 
             <p class="fs-3">Informacije o automobilu</p>
-            <p><b>Broj Šasije:</b> {{data.auto.broj_sasije}}</p>
-            <p><b>Marka:</b> {{data.auto.marka_automobila}}</p>
-            <p><b>Model:</b> {{data.auto.model}}</p>
-            <p><b>Godina proizvodnje:</b> {{data.auto.godina_proizvodnje.strftime('%Y.')}}</p>
-            <p><b>Boja:</b> {{data.auto.boja}}</p>
-            <p><b>Snaga motora:</b> {{data.auto.snaga_motora}} KW</p>
-            <p><b>Kilometraža:</b> {{data.auto.kilometraza}}</p>
-            <p><b>Tip motora:</b> {{data.auto.tip_motora}}</p>
+            <p><b>Broj Šasije:</b> {{data.a_broj_sasije}}</p>
+            <p><b>Marka:</b> {{data.a_marka_automobila}}</p>
+            <p><b>Model:</b> {{data.a_model}}</p>
+            <p><b>Godina proizvodnje:</b> {{data.a_godina_proizvodnje.strftime('%Y.')}}</p>
+            <p><b>Boja:</b> {{data.a_boja}}</p>
+            <p><b>Snaga motora:</b> {{data.a_snaga_motora}} KW</p>
+            <p><b>Kilometraža:</b> {{data.a_kilometraza}}</p>
+            <p><b>Tip motora:</b> {{data.a_tip_motora}}</p>
 
             <p class="fs-3">Informacije o računu</p>
-            <p><b>Datum izdavanja:</b> PLACEHOLDER</p>
-            <p><b>Cijena:</b> PLACEHOLDER</p>
+            <p><b>Broj računa:</b> {{data.rp_broj_racuna}}</p>
+            <p><b>Datum izdavanja:</b> {{data.rp_datum.strftime('%d.%m.%Y.')}}</p>
+            <p><b>Cijena:</b> {{data.rp_cijena}}</p>
 
         </div>
     </div>
 
     
     <a href="javascript:history.back()" class="btn btn-outline-success" id="button"> Nazad </a>
+    <a onclick="areYouSure()" class="btn btn-danger" id="button"> Storniraj račun </a>
 
 
     {% endblock %}
-
+    <script>
+        function areYouSure(){
+            if (prompt("Stornirati ćete račun! Za nastaviti upišite DA") == 'DA') {
+                window.location.href = "/prodaja/storniranje-racuna/{{data.rp_id}}";
+            }   
+        }
+    </script>
 
 </div>
 {% endblock %}
