@@ -158,6 +158,23 @@ def find_item(table, attribut: str, value) -> dict:
             raise Exception(err)
         return  mycursor.fetchall()
 ############################################################
+def find_item_like(table, attribut: str, value) -> dict:
+    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
+        # da vraća rezultate tj. rows kao dictionaryje
+        mycursor = db.cursor(dictionary=True)
+        # provjerava je li vrijednost integer ili string kako bi se prilagodio upit za sql
+        if isinstance(value, int):
+            qstring = f'SELECT * FROM {table} WHERE {attribut} LIKE %{value}%;'
+        else:
+            qstring = f'SELECT * FROM {table} WHERE {attribut} LIKE "%{value}%";'
+
+        try:
+            mycursor.execute(qstring)
+        except Exception as err:
+            raise Exception(err)
+        return  mycursor.fetchall()
+############################################################
 
 
 def edit_table(table, data):
