@@ -96,6 +96,7 @@ CREATE TABLE racun_prodaje(
 );
 
 
+
 -- DONE
 CREATE TABLE narudzbenica(
 	id INTEGER AUTO_INCREMENT,

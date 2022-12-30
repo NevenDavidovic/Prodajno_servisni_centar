@@ -119,6 +119,37 @@ def get_all_salesmen(table) -> dict:
 
         return myresult
 ############################################################
+def get_all_receipts() -> dict:
+    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
+        # da vraća rezultate tj. rows kao dictionaryje
+        mycursor = db.cursor(dictionary=True)
+        qstring = f'SELECT * FROM  svi_podaci_sa_racuna;'
+
+        try:
+            mycursor.execute(qstring)
+        except Exception as err:
+            raise Exception(err)
+        myresult = mycursor.fetchall()
+
+        return myresult
+############################################################
+def get_all_receipts_after_date(my_date) -> dict:
+    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
+        # da vraća rezultate tj. rows kao dictionaryje
+        mycursor = db.cursor(dictionary=True)
+        print(my_date)
+        qstring = f'SELECT * FROM  svi_podaci_sa_racuna WHERE rp_datum > "{my_date}" ORDER BY rp_datum DESC;'
+
+        try:
+            mycursor.execute(qstring)
+        except Exception as err:
+            raise Exception(err)
+        myresult = mycursor.fetchall()
+
+        return myresult
+############################################################
 
 # dohvaca item iz tablice po id-ju
 

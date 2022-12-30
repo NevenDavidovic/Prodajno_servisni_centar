@@ -1,6 +1,6 @@
 from flask import Flask, Blueprint, render_template, request, make_response, jsonify
 from statsFunctions import uslugePoTipuMotora, najviseUtrosenihDjelova, zaspoleniciSaNajviseServisa, zaposleniciPoNajvisojCijeni, racuniPoKupcu, topSkupiDijelovi
-from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_item,get_all_cars_for_sale,get_all_salesmen, get_last_record_identificator,find_item_like
+from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_item,get_all_cars_for_sale,get_all_salesmen, get_last_record_identificator,find_item_like,get_all_receipts,get_all_receipts_after_date
 
 
 prodaja = Blueprint("prodaja", __name__)
@@ -141,8 +141,9 @@ def createBill():
         try:
 
             # kreiranje dictionary sa svim atributima potrebnim za tablicu racun_prodaje
-            # neki podaci su dobiveni iz argumenata rute, neki iz forme sa stranice, nroj racuna preko funkcije
-            brojRacuna = get_last_record_identificator('racun_prodaje','broj_racuna')+1
+            # neki podaci su dobiveni iz argumenata rute, neki iz forme sa stranice, broj racuna preko funkcije
+
+            brojRacuna = get_last_record_identificator('racun_prodaje','broj_racuna') + 1
             data = {
                 "id_auto":request.args.get('car_id'),
                 "id_zaposlenik":request.args.get('zaposlenik_id'),
@@ -176,5 +177,36 @@ def createBill():
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
         return make_response(render_template("prodaja-kreiranje-racuna.html", data={"auto":autoData,"zaposlenik":zaposlenikData,"klijent":klijentData,"broj_racuna":brojRacuna}), 200)
+
+
+### ISPIS SVIH RAČUNA
+@prodaja.route("/prodaja/ispis-svih-racuna", methods=['POST', 'GET'])
+def getBills():
+    if request.method == "POST":
+        try:
+            queryData = {}
+            for key,value in request.form.items(): 
+                    queryData[key] = value
+    
+            table = 'svi_podaci_sa_racuna'
+            attribut = queryData['identificator']
+            value = queryData['query']
+            if attribut == 'rp_datum':
+                response = get_all_receipts_after_date(value)
+            else:
+                response = find_item_like(table, attribut, value)
+            print(response)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("prodaja-ispis-svih-racuna.html", data=response), 200)
+        
+    else:
+        try: 
+            response = get_all_receipts()
+
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("prodaja-ispis-svih-racuna.html", data=response), 200)
+
 
 # @prodaja.route
