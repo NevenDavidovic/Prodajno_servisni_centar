@@ -73,7 +73,7 @@ def addDio():
             add_item(table, data)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("success.html", data={"msg": "Usluga uspješno dodana!", "route": "/servisi/ispis"}), 200)
+        return make_response(render_template("success.html", data={"msg": "Dio uspješno dodan!", "route": "/servisi/ispis"}), 200)
     
         #return make_response(render_template("servis-dio-dodaj.html"), 200) 
     return render_template("servis-dio-dodaj.html")    
