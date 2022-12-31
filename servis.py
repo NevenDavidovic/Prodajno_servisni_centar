@@ -60,7 +60,21 @@ def deleteDio(id):
         return make_response(render_template("fail.html", error=err), 400)
     return make_response(render_template("success.html", data={"msg": "Uspješno izbrisan dio!", "route": "/servisi/ispis"}), 200)
 
-    
+
+#@servis.route("/servis/dodavanje", methods=['POST', 'GET'])
+#def addDio():
+ #   if request.method == "POST":
+  #      try:
+   #         table = 'dio'
+    #        for key, value in request.form.items():
+     #           data[key] = value
+#
+ #           add_item(table, data)
+   #     except Exception as err:
+  #          return make_response(render_template("fail.html", error=err), 400)
+    #    return make_response(render_template("success.html", data={"msg": "Dio uspješno dodan!", "route": "/servisi/ispis"}), 200)
+    #else:
+     #   return make_response(render_template("servis-dio-dodaj.html"), 200)   
         
             
     
