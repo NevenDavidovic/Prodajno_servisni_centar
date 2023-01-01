@@ -1,0 +1,69 @@
+{% extends "administracija-base.html" %}
+{% block head %}
+<title>Zaposlenici | PSC</title>
+{% endblock %}
+
+{% block body %}
+
+<div class="text-center bg-image" id="h-global">
+    <div class="mask" style="background-color: rgba(255, 255, 255, 0.7);">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div>
+                <h1>Zaposlenici</h1>
+                <p class="fs-4">Pomoću forme pretražite zaposlenike</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" id="c-global">
+
+    <div class="search">
+        <form method="post">
+            <div class="d-flex">
+                <input name="ime" value="{{request.form['ime']}}" type="text" class="form-control"
+                    placeholder="Upisati ime (npr. Iva)">
+                <input type="submit" class="btn btn-outline-success" value="Pretraži">
+            </div>
+        </form>
+    </div>
+
+    {% block content %}
+
+    {% if data %}
+
+    <!-- table -->
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Ime</th>
+                <th scope="col">Prezime</th>
+                <th scope="col">Datum rođenja</th>
+                <th scope="col">Adresa</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for d in data %}
+            <tr>
+                <td>{{d.ime}}</td>
+                <td>{{d.prezime}}</td>
+                <td>{{d.datum_rodenja.strftime('%d.%m.%Y.')}}</td>
+                <td>{{d.adresa}}</td>
+                <td><a href="/administracija/prikaz-zaposlenika/{{d.id}}" class="btn btn-outline-success"> Više
+                        informacija </a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <!-- end of table -->
+
+    {% else %}
+    <p class="fs-4 text-center">Nije pronađen niti jedan zaposlenik.</p>
+    {% endif %}
+
+    {% endblock %}
+
+
+</div>
+{% endblock %}

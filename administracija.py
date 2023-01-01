@@ -259,3 +259,22 @@ def deleteCar(id):
     except Exception as err:
         return make_response(render_template("fail.html", error=err), 400)
     return make_response(render_template("success.html", data={"msg": "Uspješno izbrisan automobil!", "route": "/administracija/ispis-svih-automobila"}), 200)
+
+# ruta za dodavanje novog automobila
+
+
+@administracija.route("/administracija/dodavanje-novog-automobila", methods=['POST', 'GET'])
+def addCar():
+    if request.method == "POST":
+        try:
+            table = 'auto'
+            data = {}
+            for key, value in request.form.items():
+                data[key] = value
+
+            add_item(table, data)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("success.html", data={"msg": "Automobil uspješno dodan!", "route": "/administracija/ispis-svih-automobila"}), 200)
+    else:
+        return make_response(render_template("administracija-dodavanje-novog-automobila.html"), 200)
