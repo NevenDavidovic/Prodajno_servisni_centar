@@ -212,8 +212,7 @@ def getBills():
 @prodaja.route("/prodaja/detalji-racuna/<int:id>", methods=['GET'])
 def getReceipt(id):
     try:
-        table = 'svi_podaci_sa_racuna'
-        response = get_receipt(table, id)
+        response = get_receipt(id)
         
     except Exception as err:
         return make_response(render_template("fail.html", error=err), 400)
@@ -224,7 +223,17 @@ def getReceipt(id):
 def removeReceipt(id):
     try:
         table = 'racun_prodaje'
+        receiptData = get_item('racun_prodaje',id)
+        
+        # brisanje racuna
         response = delete_item(table, id)
+
+        # vracanje statusa automobila sa racuna na 'Dostupan'
+        dataToEdit = {
+            "id": receiptData.get('id_auto'),
+            "dostupnost":"DA"
+        }
+        response = edit_table('auto',dataToEdit)
         
     except Exception as err:
         return make_response(render_template("fail.html", error=err), 400)

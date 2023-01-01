@@ -169,12 +169,12 @@ def get_item(table, id) -> dict:
             raise Exception(err)
         return myresult
 ############################################################
-def get_receipt(table, id) -> dict:
+def get_receipt(id) -> dict:
     # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
         # da vraća rezultate tj. rows kao dictionaryje
         mycursor = db.cursor(dictionary=True)
-        qstring = f'SELECT * FROM {table} WHERE rp_id = {id};'
+        qstring = f'SELECT * FROM svi_podaci_sa_racuna WHERE rp_id = {id};'
 
         try:
             mycursor.execute(qstring)
