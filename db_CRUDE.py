@@ -85,7 +85,6 @@ def get_all_items(table) -> dict:
         except Exception as err:
             raise Exception(err)
         myresult = mycursor.fetchall()
-        print(mycursor.fetchall())
         return myresult
 ############################################################
 def get_all_cars_for_sale(table) -> dict:
