@@ -21,11 +21,26 @@ def showStats():
         responses.append(racuniPoKupcu())
         responses.append(topSkupiDijelovi())
 
-        print(responses[5])
+        # data za grafove
+        table1_labels = [str(obj.get('tip_motora')).capitalize() for obj in responses[0]]
+        table1_data = [int(obj.get('ukupno_izvrsenih_usluga')) for obj in responses[0]]
+        
+        table3_labels = [str(obj.get('Ime_i_prezime')).capitalize() for obj in responses[2]]
+        table3_data = [obj.get('broj_servisa') for obj in responses[2]]
+        
+        
+        
     except Exception as err:
         return make_response(render_template("fail.html", error=err), 400)
 
-    return make_response(render_template("administracija-statistika.html", data=responses), 200)
+    return make_response(render_template("administracija-statistika.html", data=responses,
+    x_table1 = table1_labels,
+    y_table1 = table1_data,
+
+    x_table3 = table3_labels,
+    y_table3 = table3_data,
+    
+    ), 200)
 
 # ruta za dodavanje novog zaposlenika
 
