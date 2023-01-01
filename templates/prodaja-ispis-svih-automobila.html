@@ -60,8 +60,17 @@
                 <td>{{d.model}}</td>
                 <td>{{d.snaga_motora}} KW</td>
                 <td>{{d.godina_proizvodnje.strftime('%Y.')}}</td>
-                <td>{{d.servis_prodaja}}</td>
-                <td>{{d.dostupnost}}</td>
+                {% if d.servis_prodaja=='S' %}
+                <td>servis</td>
+                {% else %}
+                <td>prodaja</td>
+                {% endif %}
+
+                {% if d.dostupnost=='DA' %}
+                <td class="text-success">Dostupno</td>
+                {% else %}
+                <td class="text-danger">Nedostupno</td>
+                {% endif %}
                 <td><a href="/prodaja/prikaz-auta/{{d.id}}" class="btn btn-outline-success"> Više
                         informacija </a></td>
             </tr>

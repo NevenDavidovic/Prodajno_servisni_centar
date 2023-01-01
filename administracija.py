@@ -1,6 +1,6 @@
 from flask import Flask, Blueprint, render_template, request, make_response, jsonify
 from statsFunctions import uslugePoTipuMotora, najviseUtrosenihDjelova, zaspoleniciSaNajviseServisa, zaposleniciPoNajvisojCijeni, racuniPoKupcu, topSkupiDijelovi
-from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_item
+from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_item,find_item_like
 
 
 administracija = Blueprint("administracija", __name__)
@@ -56,7 +56,7 @@ def getEmployers():
             table = 'zaposlenik'
             attribut = 'ime'
             value = request.form.get('ime')
-            response = find_item(table, attribut, value)
+            response = find_item_like(table, attribut, value)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
         return make_response(render_template("administracija-ispis-svih-zaposlenika.html", data=response), 200)
@@ -114,7 +114,6 @@ def editEmployer(id):
         try:
             table = 'zaposlenik'
             response = get_item(table, id)
-            print(response)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
         return make_response(render_template("administracija-uredivanje-zaposlenika.html", data=response), 200)
@@ -129,7 +128,7 @@ def getServices():
             table = 'usluga_servis'
             attribut = 'naziv'
             value = request.form.get('naziv')
-            response = find_item(table, attribut, value)
+            response = find_item_like(table, attribut, value)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
         return make_response(render_template("administracija-ispis-svih-usluga.html", data=response), 200)
@@ -195,7 +194,6 @@ def editService(id):
         try:
             table = 'usluga_servis'
             response = get_item(table, id)
-            # print(response)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
         return make_response(render_template("administracija-uredivanje-usluge.html", data=response), 200)
@@ -210,7 +208,7 @@ def getCars():
             table = 'auto'
             attribut = 'marka_automobila'
             value = request.form.get('marka_automobila')
-            response = find_item(table, attribut, value)
+            response = find_item_like(table, attribut, value)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
         return make_response(render_template("administracija-ispis-svih-automobila.html", data=response), 200)

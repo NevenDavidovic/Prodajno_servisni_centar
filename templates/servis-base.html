@@ -13,7 +13,6 @@
         integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/static/administracija.css">
-    <link rel="stylesheet" href="/static/prodaja.css">
     <link rel="shortcut icon" href="/static/images/favicon.png">
 
     {% block head %}
@@ -36,66 +35,43 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
-                            Račun
+                            Narudžbenica
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/prodaja/ispis-svih-automobila">Kreiranje računa</a></li>
-                            <!-- <li><a class="dropdown-item" href="#">Storniranje računa</a></li> -->
-                            <li><a class="dropdown-item" href="/prodaja/ispis-svih-racuna">Ispis i pretraga računa</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Klijent
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/prodaja/ispis-svih-klijenata">Klijenti</a>
+                            <li><a class="dropdown-item" href="#">Narudžbenice</a>
                             </li>
-                            <li><a class="dropdown-item" href="/prodaja/dodavanje-novog-klijenta">Dodavanje
-                                    klijenta</a></li>
+                            <li><a class="dropdown-item" href="#">Dodavanje narudžbenice </a></li>
                         </ul>
                     </li>
-                    <!-- <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Usluga
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Usluge</a></li>
-                            <li><a class="dropdown-item" href="#">Dodavanje usluge</a></li>
-                        </ul>
-                    </li> -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
-                            Automobil
+                            Dijelovi
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/prodaja/ispis-svih-automobila">Automobili</a></li>
-                            <!-- <li><a class="dropdown-item" href="#">Dodavanje automobila</a></li> -->
+                            <li><a class="dropdown-item" href="/servisi/ispis">Dijelovi</a></li>
+                            <li><a class="dropdown-item" href="/servis/dodavanje" >Dodavanje
+                                    dijela</a></li>
                         </ul>
                     </li>
-                    <!-- <li class="nav-item dropdown">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Servis
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Servisi</a>
+                            </li>
+                            <li><a class="dropdown-item" href="#">Dodavanje servisa</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
                             Oprema
                         </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Oprema</a></li>
-                            <li><a class="dropdown-item" href="#">Dodavanje opreme</a></li>
-                        </ul>
-                    </li> -->
-                    <!-- <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Klijent
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Klijenti</a></li>
-                        </ul>
-                    </li> -->
+                        
+                    </li>
                 </ul>
             </div>
         </div>
@@ -120,14 +96,14 @@
         var content = document.querySelector('.content');
         var footer = document.querySelector('.footer');
         var navbar = document.querySelector('#nav');
-        
-        
+
+
         if (content.offsetHeight + footer.offsetHeight + navbar.offsetHeight < window.innerHeight) {
             footer.style.position = 'fixed';
             footer.style.bottom = '0';
             footer.style.width = '100%';
 
-           
+
 
         } else {
             footer.style.position = 'relative';

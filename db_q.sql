@@ -178,7 +178,46 @@ GROUP BY a.model
 ORDER BY br_prodanih_auta DESC;
 
 SELECT * FROM najprodavaniji_skupi_auti;
+-- DROP VIEW svi_podaci_sa_računa;
+CREATE VIEW svi_podaci_sa_racuna AS
+SELECT 
+rp.id as rp_id,
+rp.id_zaposlenik as rp_id_zaposlenik,
+rp.id_auto as rp_id_auto,
+rp.id_klijent as rp_id_klijent,
+rp.broj_racuna as rp_broj_racuna,
+rp.datum as rp_datum,
+rp.cijena as rp_cijena,
 
+z.id as z_id,
+z.ime as z_ime,
+z.prezime as z_prezime,
+
+a.broj_sasije as a_broj_sasije,
+a.marka_automobila as a_marka_automobila,
+a.model as a_model,
+a.boja as a_boja,
+a.godina_proizvodnje as a_godina_proizvodnje,
+a.snaga_motora as a_snaga_motora,
+a.kilometraza as a_kilometraza,
+a.tip_motora as a_tip_motora,
+
+k.ime as k_ime,
+k.prezime as k_prezime,
+k.broj_telefona as k_broj_telefona,
+k.adresa as k_adresa,
+k.grad as k_grad,
+k.spol as k_spol
+
+FROM racun_prodaje rp 
+INNER JOIN zaposlenik z ON rp.id_zaposlenik = z.id
+INNER JOIN auto a ON rp.id_auto = a.id
+INNER JOIN klijent k ON rp.id_klijent = k.id;
+
+
+SELECT * FROM svi_podaci_sa_racuna
+WHERE rp_datum > '2020-06-01'
+ORDER BY rp_datum DESC;
 -- TIN KRAJ UPITA
 
 

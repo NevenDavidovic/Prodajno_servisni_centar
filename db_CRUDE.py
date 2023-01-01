@@ -85,7 +85,6 @@ def get_all_items(table) -> dict:
         except Exception as err:
             raise Exception(err)
         myresult = mycursor.fetchall()
-        print(mycursor.fetchall())
         return myresult
 ############################################################
 def get_all_cars_for_sale(table) -> dict:
@@ -100,7 +99,54 @@ def get_all_cars_for_sale(table) -> dict:
         except Exception as err:
             raise Exception(err)
         myresult = mycursor.fetchall()
-        print(mycursor.fetchall())
+        
+        return myresult
+############################################################
+
+def get_all_salesmen(table) -> dict:
+    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
+        # da vraća rezultate tj. rows kao dictionaryje
+        mycursor = db.cursor(dictionary=True)
+        qstring = f'SELECT * FROM {table} WHERE radno_mjesto = "prodavac";'
+
+        try:
+            mycursor.execute(qstring)
+        except Exception as err:
+            raise Exception(err)
+        myresult = mycursor.fetchall()
+
+        return myresult
+############################################################
+def get_all_receipts() -> dict:
+    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
+        # da vraća rezultate tj. rows kao dictionaryje
+        mycursor = db.cursor(dictionary=True)
+        qstring = f'SELECT * FROM  svi_podaci_sa_racuna ORDER BY rp_datum DESC;'
+
+        try:
+            mycursor.execute(qstring)
+        except Exception as err:
+            raise Exception(err)
+        myresult = mycursor.fetchall()
+
+        return myresult
+############################################################
+def get_all_receipts_after_date(my_date) -> dict:
+    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
+        # da vraća rezultate tj. rows kao dictionaryje
+        mycursor = db.cursor(dictionary=True)
+        print(my_date)
+        qstring = f'SELECT * FROM  svi_podaci_sa_racuna WHERE rp_datum > "{my_date}" ORDER BY rp_datum DESC;'
+
+        try:
+            mycursor.execute(qstring)
+        except Exception as err:
+            raise Exception(err)
+        myresult = mycursor.fetchall()
+
         return myresult
 ############################################################
 
@@ -123,6 +169,22 @@ def get_item(table, id) -> dict:
             raise Exception(err)
         return myresult
 ############################################################
+def get_receipt(id) -> dict:
+    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
+        # da vraća rezultate tj. rows kao dictionaryje
+        mycursor = db.cursor(dictionary=True)
+        qstring = f'SELECT * FROM svi_podaci_sa_racuna WHERE rp_id = {id};'
+
+        try:
+            mycursor.execute(qstring)
+            myresult = mycursor.fetchone()
+            if myresult == None:
+                raise Exception("Račun nije pronađen u bazi!") 
+        except Exception as err:
+            raise Exception(err)
+        return myresult
+############################################################
 
 
 def find_item(table, attribut: str, value) -> dict:
@@ -135,6 +197,23 @@ def find_item(table, attribut: str, value) -> dict:
             qstring = f'SELECT * FROM {table} WHERE {attribut} = {value};'
         else:
             qstring = f'SELECT * FROM {table} WHERE {attribut} = "{value}";'
+
+        try:
+            mycursor.execute(qstring)
+        except Exception as err:
+            raise Exception(err)
+        return  mycursor.fetchall()
+############################################################
+def find_item_like(table, attribut: str, value) -> dict:
+    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
+        # da vraća rezultate tj. rows kao dictionaryje
+        mycursor = db.cursor(dictionary=True)
+        # provjerava je li vrijednost integer ili string kako bi se prilagodio upit za sql
+        if isinstance(value, int):
+            qstring = f'SELECT * FROM {table} WHERE {attribut} LIKE %{value}%;'
+        else:
+            qstring = f'SELECT * FROM {table} WHERE {attribut} LIKE "%{value}%";'
 
         try:
             mycursor.execute(qstring)

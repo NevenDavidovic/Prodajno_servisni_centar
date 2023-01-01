@@ -1,6 +1,6 @@
 {% extends "prodaja-base.html" %}
 {% block head %}
-<title>Klijenti | PSC</title>
+<title>Prodavači | PSC</title>
 {% endblock %}
 
 {% block body %}
@@ -9,8 +9,8 @@
     <div class="mask" style="background-color: rgba(255, 255, 255, 0.7);">
         <div class="d-flex justify-content-center align-items-center h-100">
             <div>
-                <h1>Klijenti</h1>
-                <p class="fs-4">Pomoću forme pretražite klijente</p>
+                <h1>Prodavači</h1>
+                <p class="fs-4">Pomoću forme pretražite prodavače</p>
             </div>
         </div>
     </div>
@@ -38,10 +38,8 @@
             <tr>
                 <th scope="col">Ime</th>
                 <th scope="col">Prezime</th>
-                <th scope="col">Spol</th>
+                <th scope="col">Datum rođenja</th>
                 <th scope="col">Adresa</th>
-                <th scope="col">Grad</th>
-                <th scope="col">Broj telefona</th>
                 <th scope="col"></th>
             </tr>
         </thead>
@@ -50,14 +48,9 @@
             <tr>
                 <td>{{d.ime}}</td>
                 <td>{{d.prezime}}</td>
-                <td>{{d.spol}}</td>
+                <td>{{d.datum_rodenja.strftime('%d.%m.%Y.')}}</td>
                 <td>{{d.adresa}}</td>
-                <td>{{d.grad}}</td>
-                <td>{{d.broj_telefona}}</td>
-                <td><a href="/prodaja/uredivanje-klijenta/{{d.id}}" class="btn btn-outline-success"> Uredi </a></td>
-                {% if request.args and data %}
-                <td><a href="/prodaja/ispis-svih-prodavaca?car_id={{request.args.get('car_id')}}&klijent_id={{d.id}}" class="btn btn-outline-success"> Dodaj na račun </a></td>
-                {% endif %}
+                <td><a href="/prodaja/kreiranje-racuna?car_id={{request.args.get('car_id')}}&klijent_id={{request.args.get('klijent_id')}}&zaposlenik_id={{d.id}}" class="btn btn-outline-success"> Dodaj na račun </a></td>
             </tr>
             {% endfor %}
         </tbody>
@@ -65,11 +58,9 @@
     <!-- end of table -->
 
     {% else %}
-    <p class="fs-4 text-center">Nije pronađen niti jedan klijent.</p>
-    <a href="/prodaja/dodavanje-novog-klijenta" class="btn btn-outline-success"> Dodaj novog klijenta </a>
+    <p class="fs-4 text-center">Nije pronađen niti jedan prodavač.</p>
+    <a href="javascript:history.back()" class="btn btn-outline-success" id="button"> Vrati se nazad </a>
     {% endif %}
-
-    
 
     {% endblock %}
 
