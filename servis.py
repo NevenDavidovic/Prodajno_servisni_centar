@@ -150,6 +150,16 @@ def urediStavkaDio(id):
             return make_response(render_template("fail.html", error=err), 400)
         return make_response(render_template("servis-stavka-dio-uredivanje.html", data=response, dio=dio,dio1=id_dio), 200)
 
+# delete dio
+
+@servis.route("/servis/brisanje-dijelova/<int:id>", methods=['GET'])
+def deleteStavkaDio(id):
+    try:
+        table = 'stavka_dio'
+        delete_item(table, id)
+    except Exception as err:
+        return make_response(render_template("fail.html", error=err), 400)
+    return make_response(render_template("success.html", data={"msg": "Uspješno izbrisan dio!", "route": "/servis/stavka-dio-ispis"}), 200)
 
 
 
