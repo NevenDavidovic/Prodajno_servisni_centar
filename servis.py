@@ -152,7 +152,7 @@ def urediStavkaDio(id):
 
 # delete dio
 
-@servis.route("/servis/brisanje-dijelova/<int:id>", methods=['GET'])
+@servis.route("/servis/stavka-brisanje-dijelova/<int:id>", methods=['GET'])
 def deleteStavkaDio(id):
     try:
         table = 'stavka_dio'
