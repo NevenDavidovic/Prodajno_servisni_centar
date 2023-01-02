@@ -394,12 +394,12 @@ SELECT ime, prezime, MIN(age) FROM godine_mehanicara;
 
 -- NOEL KRAJ
 
-/*-- DARJAN (NOEL) upiti preko pogleda za statistiku
+-- DARJAN (NOEL) upiti preko pogleda za statistiku
 
 -- Prikaži preko pogleda samo one zaposlenike (prodavače) koji su prodali barem jedan auto (ime, prezime, radno mjesto, ukupno_prodanih_vozila) i poredaj ih prema broju prodanih vozila silazno
 
 create view  prodavaci_sa_najvise_prodanih_automobila as
-select z.ime, z.prezime, z.radno_mjesto, count(z.id) as ukupno_prodanih_vozila
+select CONCAT(z.ime,' ', z.prezime) AS ime, z.radno_mjesto, count(z.id) as ukupno_prodanih_vozila
 from zaposlenik z
 inner join racun_prodaje r on z.id = r.id_zaposlenik
 where radno_mjesto = "prodavac"
@@ -413,17 +413,17 @@ from prodavaci_sa_najvise_prodanih_automobila;
 
 -- Brisanje pogleda
 
-drop view prodavaci_sa_najvise_prodanih_automobila;
+-- drop view prodavaci_sa_najvise_prodanih_automobila;
 
 -- Prikaži preko pogleda statistički podatak koja je marka vozila najprodavanija u PSC-u, podatke poredaj silazno
 
 create view najprodavanija_marka_automobila as
-select marka_automobila, count(a.marka_automobila) as najprodavanija_marka_vozila
+select marka_automobila, count(a.marka_automobila) as broj_prodanih_vozila
 from auto a
 inner join racun_prodaje r on a.id = r.id_auto
 where servis_prodaja = "P" and dostupnost = "NE"
 group by a.marka_automobila
-order by najprodavanija_marka_vozila DESC;
+order by broj_prodanih_vozila DESC;
 
 -- Prikaz preko pogleda
 
@@ -432,5 +432,5 @@ from najprodavanija_marka_automobila;
 
 -- Brisanje pogleda
 
-drop view najprodavanija_marka_automobila;
-*/
+-- drop view najprodavanija_marka_automobila;
+

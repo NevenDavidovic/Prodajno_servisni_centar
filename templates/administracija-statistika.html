@@ -189,8 +189,8 @@
   
     <!-- table 7 -->
     <div class="col px-4">
-      <p class="fs-5">Table 7</p>
-      <table class="table table-hover">
+      <p class="fs-5">Top prodavači</p>
+      <!-- <table class="table table-hover">
         <thead>
           <tr>
             <th scope="col">#</th>
@@ -207,16 +207,19 @@
           </tr>
           {% endfor %}
         </tbody>
-      </table>
-      <p class="text-muted credit">autor: Marija Ilić</p>
+      </table> -->
+      <div style="width: 70%; margin: 0 auto;">
+        <canvas id="table7" width="100" height="100"></canvas>
+      </div>      
+      <p class="text-muted credit">autor: Noel Modrušan</p>
 
     </div>
     <!-- end of table 7 -->
 
     <!-- table 8 -->
     <div class="col px-4">
-      <p class="fs-5">Table 8</p>
-      <table class="table table-hover">
+      <p class="fs-5">Najprodavanija marka automobila</p>
+      <!-- <table class="table table-hover">
         <thead>
           <tr>
             <th scope="col">#</th>
@@ -233,8 +236,11 @@
           </tr>
           {% endfor %}
         </tbody>
-      </table>
-      <p class="text-muted credit">autor: Marija Ilić</p>
+      </table> -->
+      <div style="width: 70%; margin: 0 auto;">
+        <canvas id="table8" width="100" height="100"></canvas>
+      </div>
+      <p class="text-muted credit">autor: Noel Modrušan</p>
 
     </div>
     <!-- end of table 8 -->
@@ -418,7 +424,7 @@
             
             const graph4 = document.getElementById("table4")
             const config4 = {
-          type:"pie",
+          type:"doughnut",
           data:data4,
           options: {
             indexAxis: 'x',
@@ -457,6 +463,59 @@
           }
         }
         const chart6 = new Chart(graph6, config6)
+  // graph 7
+        
+        var data7 = {
+          labels:{{x_table7|safe}},
+          datasets:[{
+              label:"Broj Prodanih vozila",
+              backgroundColor: ["#212529","#31373d","#3b434a","#444c55","#85909c"],
+              borderColor: "red",
+              data: {{y_table7|safe}}
+              }]
+            }
+            
+            const graph7 = document.getElementById("table7")
+            const config7 = {
+          type:"pie",
+          data:data7,
+          options: {
+            indexAxis: 'y',
+            scale: {
+              ticks: {
+                precision: 0
+              }
+            }
+          }
+        }
+        const chart7 = new Chart(graph7, config7)
+
+  // graph 8
+        
+        var data8 = {
+          labels:{{x_table8|safe}},
+          datasets:[{
+              label:"Broj Prodanih vozila",
+              backgroundColor: ["#31373d"],
+              borderColor: "red",
+              data: {{y_table8|safe}}
+              }]
+            }
+            
+            const graph8 = document.getElementById("table8")
+            const config8 = {
+          type:"bar",
+          data:data8,
+          options: {
+            indexAxis: 'x',
+            scale: {
+              ticks: {
+                precision: 0
+              }
+            }
+          }
+        }
+        const chart8 = new Chart(graph8, config8)
 
 </script>
       

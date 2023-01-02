@@ -118,5 +118,35 @@ def topSkupiDijelovi():
         result = mycursor.fetchall()
         return result
 
-    # STATISTIKE SARA
+    # STATISTIKE NOEL
+def topProdavaci():
+    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    with mysql.connector.connect(host="localhost",user="root",passwd="root",database="Prodajno_servisni_centar") as db:
+        mycursor = db.cursor(dictionary=True) # da vraća rezultate tj. rows kao dictionaryje
+
+        qstring = f'''SELECT *
+        from prodavaci_sa_najvise_prodanih_automobila LIMIT 5;'''
+
+        try:
+            mycursor.execute(qstring) 
+        except Exception as err:
+            raise Exception(err)
+        result = mycursor.fetchall()
+        return result
+
+def topMarkeAutomobila():
+    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    with mysql.connector.connect(host="localhost",user="root",passwd="root",database="Prodajno_servisni_centar") as db:
+        mycursor = db.cursor(dictionary=True) # da vraća rezultate tj. rows kao dictionaryje
+
+        qstring = f'''SELECT *
+        from najprodavanija_marka_automobila;'''
+
+        try:
+            mycursor.execute(qstring) 
+        except Exception as err:
+            raise Exception(err)
+        result = mycursor.fetchall()
+        return result
+
 

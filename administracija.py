@@ -1,5 +1,5 @@
 from flask import Flask, Blueprint, render_template, request, make_response, jsonify
-from statsFunctions import uslugePoTipuMotora, najviseUtrosenihDjelova, zaspoleniciSaNajviseServisa, zaposleniciPoNajvisojCijeni, racuniPoKupcu, topSkupiDijelovi
+from statsFunctions import uslugePoTipuMotora, najviseUtrosenihDjelova, zaspoleniciSaNajviseServisa, zaposleniciPoNajvisojCijeni, racuniPoKupcu, topSkupiDijelovi,topProdavaci,topMarkeAutomobila
 from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_item,find_item_like
 
 
@@ -20,6 +20,8 @@ def showStats():
         responses.append(zaposleniciPoNajvisojCijeni())
         responses.append(racuniPoKupcu())
         responses.append(topSkupiDijelovi())
+        responses.append(topProdavaci())
+        responses.append(topMarkeAutomobila())
 
         # data za grafove
         table1_labels = [str(obj.get('tip_motora')).capitalize() for obj in responses[0]]
@@ -34,10 +36,12 @@ def showStats():
         
         table6_labels = [str(obj.get('serijski_broj')).capitalize() +' '+ str(obj.get('opis').capitalize()) for obj in responses[5]]
         table6_data = [float(obj.get('nabavna_cijena')) for obj in responses[5]]
-        # table6_data = [15,18,10,12,3]
         
-        print(table6_labels)
-        print(table6_data)
+        table7_labels = [str(obj.get('ime')).capitalize() for obj in responses[6]]
+        table7_data = [int(obj.get('ukupno_prodanih_vozila')) for obj in responses[6]]
+        
+        table8_labels = [str(obj.get('marka_automobila')).capitalize() for obj in responses[7]]
+        table8_data = [int(obj.get('broj_prodanih_vozila')) for obj in responses[7]]
         
     except Exception as err:
         return make_response(render_template("fail.html", error=err), 400)
@@ -54,6 +58,12 @@ def showStats():
     
     x_table6 = table6_labels,
     y_table6 = table6_data,
+    
+    x_table7 = table7_labels,
+    y_table7 = table7_data,
+    
+    x_table8 = table8_labels,
+    y_table8 = table8_data,
     
     ), 200)
 
