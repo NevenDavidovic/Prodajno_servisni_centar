@@ -120,4 +120,4 @@ def ispisStavkaDio():
             return make_response(render_template("fail.html", error=err), 400)
         return make_response(render_template("servis-stavka-dio-ispis.html", data=response), 200)
 
-# NASTAVLJAMO sa daljnim dijelvimaa
+# NASTAVLJAMO sa daljnim dijelvi
