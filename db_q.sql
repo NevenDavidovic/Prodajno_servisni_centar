@@ -82,7 +82,7 @@ SELECT marka_automobila, COUNT(marka_automobila) AS kolicina
 -- Prva tri zaposlenika koja imaju najviše servisa
 
 CREATE VIEW dijelovi AS
-SELECT s.id_dio,d.id,naziv, proizvodac,serijski_broj,opis, kategorija,nabavna_cijena,prodajna_cijena, dostupna_kolicina FROM dio as d, stavka_dio as s WHERE d.id=s.id_dio;
+SELECT stavka_dio.id,naziv,proizvodac,serijski_broj,opis, kategorija, nabavna_cijena,prodajna_cijena,dostupna_kolicina FROM dio,stavka_dio WHERE dio.id=stavka_dio.id_dio;
 
 SELECT CONCAT(z.ime ,' ', z.prezime) AS Ime_i_prezime,COUNT(z.id) as broj_servisa
 FROM servis AS s, usluga_servis AS u, zaposlenik AS z
