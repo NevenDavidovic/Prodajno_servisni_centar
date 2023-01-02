@@ -128,6 +128,7 @@ def urediStavkaDio(id):
         try:
             table = 'stavka_dio'
             data = {}
+            print(data)
             for key, value in request.form.items():
                 data[key] = value
             data["id"] = id
@@ -135,10 +136,10 @@ def urediStavkaDio(id):
             edit_table(table, data)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("success.html", data={"msg": "Podaci o dijelu su uspješno promjenjeni!", "route": "/servisi/ispis"}), 200)
+        return make_response(render_template("success.html", data={"msg": "Podaci o dijelu su uspješno promjenjeni!", "route": "/servis/stavka-dio-ispis"}), 200)
     else:
         try:
-            table = 'dijelovi'
+            table = 'stavka_dio'
             tabla='dio'
             response = get_item(table, id)
             dio = get_all_items(tabla)

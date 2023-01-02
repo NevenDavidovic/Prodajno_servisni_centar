@@ -94,7 +94,7 @@
                 <!-- spol -->
                 <label for="opis" class="form-label">Opis</label>
                 <div class="col">
-                    <input name="opis" value="data.opis" type="text" class="form-control"
+                    <input name="opis" value="{{data.opis}}" type="text" class="form-control"
                     required>
                 </div>
                 <!-- end of  -->
@@ -117,12 +117,11 @@
                                
                         <select id="id_dio" name="id_dio" required>
                           {% for d in dio %}
-                            <option name='id_dio' value="{{ d.id }} {% if  dio1.id == d.id  %} selected {% endif %} >{{ d.naziv }} & {{d.proizvodac}}</option>
+                            <option name='id_dio' value="{{ d.id }}"" {% if dio1.id == d.id  %} selected {% endif %}>{{ d.naziv }} & {{d.proizvodac}}</option>
                           {% endfor %}
                         
                         </select>
-                        {% set id_dio = 'id_dio' %}
-                        {{ request.form[id_dio] }}
+                        {% set id_dio = request.form['id_dio'] %}
             
                     </div>
 
