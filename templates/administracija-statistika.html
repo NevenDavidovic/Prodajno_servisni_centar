@@ -79,7 +79,7 @@
     <!-- table 4 -->
     <div class="col px-4">
       <p class="fs-5">Zaposlenici po ukupnoj cijeni servisa</p>
-      <table class="table table-hover">
+      <!-- <table class="table table-hover">
         <thead>
           <tr>
             <th scope="col">#</th>
@@ -96,7 +96,10 @@
           </tr>
           {% endfor %}
         </tbody>
-      </table>
+      </table> -->
+      <div style="width: 70%; margin: 0 auto;">
+        <canvas id="table4" width="100" height="100"></canvas>
+      </div>
       <p class="text-muted credit">autor: Neven Davidović</p>
     </div>
     <!-- end of table 4 -->
@@ -157,7 +160,7 @@
     <!-- table 6 -->
     <div class="col px-4">
       <p class="fs-5">Top 5 skupih dijelova</p>
-      <table class="table table-hover">
+      <!-- <table class="table table-hover">
         <thead>
           <tr>
             <th scope="col">#</th>
@@ -176,7 +179,8 @@
           </tr>
           {% endfor %}
         </tbody>
-      </table>
+      </table> -->
+      <canvas id="table6" width="200" height="100"></canvas>
       <p class="text-muted credit">autor: Darjan Jurjanović</p>
       <!-- end of table 6 -->
     </div>
@@ -399,6 +403,60 @@
           }
         }
         const chart3 = new Chart(graph3, config3)
+
+  // graph 4
+        
+        var data4 = {
+          labels:{{x_table4|safe}},
+          datasets:[{
+              label:"Ukupna cijena",
+              backgroundColor: ["#212529","#31373d","##3b434a"],
+              borderColor: "red",
+              data: {{y_table4|safe}}
+              }]
+            }
+            
+            const graph4 = document.getElementById("table4")
+            const config4 = {
+          type:"pie",
+          data:data4,
+          options: {
+            indexAxis: 'x',
+            scale: {
+              ticks: {
+                precision: 0
+              }
+            }
+          }
+        }
+        const chart4 = new Chart(graph4, config4)
+
+  // graph 6
+        
+        var data6 = {
+          labels:{{x_table6|safe}},
+          datasets:[{
+              label:"Nabavna cijena",
+              backgroundColor: ["#212529","#31373d","##3b434a"],
+              borderColor: "red",
+              data: {{y_table6|safe}}
+              }]
+            }
+            
+            const graph6 = document.getElementById("table6")
+            const config6 = {
+          type:"line",
+          data:data6,
+          options: {
+            indexAxis: 'x',
+            scale: {
+              ticks: {
+                precision: 0
+              }
+            }
+          }
+        }
+        const chart6 = new Chart(graph6, config6)
 
 </script>
       

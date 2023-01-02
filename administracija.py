@@ -27,8 +27,17 @@ def showStats():
         
         table3_labels = [str(obj.get('Ime_i_prezime')).capitalize() for obj in responses[2]]
         table3_data = [obj.get('broj_servisa') for obj in responses[2]]
+
         
+        table4_labels = [str(obj.get('Ime_i_prezime')).capitalize() for obj in responses[2]]
+        table4_data = [int(obj.get('ukupno_po_servisu')) for obj in responses[3]]
         
+        table6_labels = [str(obj.get('serijski_broj')).capitalize() +' '+ str(obj.get('opis').capitalize()) for obj in responses[5]]
+        table6_data = [float(obj.get('nabavna_cijena')) for obj in responses[5]]
+        # table6_data = [15,18,10,12,3]
+        
+        print(table6_labels)
+        print(table6_data)
         
     except Exception as err:
         return make_response(render_template("fail.html", error=err), 400)
@@ -39,6 +48,12 @@ def showStats():
 
     x_table3 = table3_labels,
     y_table3 = table3_data,
+
+    x_table4 = table4_labels,
+    y_table4 = table4_data,
+    
+    x_table6 = table6_labels,
+    y_table6 = table6_data,
     
     ), 200)
 
