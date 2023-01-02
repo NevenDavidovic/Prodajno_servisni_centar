@@ -22,9 +22,9 @@
   <!-- ROW  -->
   <div class="row row-cols-lg-2 row-cols-md-1">
     <!-- table 1 -->
-    <div class="col px-4">
+     <div class="col px-4">
       <p class="fs-5">Usluge po tipu motora</p>
-      <table class="table table-hover">
+      <!--<table class="table table-hover">
         <thead>
           <tr>
             <th scope="col">#</th>
@@ -42,9 +42,10 @@
           </tr>
           {% endfor %}
         </tbody>
-      </table>
+      </table>-->
+      <canvas id="table1" width="200" height="100"></canvas>
       <p class="text-muted credit">autor: Tin Pritišanac</p>
-    </div>
+    </div> 
     <!-- end of table 1 -->
 
     <!-- table 2 -->
@@ -74,10 +75,36 @@
     </div>
     <!-- end of table 2 -->
 
+
+    <!-- table 4 -->
+    <div class="col px-4">
+      <p class="fs-5">Zaposlenici po ukupnoj cijeni servisa</p>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Ime i prezime</th>
+            <th scope="col">Ukupno po servisu</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for d in data[3] %}
+          <tr>
+            <th scope="row">{{data[3].index(d)+1}}</th>
+            <td>{{d.Ime_i_prezime}}</td>
+            <td>{{d.ukupno_po_servisu}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <p class="text-muted credit">autor: Neven Davidović</p>
+    </div>
+    <!-- end of table 4 -->
+
     <!-- table 3 -->
     <div class="col px-4">
       <p class="fs-5">Zaposlenici sa najviše servisa</p>
-      <table class="table table-hover">
+      <!-- <table class="table table-hover">
         <thead>
           <tr>
             <th scope="col">#</th>
@@ -94,39 +121,11 @@
           </tr>
           {% endfor %}
         </tbody>
-      </table>
+      </table> -->
+      <canvas id="table3" width="200" height="100"></canvas>
       <p class="text-muted credit">autor: Neven Davidović</p>
     </div>
     <!-- end of table 3 -->
-  
-  
-
-  
-  
-    <!-- table 4 -->
-    <div class="col px-4">
-      <p class="fs-5">Zaposlenici po ukupnoj cijeni servisa</p>
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Ime i prezime</th>
-            <th scope="col">ukupno_po_servisu</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for d in data[3] %}
-          <tr>
-            <th scope="row">{{data[3].index(d)+1}}</th>
-            <td>{{d.Ime_i_prezime}}</td>
-            <td>{{d.ukupno_po_servisu}}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      <p class="text-muted credit">autor: Neven Davidović</p>
-    </div>
-    <!-- end of table 4 -->
 
     <!-- table 5 -->
     <div class="col px-4">
@@ -332,7 +331,6 @@
             <td>{{d.ukupno_po_servisu}}</td>
           </tr>
           {% endfor %}
-          {% endblock %}
         </tbody>
       </table>
       <p class="text-muted credit">autor: Sara Mauko</p>
@@ -342,5 +340,67 @@
   <!-- end of ROW -->
 </div>
 <!-- end of container -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js" ></script>
 
+<script>
+
+  // graph 1
+        
+        
+        
+        var data1 = {
+          labels:{{x_table1|safe}},
+          datasets:[{
+              label:"Ukupno izvršenih usluga",
+              backgroundColor: "#212529",
+              borderColor: "red",
+              data: {{y_table1|safe}}
+              }]
+            }
+            
+            const graph1 = document.getElementById("table1")
+            const config1 = {
+          type:"bar",
+          data:data1,
+          options: {
+            indexAxis: 'y',
+            scale: {
+              ticks: {
+                precision: 0
+              }
+            }
+          }
+        }
+        const chart1 = new Chart(graph1, config1)
+
+  // graph 3
+        
+        var data3 = {
+          labels:{{x_table3|safe}},
+          datasets:[{
+              label:"Broj servisa",
+              backgroundColor: "#212529",
+              borderColor: "red",
+              data: {{y_table3|safe}}
+              }]
+            }
+            
+            const graph3 = document.getElementById("table3")
+            const config3 = {
+          type:"bar",
+          data:data3,
+          options: {
+            indexAxis: 'x',
+            scale: {
+              ticks: {
+                precision: 0
+              }
+            }
+          }
+        }
+        const chart3 = new Chart(graph3, config3)
+
+</script>
+      
+    {% endblock %}
 {% endblock %}
