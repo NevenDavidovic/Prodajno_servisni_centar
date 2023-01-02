@@ -6,6 +6,7 @@ USE Prodajno_servisni_centar;
 -- DONE
 CREATE TABLE zaposlenik(
 	id INTEGER AUTO_INCREMENT,
+	oib VARCHAR (20) NOT NULL UNIQUE,
 	ime VARCHAR (20) NOT NULL,
 	prezime VARCHAR (20) NOT NULL,
 	datum_rodenja DATE NOT NULL,
@@ -69,6 +70,7 @@ CREATE TABLE oprema_vozila(
 -- DONE
 CREATE TABLE klijent(
 	id INTEGER AUTO_INCREMENT,
+	oib VARCHAR (20) NOT NULL UNIQUE,
 	ime VARCHAR (20) NOT NULL,
 	prezime VARCHAR (20) NOT NULL,
 	broj_telefona VARCHAR (20) NOT NULL UNIQUE,
