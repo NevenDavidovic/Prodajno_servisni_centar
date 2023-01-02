@@ -42,6 +42,14 @@
                             required>
                     </div>
                 </div>
+                
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="oib" class="form-label">OIB</label>
+                        <input name="oib" value="{{request.form['oib']}}" type="text" pattern="[0-9]{13}" minlength="13" maxlength="13" class="form-control"
+                            required>
+                    </div>
+                </div>
 
                 <!-- spol -->
                 <label for="spol" class="form-label">Spol</label>

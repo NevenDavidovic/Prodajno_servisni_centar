@@ -192,6 +192,7 @@ rp.cijena as rp_cijena,
 z.id as z_id,
 z.ime as z_ime,
 z.prezime as z_prezime,
+z.oib as z_oib,
 
 a.broj_sasije as a_broj_sasije,
 a.marka_automobila as a_marka_automobila,
@@ -207,7 +208,8 @@ k.prezime as k_prezime,
 k.broj_telefona as k_broj_telefona,
 k.adresa as k_adresa,
 k.grad as k_grad,
-k.spol as k_spol
+k.spol as k_spol,
+k.oib as k_oib
 
 FROM racun_prodaje rp 
 INNER JOIN zaposlenik z ON rp.id_zaposlenik = z.id
