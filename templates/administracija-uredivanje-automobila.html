@@ -1,6 +1,6 @@
 {% extends "administracija-base.html" %}
 {% block head %}
-<title>Dodavanje automobila | PSC</title>
+<title>Uređivanje automobila | PSC</title>
 {% endblock %}
 
 {% block body %}
@@ -9,8 +9,8 @@
     <div class="mask" style="background-color: rgba(255, 255, 255, 0.7);">
         <div class="d-flex justify-content-center align-items-center h-100">
             <div>
-                <h1>Dodavanje automobila</h1>
-                <p class="fs-4">Pomoću forme unesite podatke o novom automobilu</p>
+                <h1>Uređivanje automobila</h1>
+                <p class="fs-4">Pomoću forme uredite podatke o automobilu</p>
             </div>
         </div>
     </div>
@@ -30,7 +30,7 @@
                 <div class="row" id="input-global">
                     <div class="col">
                         <label for="marka_automobila" class="form-label">Marka</label>
-                        <input name="marka_automobila" value="{{request.form['marka_automobila']}}" type="text"
+                        <input name="marka_automobila" value="{{data.marka_automobila}}" type="text"
                             class="form-control" required>
                     </div>
                 </div>
@@ -38,14 +38,14 @@
                 <div class="row" id="input-global">
                     <div class="col">
                         <label for="model" class="form-label">Model</label>
-                        <input name="model" value="{{request.form['model']}}" type="text" class="form-control" required>
+                        <input name="model" value="{{data.model}}" type="text" class="form-control" required>
                     </div>
                 </div>
 
                 <div class="row" id="input-global">
                     <div class="col">
                         <label for="godina_proizvodnje" class="form-label">Godina proizvodnje</label>
-                        <input name="godina_proizvodnje" value="{{request.form['godina_proizvodnje']}}" type="text"
+                        <input name="godina_proizvodnje" value="{{data.godina_proizvodnje.strftime('%Y')}}" type="text"
                             pattern="\d{4}" class="form-control" required>
                     </div>
                 </div>
@@ -53,8 +53,8 @@
                 <div class="row" id="input-global">
                     <div class="col">
                         <label for="broj_sasije" class="form-label">Broj šasije</label>
-                        <input name="broj_sasije" value="{{request.form['broj_sasije']}}" type="text"
-                            class="form-control" required>
+                        <input name="broj_sasije" value="{{data.broj_sasije}}" type="text" class="form-control"
+                            required>
                     </div>
                 </div>
 
@@ -63,25 +63,41 @@
 
                     <div class="col-6">
 
+
                         <div class="row" id="input-global">
                             <div class="col">
                                 <label for="servis_prodaja" class="form-label">Namjena</label>
                                 <div class="form-check">
+                                    {% if data.servis_prodaja == 'S' %}
+                                    <input class="form-check-input" checked type="radio" name="servis_prodaja" value="S"
+                                        id="servis" required>
+
+                                    {% else %}
                                     <input class="form-check-input" type="radio" name="servis_prodaja" value="S"
                                         id="servis" required>
+
+                                    {% endif %}
                                     <label class="form-check-label" for="servis">
                                         Servis
                                     </label>
                                 </div>
                                 <div class="form-check">
+                                    {% if data.servis_prodaja == 'P' %}
+                                    <input class="form-check-input" checked type="radio" name="servis_prodaja" value="P"
+                                        id="prodaja" required>
+
+                                    {% else %}
                                     <input class="form-check-input" type="radio" name="servis_prodaja" value="P"
                                         id="prodaja" required>
+
+                                    {% endif %}
                                     <label class="form-check-label" for="prodaja">
                                         Prodaja
                                     </label>
                                 </div>
                             </div>
                         </div>
+
 
                     </div>
 
@@ -91,15 +107,29 @@
                             <div class="col">
                                 <label for="dostupnost" class="form-label">Dostupnost</label>
                                 <div class="form-check">
+                                    {% if data.dostupnost == 'DA' %}
+                                    <input class="form-check-input" checked type="radio" name="dostupnost" value="DA"
+                                        id="dostupno" required>
+
+                                    {% else %}
                                     <input class="form-check-input" type="radio" name="dostupnost" value="DA"
                                         id="dostupno" required>
+
+                                    {% endif %}
                                     <label class="form-check-label" for="dostupno">
                                         Dostupno
                                     </label>
                                 </div>
                                 <div class="form-check">
+                                    {% if data.dostupnost == 'NE' %}
+                                    <input class="form-check-input" checked type="radio" name="dostupnost" value="NE"
+                                        id="nedostupno" required>
+
+                                    {% else %}
                                     <input class="form-check-input" type="radio" name="dostupnost" value="NE"
                                         id="nedostupno" required>
+
+                                    {% endif %}
                                     <label class="form-check-label" for="nedostupno">
                                         Nedostupno
                                     </label>
@@ -122,30 +152,29 @@
                 <div class="row" id="input-global">
                     <div class="col">
                         <label for="boja" class="form-label">Boja</label>
-                        <input name="boja" value="{{request.form['boja']}}" type="text" class="form-control" required>
+                        <input name="boja" value="{{data.boja}}" type="text" class="form-control" required>
                     </div>
                 </div>
 
                 <div class="row" id="input-global">
                     <div class="col">
                         <label for="tip_motora" class="form-label">Tip motora</label>
-                        <input name="tip_motora" value="{{request.form['tip_motora']}}" type="text" class="form-control"
-                            required>
+                        <input name="tip_motora" value="{{data.tip_motora}}" type="text" class="form-control" required>
                     </div>
                 </div>
 
                 <div class="row" id="input-global">
                     <div class="col">
                         <label for="snaga_motora" class="form-label">Snaga motora</label>
-                        <input name="snaga_motora" value="{{request.form['snaga_motora']}}" type="text"
-                            class="form-control" required>
+                        <input name="snaga_motora" value="{{data.snaga_motora}}" type="text" class="form-control"
+                            required>
                     </div>
                 </div>
 
                 <div class="row" id="input-global">
                     <div class="col">
                         <label for="kilometraza" class="form-label">Kilometraža</label>
-                        <input name="kilometraza" value="{{request.form['kilometraza']}}" type="text" pattern="\d*"
+                        <input name="kilometraza" value="{{data.kilometraza}}" type="text" pattern="\d*"
                             class="form-control" required>
                     </div>
                 </div>
@@ -153,7 +182,7 @@
             </div>
         </div>
 
-        <button class="btn btn-outline-success" id="button" type="submit">Dodaj automobil</button>
+        <button class="btn btn-outline-success" id="button" type="submit">Uredi automobil</button>
 
     </form>
     {% endblock %}
