@@ -1,6 +1,6 @@
 from flask import Flask, Blueprint, render_template, request, make_response, jsonify
-from statsFunctions import uslugePoTipuMotora, najviseUtrosenihDjelova, zaspoleniciSaNajviseServisa, zaposleniciPoNajvisojCijeni, racuniPoKupcu, topSkupiDijelovi,topProdavaci,topMarkeAutomobila,mjesečniPrihodiProdaja,mjesečniPrihodiServis
-from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_item,find_item_like
+from statsFunctions import uslugePoTipuMotora, najviseUtrosenihDjelova, zaspoleniciSaNajviseServisa, zaposleniciPoNajvisojCijeni, racuniPoKupcu, topSkupiDijelovi, topProdavaci, topMarkeAutomobila, mjesečniPrihodiProdaja, mjesečniPrihodiServis
+from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_item, find_item_like
 
 
 administracija = Blueprint("administracija", __name__)
@@ -26,60 +26,73 @@ def showStats():
         responses.append(mjesečniPrihodiServis())
 
         # data za grafove
-        table1_labels = [str(obj.get('tip_motora')).capitalize() for obj in responses[0]]
-        table1_data = [int(obj.get('ukupno_izvrsenih_usluga')) for obj in responses[0]]
-        
-        table3_labels = [str(obj.get('Ime_i_prezime')).capitalize() for obj in responses[2]]
+        table1_labels = [str(obj.get('tip_motora')).capitalize()
+                         for obj in responses[0]]
+        table1_data = [int(obj.get('ukupno_izvrsenih_usluga'))
+                       for obj in responses[0]]
+
+        table3_labels = [str(obj.get('Ime_i_prezime')).capitalize()
+                         for obj in responses[2]]
         table3_data = [obj.get('broj_servisa') for obj in responses[2]]
 
-        
-        table4_labels = [str(obj.get('Ime_i_prezime')).capitalize() for obj in responses[2]]
-        table4_data = [int(obj.get('ukupno_po_servisu')) for obj in responses[3]]
-        
-        table6_labels = [str(obj.get('serijski_broj')).capitalize() +' '+ str(obj.get('opis').capitalize()) for obj in responses[5]]
-        table6_data = [float(obj.get('nabavna_cijena')) for obj in responses[5]]
-        
-        table7_labels = [str(obj.get('ime')).capitalize() for obj in responses[6]]
-        table7_data = [int(obj.get('ukupno_prodanih_vozila')) for obj in responses[6]]
-        
-        table8_labels = [str(obj.get('marka_automobila')).capitalize() for obj in responses[7]]
-        table8_data = [int(obj.get('broj_prodanih_vozila')) for obj in responses[7]]
-        
-        table9_labels = [str(obj.get('mjesec')).capitalize() for obj in responses[8]]
+        table4_labels = [str(obj.get('Ime_i_prezime')).capitalize()
+                         for obj in responses[2]]
+        table4_data = [int(obj.get('ukupno_po_servisu'))
+                       for obj in responses[3]]
+
+        table6_labels = [str(obj.get('serijski_broj')).capitalize(
+        ) + ' ' + str(obj.get('opis').capitalize()) for obj in responses[5]]
+        table6_data = [float(obj.get('nabavna_cijena'))
+                       for obj in responses[5]]
+
+        table7_labels = [str(obj.get('ime')).capitalize()
+                         for obj in responses[6]]
+        table7_data = [int(obj.get('ukupno_prodanih_vozila'))
+                       for obj in responses[6]]
+
+        table8_labels = [str(obj.get('marka_automobila')).capitalize()
+                         for obj in responses[7]]
+        table8_data = [int(obj.get('broj_prodanih_vozila'))
+                       for obj in responses[7]]
+
+        table9_labels = [str(obj.get('mjesec')).capitalize()
+                         for obj in responses[8]]
         table9_data = [int(obj.get('prihodi')) for obj in responses[8]]
-        
-        table10_labels = [str(obj.get('mjesec')).capitalize() for obj in responses[9]]
-        table10_data = [int(obj.get('ukupna_cijena_servisa')) for obj in responses[9]]
-        
+
+        table10_labels = [str(obj.get('mjesec')).capitalize()
+                          for obj in responses[9]]
+        table10_data = [int(obj.get('ukupna_cijena_servisa'))
+                        for obj in responses[9]]
+
     except Exception as err:
         return make_response(render_template("fail.html", error=err), 400)
 
     return make_response(render_template("administracija-statistika.html", data=responses,
-    x_table1 = table1_labels,
-    y_table1 = table1_data,
+                                         x_table1=table1_labels,
+                                         y_table1=table1_data,
 
-    x_table3 = table3_labels,
-    y_table3 = table3_data,
+                                         x_table3=table3_labels,
+                                         y_table3=table3_data,
 
-    x_table4 = table4_labels,
-    y_table4 = table4_data,
-    
-    x_table6 = table6_labels,
-    y_table6 = table6_data,
-    
-    x_table7 = table7_labels,
-    y_table7 = table7_data,
-    
-    x_table8 = table8_labels,
-    y_table8 = table8_data,
-    
-    x_table9 = table9_labels,
-    y_table9 = table9_data,
-    
-    x_table10 = table10_labels,
-    y_table10 = table10_data,
-    
-    ), 200)
+                                         x_table4=table4_labels,
+                                         y_table4=table4_data,
+
+                                         x_table6=table6_labels,
+                                         y_table6=table6_data,
+
+                                         x_table7=table7_labels,
+                                         y_table7=table7_data,
+
+                                         x_table8=table8_labels,
+                                         y_table8=table8_data,
+
+                                         x_table9=table9_labels,
+                                         y_table9=table9_data,
+
+                                         x_table10=table10_labels,
+                                         y_table10=table10_data,
+
+                                         ), 200)
 
 # ruta za dodavanje novog zaposlenika
 
@@ -309,6 +322,8 @@ def addCar():
             table = 'auto'
             data = {}
             for key, value in request.form.items():
+                if key == 'godina_proizvodnje':
+                    value = value + '-01-01'
                 data[key] = value
 
             add_item(table, data)
@@ -317,3 +332,30 @@ def addCar():
         return make_response(render_template("success.html", data={"msg": "Automobil uspješno dodan!", "route": "/administracija/ispis-svih-automobila"}), 200)
     else:
         return make_response(render_template("administracija-dodavanje-novog-automobila.html"), 200)
+
+# ruta za uredivanje podataka o automobilu
+
+
+@administracija.route("/administracija/uredivanje-automobila/<int:id>", methods=['POST', 'GET'])
+def editCar(id):
+    if request.method == "POST":
+        try:
+            table = 'auto'
+            data = {}
+            for key, value in request.form.items():
+                if key == 'godina_proizvodnje':
+                    value = value + '-01-01'
+                data[key] = value
+            data["id"] = id
+
+            edit_table(table, data)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("success.html", data={"msg": "Podaci o automobilu uspješno promjenjeni!", "route": "/administracija/ispis-svih-automobila"}), 200)
+    else:
+        try:
+            table = 'auto'
+            response = get_item(table, id)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("administracija-uredivanje-automobila.html", data=response), 200)
