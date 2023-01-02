@@ -79,7 +79,7 @@ def addDio():
         #return make_response(render_template("servis-dio-dodaj.html"), 200) 
     return render_template("servis-dio-dodaj.html")    
             
-  
+
   # napravi servis 
 
 # dodaj sve podatke o dijelu
@@ -114,10 +114,41 @@ def ispisStavkaDio():
         return make_response(render_template("servis-stavka-dio-ispis.html", data=response), 200)
     else:
         try:
-            table = 'stavka_dio'
+            table = 'dijelovi'
             response = get_all_items(table)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
         return make_response(render_template("servis-stavka-dio-ispis.html", data=response), 200)
 
-# Svašta nešta treba promijeniti,,,
+# napravi uređivanje
+
+@servis.route("/servis/stavka-uredivanje-dijelova/<int:id>", methods=['POST', 'GET'])
+def urediStavkaDio(id):
+    if request.method == "POST":
+        try:
+            table = 'stavka_dio'
+            data = {}
+            for key, value in request.form.items():
+                data[key] = value
+            data["id"] = id
+
+            edit_table(table, data)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("success.html", data={"msg": "Podaci o dijelu su uspješno promjenjeni!", "route": "/servisi/ispis"}), 200)
+    else:
+        try:
+            table = 'dijelovi'
+            tabla='dio'
+            response = get_item(table, id)
+            dio = get_all_items(tabla)
+            id_dio=get_item(table,id)
+            
+            # print(response)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("servis-stavka-dio-uredivanje.html", data=response, dio=dio,dio1=id_dio), 200)
+
+
+
+
