@@ -75,7 +75,7 @@ SELECT marka_automobila, COUNT(marka_automobila) AS kolicina
 			FROM racun_prodaje, auto
 			WHERE racun_prodaje.id_auto=auto.id)
     GROUP BY marka_automobila
-    ORDER BY marka_automobila ASC;
+    ORDER BY kolicina DESC;
 -- MARIJA end
 
 -- NEVEN UPITI
@@ -289,6 +289,8 @@ FROM narudzbenica n, servis s,usluga_servis u
 WHERE n.id=s.id_narudzbenica AND u.id=s.id_usluga_servis
 GROUP BY id_narudzbenica;
 
+
+
 CREATE VIEW cijena__dijelova AS
 SELECT id_narudzbenica, SUM(kolicina*prodajna_cijena) AS cijena_dijelova, id_servis
 FROM dio_na_servisu i
@@ -303,6 +305,7 @@ WHERE cd.id_narudzbenica=cs.id_narudzbenica AND EXTRACT(YEAR FROM datum_povratka
 GROUP BY CAST(DATE_SUB(datum_povratka, INTERVAL DAYOFMONTH(datum_povratka)-1 DAY) AS DATE)
 ORDER BY mjesec ASC;
 
+SELECT * FROM dio_servis_po_mj;
 -- ukupni prihodi u godini 2022
 
 CREATE VIEW svi_prihodi_u_godini AS
@@ -392,9 +395,8 @@ SELECT ime, prezime, MIN(age) FROM godine_mehanicara;
 
 */
 
--- NOEL KRAJ
 
--- DARJAN (NOEL) upiti preko pogleda za statistiku
+-- NOEL upiti preko pogleda za statistiku
 
 -- Prikaži preko pogleda samo one zaposlenike (prodavače) koji su prodali barem jedan auto (ime, prezime, radno mjesto, ukupno_prodanih_vozila) i poredaj ih prema broju prodanih vozila silazno
 
@@ -433,4 +435,6 @@ from najprodavanija_marka_automobila;
 -- Brisanje pogleda
 
 -- drop view najprodavanija_marka_automobila;
+
+-- NOEL KRAJ
 

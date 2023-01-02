@@ -90,7 +90,7 @@ def racuniPoKupcu():
         from klijent k
         inner join racun_prodaje r on k.id = r.id_klijent
         group by k.id
-        order by Ukupan_broj_računa
+        order by Ukupan_broj_računa DESC
         LIMIT 5;'''
 
         try:
@@ -140,7 +140,7 @@ def topMarkeAutomobila():
         mycursor = db.cursor(dictionary=True) # da vraća rezultate tj. rows kao dictionaryje
 
         qstring = f'''SELECT *
-        from najprodavanija_marka_automobila;'''
+        from najprodavanija_marka_automobila LIMIT 7;'''
 
         try:
             mycursor.execute(qstring) 
@@ -150,3 +150,33 @@ def topMarkeAutomobila():
         return result
 
 
+# STATISTIKE SARA
+def mjesečniPrihodiProdaja():
+    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    with mysql.connector.connect(host="localhost",user="root",passwd="root",database="Prodajno_servisni_centar") as db:
+        mycursor = db.cursor(dictionary=True) # da vraća rezultate tj. rows kao dictionaryje
+
+        qstring = f'''SELECT *
+        from prihod_po_mjesecima;'''
+
+        try:
+            mycursor.execute(qstring) 
+        except Exception as err:
+            raise Exception(err)
+        result = mycursor.fetchall()
+        return result
+
+def mjesečniPrihodiServis():
+    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    with mysql.connector.connect(host="localhost",user="root",passwd="root",database="Prodajno_servisni_centar") as db:
+        mycursor = db.cursor(dictionary=True) # da vraća rezultate tj. rows kao dictionaryje
+
+        qstring = f'''SELECT *
+        from dio_servis_po_mj;'''
+
+        try:
+            mycursor.execute(qstring) 
+        except Exception as err:
+            raise Exception(err)
+        result = mycursor.fetchall()
+        return result
