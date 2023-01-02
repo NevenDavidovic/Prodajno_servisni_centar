@@ -1,6 +1,6 @@
 {% extends "servis-base.html" %}
 {% block head %}
-<title>Usluge | PSC</title>
+<title>Dijelovi | PSC</title>
 {% endblock %}
 
 {% block body %}
@@ -22,7 +22,7 @@
         <form method="post">
             <div class="d-flex">
                 <input name="naziv" value="{{request.form['naziv']}}" type="text" class="form-control"
-                    placeholder="Upisati naziv usluge (npr. Izmjena ulja)">
+                    placeholder="Upisati naziv dijela">
                 <input type="submit" class="btn btn-outline-success" value="Pretraži">
             </div>
         </form>
@@ -46,7 +46,7 @@
             {% for d in data %}
             <tr>
                 <td>{{d.naziv}}</td>
-                <td>{{d.proizvodac}} kn</td>
+                <td>{{d.proizvodac}}</td>
                 <td>
                     <a href="/servis/uredivanje-dijelova/{{d.id}}" class="btn btn-outline-success">Uredi</a>
                     <a href="/servis/brisanje-dijelova/{{d.id}}" class="btn btn-outline-success">Ukloni</a>
@@ -58,7 +58,7 @@
     <!-- end of table -->
 
     {% else %}
-    <p class="fs-4 text-center">Nije pronađena niti jedna usluga.</p>
+    <p class="fs-4 text-center">Nije pronađen niti jedan dio.</p>
     {% endif %}
 
     {% endblock %}

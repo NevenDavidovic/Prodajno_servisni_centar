@@ -1,6 +1,6 @@
 from flask import Flask, Blueprint, render_template, request, make_response, jsonify
 from statsFunctions import uslugePoTipuMotora, najviseUtrosenihDjelova, zaspoleniciSaNajviseServisa, zaposleniciPoNajvisojCijeni, racuniPoKupcu, topSkupiDijelovi
-from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_item
+from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_item,find_item_like
 
 
 servis = Blueprint("servis", __name__)
@@ -15,7 +15,7 @@ def ispisiServis():
             table = 'dio'
             attribut = 'naziv'
             value = request.form.get('naziv')
-            response = find_item(table, attribut, value)
+            response = find_item_like(table, attribut, value)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
         return make_response(render_template("servis-dio-ispis.html", data=response), 200)
@@ -120,3 +120,4 @@ def ispisStavkaDio():
             return make_response(render_template("fail.html", error=err), 400)
         return make_response(render_template("servis-stavka-dio-ispis.html", data=response), 200)
 
+# NASTAVLJAMO sa daljnim dijelvimaa
