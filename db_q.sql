@@ -181,7 +181,7 @@ GROUP BY a.model
 ORDER BY br_prodanih_auta DESC;
 
 SELECT * FROM najprodavaniji_skupi_auti;
--- DROP VIEW svi_podaci_sa_računa;
+-- DROP VIEW svi_podaci_sa_racuna;
 CREATE VIEW svi_podaci_sa_racuna AS
 SELECT 
 rp.id as rp_id,
@@ -219,10 +219,6 @@ INNER JOIN zaposlenik z ON rp.id_zaposlenik = z.id
 INNER JOIN auto a ON rp.id_auto = a.id
 INNER JOIN klijent k ON rp.id_klijent = k.id;
 
-
-SELECT * FROM svi_podaci_sa_racuna
-WHERE rp_datum > '2020-06-01'
-ORDER BY rp_datum DESC;
 -- TIN KRAJ UPITA
 
 

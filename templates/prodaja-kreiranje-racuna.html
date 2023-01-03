@@ -26,7 +26,7 @@
             <p class="fs-3">Informacije o Klijentu</p>
             <p><b>Ime:</b> {{data.klijent.ime}}</p>
             <p><b>Prezime:</b> {{data.klijent.prezime}}</p>
-            <p><b>OIB:</b> PLACEHOLDER</p>
+            <p><b>OIB:</b>  {{data.klijent.oib}}</p>
             <p><b>Broj telefona:</b> {{data.klijent.broj_telefona}}</p>
             <p><b>Adresa:</b> {{data.klijent.adresa}}</p>
             <p><b>Grad:</b> {{data.klijent.grad}}</p>
@@ -36,7 +36,7 @@
             <p class="fs-3">Zaposlenik</p>
             <p><b>Ime:</b> {{data.zaposlenik.ime}}</p>
             <p><b>Prezime:</b> {{data.zaposlenik.prezime}}</p>
-            <p><b>OIB:</b> PLACEHOLDER</p>
+            <p><b>OIB:</b>  {{data.zaposlenik.oib}}</p>
         </div>
         <div class="col">
             
@@ -66,6 +66,12 @@
                         <input name="cijena"  type="number" step=".01" class="form-control"required>
                     </div>
                 </div>
+                {% if data.status_klijenta.prijasnji_klijent == True %}
+                 <p class="text-success">Prijašnji klijent! Popust na cijenu 10%</p> 
+                {% endif %}
+                {% if data.status_klijenta.klijent_zaposlenik == True %}
+                 <p class="text-success">Klijent zaposlenik! Popust na cijenu od X</p> 
+                {% endif %}
 
             </form>
         </div>

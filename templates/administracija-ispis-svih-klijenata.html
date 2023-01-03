@@ -1,4 +1,4 @@
-{% extends "prodaja-base.html" %}
+{% extends "administracija-base.html" %}
 {% block head %}
 <title>Klijenti | PSC</title>
 {% endblock %}
@@ -18,29 +18,11 @@
 
 <div class="container" id="c-global">
 
-    <!-- <div class="search">
+    <div class="search">
         <form method="post">
             <div class="d-flex">
                 <input name="ime" value="{{request.form['ime']}}" type="text" class="form-control"
-                    placeholder="Upisati ime (npr. Iva)" required>
-                <input type="submit" class="btn btn-outline-success" value="Pretraži">
-            </div>
-        </form>
-    </div> -->
-    <label for="identificator" class="form-label">Pretraži prema:</label>
-    <div class="search">
-        <form method="post" class="d-flex">
-            <select class="form-select" name="identificator" id="identificator" aria-label="Pretraži po" required value="{{request.form['identificator']}}">
-                <option selected value="ime">Ime</option>
-                <option value="prezime">Prezime</option>
-                <option value="oib">OIB</option>
-                <option value="adresa">Adresa</option>
-                <option value="grad">Grad</option>
-    
-            </select>
-            <div class="d-flex search-box">
-                <input name="query" value="{{request.form['query']}}" type="text" class="form-control"
-                    placeholder="Upisati traženi pojam" required>
+                    placeholder="Upisati ime (npr. Iva)">
                 <input type="submit" class="btn btn-outline-success" value="Pretraži">
             </div>
         </form>
@@ -70,14 +52,11 @@
                 <td>{{d.ime}}</td>
                 <td>{{d.prezime}}</td>
                 <td>{{d.oib}}</td>
-                <td>{{d.spol}}</td>
+                <td>{% if d.spol=='ž' %} Žensko {% else %} Muško {% endif %}</td>
                 <td>{{d.adresa}}</td>
                 <td>{{d.grad}}</td>
                 <td>{{d.broj_telefona}}</td>
-                <td><a href="/prodaja/uredivanje-klijenta/{{d.id}}" class="btn btn-outline-success"> Uredi </a></td>
-                {% if request.args and data %}
-                <td><a href="/prodaja/ispis-svih-prodavaca?car_id={{request.args.get('car_id')}}&klijent_id={{d.id}}" class="btn btn-outline-success"> Dodaj na račun </a></td>
-                {% endif %}
+                <td><a href="/administracija/brisanje-klijenta/{{d.id}}" class="btn btn-outline-success">Ukloni</a></td>
             </tr>
             {% endfor %}
         </tbody>
@@ -86,11 +65,8 @@
 
     {% else %}
     <p class="fs-4 text-center">Nije pronađen niti jedan klijent.</p>
-    <a href="/prodaja/dodavanje-novog-klijenta" class="btn btn-outline-success"> Dodaj novog klijenta </a>
-    <a href="/administracija/ispis-svih-zaposlenika" class="btn btn-outline-success"> Dodaj zaposlenika kao klijenta </a>
     {% endif %}
 
-    
 
     {% endblock %}
 
