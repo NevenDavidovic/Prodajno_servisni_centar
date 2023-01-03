@@ -69,7 +69,7 @@
 
     {% block content %}
     <!-- form -->
-    <form method="post">
+    <form method="post" action="/servis/stavka-dio-dodaj">
         <!-- main row -->
         <div class="row" id="end">
             <!-- col 1 -->
@@ -86,7 +86,7 @@
                 <div class="row" id="input-global">
                     <div class="col">
                         <label for="serijski_broj" class="form-label">Serijski broj</label>
-                        <input name="serijski_broj" value="{{data.serijski_broj}}" type="text" class="form-control"
+                        <input name="serijski_broj" value="{{request.form['serijski_broj']}}" type="text" class="form-control"
                             required>
                     </div>
                 </div>
@@ -94,14 +94,14 @@
                 <!-- spol -->
                 <label for="opis" class="form-label">Opis</label>
                 <div class="col">
-                    <input name="opis" value="{{data.opis}}" type="text" class="form-control"
+                    <input name="opis" value="{{request.form['']}}" type="text" class="form-control"
                     required>
                 </div>
                 <!-- end of  -->
                 <div class="row" id="input-global">
                   <div class="col">
                       <label for="kategorija" class="form-label">Kategorija</label>
-                      <input name="kategorija" value="{{data.kategorija}}" type="text" class="form-control"
+                      <input name="kategorija" value="{{request.form['kategorija']}}" type="text" class="form-control"
                           required>
                   </div>
               </div>
@@ -110,18 +110,18 @@
 
                
                          <!-- so here is the form for the SELECT A PART  -->  
-                         <div>
-                          <label for="id-dio"> <span id="s" >*</span> Naziv dijela & Proizvođač</label> <br>
+                         <div> Odabrali ste: {{data['naziv']}} {{data['proizvodac']}}</label> <br> 
                         <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="Search...">
                        
                                
                         <select id="id_dio" name="id_dio" required>
-                          {% for d in dio %}
-                            <option name='id_dio' value="{{ d.id }}" {% if dio1.id == d.id  %} selected {% endif %}>{{ d.naziv }} & {{d.proizvodac}}</option>
+                          {% for option in dio %}
+                            <option name='id_dio' value="{{ option.id }}"{% if data.naziv == option.naziv and data.proizvodac==option.proizvodac %} selected {% endif %}>{{ option.naziv }} & {{option.proizvodac}}</option>
                           {% endfor %}
                         
                         </select>
-                        {% set id_dio = request.form['id_dio'] %}
+                        {% set id_dio = 'id_dio' %}
+                        {{ request.form[id_dio] }}
             
                     </div>
 
@@ -138,7 +138,7 @@
                 <div class="row" id="input-global">
                     <div class="col">
                         <label for="nabavna_cijena" class="form-label">Nabavna cijena</label>
-                        <input pattern="^\d+(\.\d{1,2})?$" name="nabavna_cijena" value="{{data.nabavna_cijena}}" type="text" class="form-control"
+                        <input pattern="^\d+(\.\d{1,2})?$" name="nabavna_cijena" value="{{request.form['nabavna_cijena']}}" type="text" class="form-control"
                             required>
                     </div>
                 </div>
@@ -146,14 +146,14 @@
                 <div class="row" id="input-global">
                     <div class="col">
                         <label for="prodajna_cijena" class="form-label">Prodajna cijena</label>
-                        <input pattern="^\d+(\.\d{1,2})?$" name="prodajna_cijena" value="{{data.prodajna_cijena}}" type="text" class="form-control" required>
+                        <input pattern="^\d+(\.\d{1,2})?$" name="prodajna_cijena" value="{{request.form['prodajna_cijena']}}" type="text" class="form-control" required>
                     </div>
                 </div>
 
                 <div class="row" id="input-global">
                     <div class="col">
                         <label for="dostupna_kolicina" class="form-label">Dostupna količina</label>
-                        <input name="dostupna_kolicina" value="{{data.dostupna_kolicina}}" type="text"
+                        <input name="dostupna_kolicina" value="{{request.form['dostupna_kolicina']}}" type="text"
                             class="form-control" required>
                     </div>
                 </div>
@@ -162,8 +162,8 @@
             <!-- end of col2 -->
         </div>
         <!-- end of main row -->
-
-        <button class="btn btn-outline-success" id="button" type="submit">Uredi dio</button>
+        
+        <button class="btn btn-outline-success" id="button" type="submit">Dodaj dio</button>
 
     </form>
 
