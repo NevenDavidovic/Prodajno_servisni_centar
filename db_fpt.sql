@@ -25,7 +25,7 @@ DELIMITER ;
 
 -- TIN FUNKCIJE, PROCEDURE I OKIDACI
 -- FUNKCIJE ZA ODREĐIVANJE CIJENE PRODANIH AUTOMOBILA
-##  Koji se automobili najviše prodaju u kojem cjenovnom rangu (jeftini, srednji, skupi)?
+## Funkcija koja vraca namjmanju cijenu u tablici racun_prodaje
 DELIMITER //
 CREATE FUNCTION min_cijena() RETURNS INTEGER
 DETERMINISTIC
@@ -36,6 +36,7 @@ RETURN (SELECT MIN(cijena) FROM racun_prodaje);
 END//
 DELIMITER ;
 
+## Funkcija koja vraca najvecu cijenu u tablici racun_prodaje
 DELIMITER //
 CREATE FUNCTION max_cijena() RETURNS INTEGER
 DETERMINISTIC
@@ -46,6 +47,7 @@ RETURN (SELECT MAX(cijena) FROM racun_prodaje);
 END//
 DELIMITER ;
 
+## Funkcija koja vraca raspon cijena u tablici racun_prodaje
 DELIMITER //
 CREATE FUNCTION raspon_cijena() RETURNS INTEGER
 DETERMINISTIC
@@ -56,13 +58,13 @@ RETURN ((SELECT MAX(cijena) FROM racun_prodaje) - (SELECT MIN(cijena) FROM racun
 END//
 DELIMITER ;
 
+# TRIGGER koji daje klijentima koji su ujedno zaposlenici dodatan popust
+# TRIGGER koji daje dodatan popust ljudima iz ZG-a
 -- TIN GOTOVO
 
 -- DARJAN FPO
 
 -- Napravi okidač koji za postojećeg klijenta (kupca) smanjuje cijenu novog vozila kojeg je kupio/la za 10%
-
-/*
 DELIMITER //
 CREATE TRIGGER popust_10
 BEFORE INSERT ON racun_prodaje
@@ -78,9 +80,9 @@ end if;
 END//
 DELIMITER ;
 
- INSERT INTO racun_prodaje VALUES (31, 4, 96, 1, 31, "2022-04-04 00:00:00", 121320.53957275549);
+-- INSERT INTO racun_prodaje VALUES (31, 4, 96, 1, 31, "2022-04-04 00:00:00", 121320.53957275549);
 
-select * from racun_prodaje;
+-- select * from racun_prodaje;
 
 -- okidač radi, cijena vozila na računu je umanjena za 10%
-*/
+

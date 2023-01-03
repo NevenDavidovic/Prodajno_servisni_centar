@@ -1,6 +1,6 @@
 from flask import Flask, Blueprint, render_template, request, make_response, jsonify
 from statsFunctions import uslugePoTipuMotora, najviseUtrosenihDjelova, zaspoleniciSaNajviseServisa, zaposleniciPoNajvisojCijeni, racuniPoKupcu, topSkupiDijelovi
-from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_item, get_all_cars_for_sale, get_all_salesmen, get_last_record_identificator, find_item_like, get_all_receipts, get_all_receipts_after_date, get_receipt
+from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_item, get_all_cars_for_sale, get_all_salesmen, get_last_record_identificator, find_item_like, get_all_receipts, get_all_receipts_after_date, get_receipt,get_client_status
 
 
 prodaja = Blueprint("prodaja", __name__)
@@ -199,15 +199,16 @@ def createBill():
     else:
         try:
             autoData = get_item('auto', request.args.get('car_id'))
-            zaposlenikData = get_item(
-                'zaposlenik', request.args.get('zaposlenik_id'))
+            zaposlenikData = get_item('zaposlenik', request.args.get('zaposlenik_id'))
             klijentData = get_item('klijent', request.args.get('klijent_id'))
-            brojRacuna = get_last_record_identificator(
-                'racun_prodaje', 'broj_racuna')+1
+            brojRacuna = get_last_record_identificator('racun_prodaje', 'broj_racuna')+1
+
+            # provjera ima li klijent kakve popuste
+            statusKlijenta = get_client_status(klijentData.get('id'))
 
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("prodaja-kreiranje-racuna.html", data={"auto": autoData, "zaposlenik": zaposlenikData, "klijent": klijentData, "broj_racuna": brojRacuna}), 200)
+        return make_response(render_template("prodaja-kreiranje-racuna.html", data={"auto": autoData, "zaposlenik": zaposlenikData, "klijent": klijentData, "broj_racuna": brojRacuna, "status_klijenta":statusKlijenta}), 200)
 
 
 # ISPIS SVIH RAČUNA

@@ -66,6 +66,12 @@
                         <input name="cijena"  type="number" step=".01" class="form-control"required>
                     </div>
                 </div>
+                {% if data.status_klijenta.prijasnji_klijent == True %}
+                 <p class="text-success">Prijašnji klijent! Popust na cijenu 10%</p> 
+                {% endif %}
+                {% if data.status_klijenta.klijent_zaposlenik == True %}
+                 <p class="text-success">Klijent zaposlenik! Popust na cijenu 5%</p> 
+                {% endif %}
 
             </form>
         </div>
