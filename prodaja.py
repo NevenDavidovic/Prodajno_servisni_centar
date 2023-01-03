@@ -55,9 +55,16 @@ def addZaposlenikAsClient(id):
 def getClients():
     if request.method == "POST":
         try:
+            queryData = {}
+            for key, value in request.form.items():
+                queryData[key] = value
+
             table = 'klijent'
-            attribut = 'ime'
-            value = request.form.get('ime')
+            attribut = queryData['identificator']
+            value = queryData['query']
+
+            response = find_item_like(table, attribut, value)
+            
             response = find_item_like(table, attribut, value)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
