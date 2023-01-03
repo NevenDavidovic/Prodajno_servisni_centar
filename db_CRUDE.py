@@ -130,7 +130,7 @@ def get_all_receipts() -> dict:
         except Exception as err:
             raise Exception(err)
         myresult = mycursor.fetchall()
-
+        
         return myresult
 ############################################################
 def get_all_receipts_after_date(my_date) -> dict:

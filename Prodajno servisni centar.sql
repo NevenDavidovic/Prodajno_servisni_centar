@@ -167,7 +167,7 @@ CREATE TABLE stavka_dio(
    	kategorija VARCHAR(20) NOT NULL,
 	nabavna_cijena DECIMAL (8,2) NOT NULL,
 	prodajna_cijena DECIMAL (8,2) NOT NULL,
-    	dostupna_kolicina INTEGER NOT NULL,
+    dostupna_kolicina INTEGER NOT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (id_dio) REFERENCES dio (id) on delete set null
 );
