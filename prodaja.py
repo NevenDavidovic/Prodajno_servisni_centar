@@ -25,6 +25,30 @@ def addClient():
     else:
         return make_response(render_template("prodaja-dodavanje-novog-klijenta.html"), 200)
 
+# dodavanje zaposlenika kao klijenta
+@prodaja.route("/prodaja/dodavanje-zaposlenika-kao-klijenta/<int:id>", methods=['GET'])
+def addZaposlenikAsClient(id):
+        try:
+            # dohvacanje podataka o zaposleniku
+            zaposlenikData = get_item('zaposlenik',id)
+            table = 'klijent'
+            # uzimanje relevantnih podataka za klijenta od zaposlenika
+            data = {
+	            "oib": zaposlenikData.get('oib'),
+	            "ime": zaposlenikData.get('ime'),
+	            "prezime": zaposlenikData.get('prezime'),
+	            "broj_telefona": zaposlenikData.get('broj_telefona'),
+	            "adresa": zaposlenikData.get('adresa'),
+	            "grad": zaposlenikData.get('grad'),
+	            "spol": zaposlenikData.get('spol')
+            }
+            # dodavanje klijenta
+            add_item(table, data)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("success.html", data={"msg": "Zaposlenik uspješno dodan kao klijent!", "route": "/prodaja/ispis-svih-klijenata"}), 200)
+    
+
 
 # ISPIS SVIH KLIJENATA
 @prodaja.route("/prodaja/ispis-svih-klijenata", methods=['POST', 'GET'])
