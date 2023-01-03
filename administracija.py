@@ -437,3 +437,38 @@ def editEquipment(id):
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
         return make_response(render_template("administracija-uredivanje-opreme.html", data=response), 200)
+
+# ruta za ispis svih klijenata
+
+
+@administracija.route("/administracija/ispis-svih-klijenata", methods=['POST', 'GET'])
+def getClients():
+    if request.method == "POST":
+        try:
+            table = 'klijent'
+            attribut = 'ime'
+            value = request.form.get('ime')
+            response = find_item_like(table, attribut, value)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("administracija-ispis-svih-klijenata.html", data=response), 200)
+    else:
+        try:
+            table = 'klijent'
+            response = get_all_items(table)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("administracija-ispis-svih-klijenata.html", data=response), 200)
+
+
+# ruta za brisanje određenog klijenta
+
+
+@administracija.route("/administracija/brisanje-klijenta/<int:id>", methods=['GET'])
+def deleteClient(id):
+    try:
+        table = 'klijent'
+        delete_item(table, id)
+    except Exception as err:
+        return make_response(render_template("fail.html", error=err), 400)
+    return make_response(render_template("success.html", data={"msg": "Uspješno izbrisan klijent!", "route": "/administracija/ispis-svih-klijenata"}), 200)
