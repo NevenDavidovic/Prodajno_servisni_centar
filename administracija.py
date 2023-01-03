@@ -359,3 +359,81 @@ def editCar(id):
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
         return make_response(render_template("administracija-uredivanje-automobila.html", data=response), 200)
+
+# ruta za ispis sve opreme
+
+
+@administracija.route("/administracija/ispis-sve-opreme", methods=['POST', 'GET'])
+def getEquipment():
+    if request.method == "POST":
+        try:
+            table = 'oprema'
+            attribut = 'naziv'
+            value = request.form.get('naziv')
+            response = find_item_like(table, attribut, value)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("administracija-ispis-sve-opreme.html", data=response), 200)
+    else:
+        try:
+            table = 'oprema'
+            response = get_all_items(table)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("administracija-ispis-sve-opreme.html", data=response), 200)
+
+# ruta za brisanje određene opreme
+
+
+@administracija.route("/administracija/brisanje-opreme/<int:id>", methods=['GET'])
+def deleteEquipment(id):
+    try:
+        table = 'oprema'
+        delete_item(table, id)
+    except Exception as err:
+        return make_response(render_template("fail.html", error=err), 400)
+    return make_response(render_template("success.html", data={"msg": "Uspješno izbrisana oprema!", "route": "/administracija/ispis-sve-opreme"}), 200)
+
+# ruta za dodavanje nove opreme
+
+
+@administracija.route("/administracija/dodavanje-nove-opreme", methods=['POST', 'GET'])
+def addEquipment():
+    if request.method == "POST":
+        try:
+            table = 'oprema'
+            data = {}
+            for key, value in request.form.items():
+                data[key] = value
+
+            add_item(table, data)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("success.html", data={"msg": "Oprema uspješno dodana!", "route": "/administracija/ispis-sve-opreme"}), 200)
+    else:
+        return make_response(render_template("administracija-dodavanje-nove-opreme.html"), 200)
+
+# ruta za uredivanje podataka o opremi
+
+
+@administracija.route("/administracija/uredivanje-opreme/<int:id>", methods=['POST', 'GET'])
+def editEquipment(id):
+    if request.method == "POST":
+        try:
+            table = 'oprema'
+            data = {}
+            for key, value in request.form.items():
+                data[key] = value
+            data["id"] = id
+
+            edit_table(table, data)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("success.html", data={"msg": "Podaci o opremi uspješno promjenjeni!", "route": "/administracija/ispis-sve-opreme"}), 200)
+    else:
+        try:
+            table = 'oprema'
+            response = get_item(table, id)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("administracija-uredivanje-opreme.html", data=response), 200)
