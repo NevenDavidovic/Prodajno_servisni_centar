@@ -112,7 +112,7 @@ def add_stavkaDio():
 def ispisStavkaDio():
     if request.method == "POST":
         try:
-            table = 'stavka_dio'
+            table = 'dijelovi'
             attribut = 'naziv'
             value = request.form.get('naziv')
             response = find_item_like(table, attribut, value)
@@ -169,8 +169,10 @@ def deleteStavkaDio(id):
     return make_response(render_template("success.html", data={"msg": "Uspješno izbrisan dio!", "route": "/servis/stavka-dio-ispis"}), 200)
 
 
-@servis.route("/proba/<int:id>", methods=['GET','POST'])
-def roba(id):
-    red=get_all_items('dio')
-    
-    return render_template("dodaj_ostale_informacije.html", red=red)
+################################################################################################################
+################################################################################################################
+# NARUDŽBENICA
+
+@servis.route('/narudzbenica/popis', methods=['GET','POST'])
+def ispisNarudzbenice():
+    return render_template("fail.htmml")
