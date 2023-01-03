@@ -1,6 +1,6 @@
 {% extends "administracija-base.html" %}
 {% block head %}
-<title>Usluge | PSC</title>
+<title>Oprema | PSC</title>
 {% endblock %}
 
 {% block body %}
@@ -9,8 +9,8 @@
     <div class="mask" style="background-color: rgba(255, 255, 255, 0.7);">
         <div class="d-flex justify-content-center align-items-center h-100">
             <div>
-                <h1>Usluge</h1>
-                <p class="fs-4">Pomoću forme pretražite usluge</p>
+                <h1>Oprema</h1>
+                <p class="fs-4">Pomoću forme pretražite opremu</p>
             </div>
         </div>
     </div>
@@ -22,7 +22,7 @@
         <form method="post">
             <div class="d-flex">
                 <input name="naziv" value="{{request.form['naziv']}}" type="text" class="form-control"
-                    placeholder="Upisati naziv usluge (npr. Izmjena ulja)">
+                    placeholder="Upisati naziv opreme (npr. parkirna kamera)">
                 <input type="submit" class="btn btn-outline-success" value="Pretraži">
             </div>
         </form>
@@ -37,6 +37,8 @@
         <thead>
             <tr>
                 <th scope="col">Naziv</th>
+                <th scope="col">Marka</th>
+                <th scope="col">Model</th>
                 <th scope="col">Cijena</th>
                 <th scope="col"></th>
             </tr>
@@ -45,10 +47,12 @@
             {% for d in data %}
             <tr>
                 <td>{{d.naziv}}</td>
+                <td>{{d.marka}}</td>
+                <td>{{d.model}}</td>
                 <td>{{d.cijena}} kn</td>
                 <td>
-                    <a href="/administracija/uredivanje-usluge/{{d.id}}" class="btn btn-outline-success">Uredi</a>
-                    <a href="/administracija/brisanje-usluge/{{d.id}}" class="btn btn-outline-success">Ukloni</a>
+                    <a href="/administracija/uredivanje-opreme/{{d.id}}" class="btn btn-outline-success">Uredi</a>
+                    <a href="/administracija/brisanje-opreme/{{d.id}}" class="btn btn-outline-success">Ukloni</a>
                 </td>
             </tr>
             {% endfor %}
@@ -57,7 +61,7 @@
     <!-- end of table -->
 
     {% else %}
-    <p class="fs-4 text-center">Nije pronađena niti jedna usluga.</p>
+    <p class="fs-4 text-center">Nije pronađena niti jedna oprema.</p>
     {% endif %}
 
     {% endblock %}

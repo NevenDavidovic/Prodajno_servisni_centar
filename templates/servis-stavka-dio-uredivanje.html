@@ -1,18 +1,65 @@
 {% extends "servis-base.html" %}
 {% block head %}
-<title>Uređivanje dijela | PSC</title>
+<title>Dodavanje podataka o dijelu | PSC</title>
+<style>
+    #searchInput {
+      width: 50%;
+      height: 2em;
+      background-color: #eee;
+      font-size: 16px;
+      border: 1px solid #ccc;
+    }
+  
+    #id_dio {
+      width: 50%;
+      height: 2em;
+      background-color: #eee;
+      font-size: 16px;
+      border: 1px solid #ccc;
+    }
 
+    #s {
+      color: red;
+    }
 
+  </style>
 {% endblock %}
 
 {% block body %}
+
+<script>
+    function searchFunction() {
+      // Get the search input
+      var input = document.getElementById("searchInput");
+      // Get the select element
+      var select = document.getElementById("id_dio");
+      // Get the options
+      var options = select.options;
+      // Flag to keep track of whether a matching option was found
+      var foundMatch = false;
+      // Loop through the options and show only those that match the search input
+      for (var i = 0; i < options.length; i++) {
+        if (options[i].text.toLowerCase().includes(input.value.toLowerCase())) {
+          options[i].style.display = "";
+          // If the option text contains the search input (case-insensitive), set it as selected
+          if (!foundMatch) {
+            options[i].selected = true;
+            foundMatch = true;
+          }
+        } else {
+          options[i].style.display = "none";
+        }
+      }
+    }
+  </script>
+
 
 <div class="text-center bg-image" id="h-global">
     <div class="mask" style="background-color: rgba(255, 255, 255, 0.7);">
         <div class="d-flex justify-content-center align-items-center h-100">
             <div>
-                <h1>Uređivanje dijela</h1>
-                <p class="fs-4">Pomoću forme uredite podatke o dijelu</p>
+                <h1>Dodavanje dijelova </h1>
+                <p class="fs-4">Pomoću forme unesite podatke o dijelu</p>
             </div>
         </div>
     </div>
@@ -20,38 +67,108 @@
 
 <div class="container" id="c-global">
 
-
     {% block content %}
+    <!-- form -->
     <form method="post">
-
+        <!-- main row -->
         <div class="row" id="end">
+            <!-- col 1 -->
+            <div class="col">
 
-            <p class="fs-3">Informacije o dijelu</p>
+                <p class="fs-3">Opće informacije</p>
 
-            <div class="col-8">
+    
+
+            
+            <!-- so here is the form for the SELECT A PART  --> 
+                
+                
                 <div class="row" id="input-global">
                     <div class="col">
-                        <label for="naziv" class="form-label">Naziv</label>
-                        <input name="naziv" value="{{data.naziv}}" type="text" class="form-control" required>
+                        <label for="serijski_broj" class="form-label">Serijski broj</label>
+                        <input name="serijski_broj" value="{{data.serijski_broj}}" type="text" class="form-control"
+                            required>
                     </div>
                 </div>
+
+                <!-- spol -->
+                <label for="opis" class="form-label">Opis</label>
+                <div class="col">
+                    <input name="opis" value="{{data.opis}}" type="text" class="form-control"
+                    required>
+                </div>
+                <!-- end of  -->
+                <div class="row" id="input-global">
+                  <div class="col">
+                      <label for="kategorija" class="form-label">Kategorija</label>
+                      <input name="kategorija" value="{{data.kategorija}}" type="text" class="form-control"
+                          required>
+                  </div>
+              </div>
+                
+                <!-- end of  -->
+
+               
+                         <!-- so here is the form for the SELECT A PART  -->  
+                         <div>
+                          <label for="id-dio"> <span id="s" >*</span> Naziv dijela & Proizvođač</label> <br>
+                        <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="Search...">
+                       
+                               
+                        <select id="id_dio" name="id_dio" required>
+                          {% for d in dio %}
+                            <option name='id_dio' value="{{ d.id }}"" {% if dio1.id == d.id  %} selected {% endif %}>{{ d.naziv }} & {{d.proizvodac}}</option>
+                          {% endfor %}
+                        
+                        </select>
+                        {% set id_dio = request.form['id_dio'] %}
+            
+                    </div>
+
+
             </div>
+            <!-- end of col1 -->
 
+            <!-- col 2 -->
+            <div class="col">
+                <p class="fs-3">Cijena i količina</p>
+                
+                
 
-            <div class="col-4">
                 <div class="row" id="input-global">
                     <div class="col">
-                        <label for="proizvodac" class="form-label">Proizvođač</label>
-                        <input name="proizvodac" value="{{data.proizvodac}}" type="text" 
+                        <label for="nabavna_cijena" class="form-label">Nabavna cijena</label>
+                        <input pattern="^\d+(\.\d{1,2})?$" name="nabavna_cijena" value="{{data.nabavna_cijena}}" type="text" class="form-control"
+                            required>
+                    </div>
+                </div>
+
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="prodajna_cijena" class="form-label">Prodajna cijena</label>
+                        <input pattern="^\d+(\.\d{1,2})?$" name="prodajna_cijena" value="{{data.prodajna_cijena}}" type="text" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="dostupna_kolicina" class="form-label">Dostupna količina</label>
+                        <input name="dostupna_kolicina" value="{{data.dostupna_kolicina}}" type="text"
                             class="form-control" required>
                     </div>
                 </div>
+                
             </div>
+            <!-- end of col2 -->
         </div>
+        <!-- end of main row -->
 
         <button class="btn btn-outline-success" id="button" type="submit">Uredi dio</button>
 
     </form>
+
+    
+    <!-- end of form -->
     {% endblock %}
 </div>
 {% endblock %}

@@ -32,21 +32,22 @@
                 <div class="row" id="input-global">
                     <div class="col">
                         <label for="ime" class="form-label">Ime</label>
-                        <input name="ime" value="{{data.ime}}" type="text" class="form-control">
+                        <input name="ime" value="{{data.ime}}" type="text" class="form-control" required>
                     </div>
                 </div>
 
                 <div class="row" id="input-global">
                     <div class="col">
                         <label for="prezime" class="form-label">Prezime</label>
-                        <input name="prezime" value="{{data.prezime}}" type="text" class="form-control">
+                        <input name="prezime" value="{{data.prezime}}" type="text" class="form-control" required>
                     </div>
                 </div>
-                
+
                 <div class="row" id="input-global">
                     <div class="col">
                         <label for="oib" class="form-label">OIB</label>
-                        <input name="oib" value="{{data.oib}}" type="text" pattern="[0-9]{13}" minlength="13" maxlength="13" class="form-control">
+                        <input name="oib" value="{{data.oib}}" type="text" pattern="[0-9]{13}" minlength="13"
+                            maxlength="13" class="form-control" required>
                     </div>
                 </div>
 
@@ -57,7 +58,7 @@
                             <div class="col">
                                 <label for="datum_rodenja" class="form-label">Datum rođenja</label>
                                 <input name="datum_rodenja" value="{{data.datum_rodenja}}" type="date"
-                                    class="form-control">
+                                    class="form-control" required>
                             </div>
                         </div>
 
@@ -70,11 +71,13 @@
                                 <label for="spol" class="form-label">Spol</label>
                                 <div class="form-check">
                                     {% if data.spol == 'm' %}
-                                    <input class="form-check-input" checked type="radio" name="spol" value="m" id="musko">
-                                
+                                    <input class="form-check-input" checked type="radio" name="spol" value="m"
+                                        id="musko" required>
+
                                     {% else %}
-                                    <input class="form-check-input" type="radio" name="spol" value="m" id="musko">
-                                    
+                                    <input class="form-check-input" type="radio" name="spol" value="m" id="musko"
+                                        required>
+
                                     {% endif %}
                                     <label class="form-check-label" for="musko">
                                         Muško
@@ -82,11 +85,13 @@
                                 </div>
                                 <div class="form-check">
                                     {% if data.spol == 'ž' %}
-                                    <input class="form-check-input" checked type="radio" name="spol" value="ž" id="zensko">
-                                    
+                                    <input class="form-check-input" checked type="radio" name="spol" value="ž"
+                                        id="zensko" required>
+
                                     {% else %}
-                                    <input class="form-check-input" type="radio" name="spol" value="ž" id="zensko">
-                                    
+                                    <input class="form-check-input" type="radio" name="spol" value="ž" id="zensko"
+                                        required>
+
                                     {% endif %}
                                     <label class="form-check-label" for="zensko">
                                         Žensko
@@ -101,14 +106,14 @@
                 <div class="row" id="input-global">
                     <div class="col">
                         <label for="adresa" class="form-label">Adresa</label>
-                        <input name="adresa" value="{{data.adresa}}" type="text" class="form-control">
+                        <input name="adresa" value="{{data.adresa}}" type="text" class="form-control" required>
                     </div>
                 </div>
 
                 <div class="row" id="input-global">
                     <div class="col">
                         <label for="grad" class="form-label">Grad</label>
-                        <input name="grad" value="{{data.grad}}" type="text" class="form-control">
+                        <input name="grad" value="{{data.grad}}" type="text" class="form-control" required>
                     </div>
                 </div>
 
@@ -123,14 +128,16 @@
                 <div class="row" id="input-global">
                     <div class="col">
                         <label for="broj_telefona" class="form-label">Broj telefona</label>
-                        <input name="broj_telefona" value="{{data.broj_telefona}}" type="text" class="form-control">
+                        <input name="broj_telefona" value="{{data.broj_telefona}}" type="text" class="form-control"
+                            required>
                     </div>
                 </div>
 
                 <div class="row" id="input-global">
                     <div class="col">
                         <label for="e_mail" class="form-label">E-mail</label>
-                        <input name="e_mail" value="{{data.e_mail}}" type="e_mail" class="form-control" id="e_mail">
+                        <input name="e_mail" value="{{data.e_mail}}" type="e_mail" class="form-control" id="e_mail"
+                            required>
                     </div>
                 </div>
 
@@ -138,7 +145,8 @@
                 <div class="row" id="input-global">
                     <div class="col">
                         <label for="radno_mjesto" class="form-label">Radno mjesto</label>
-                        <select name="radno_mjesto" class="form-control" id="radno_mjesto" data-zanimanje="{{data.radno_mjesto}}" value="{{data.radno_mjesto}}">
+                        <select name="radno_mjesto" class="form-control" id="radno_mjesto"
+                            data-zanimanje="{{data.radno_mjesto}}" value="{{data.radno_mjesto}}" required>
                             <option value="autoelektricar">Autoelektričar</option>
                             <option value="mehanicar">Mehaničar</option>
                             <option value="prodavac">Prodavač</option>
@@ -154,7 +162,7 @@
                     <div class="col">
                         <label for="datum_zaposlenja" class="form-label">Datum zaposlenja</label>
                         <input name="datum_zaposlenja" value="{{data.datum_zaposlenja}}" type="date"
-                            class="form-control">
+                            class="form-control" required>
                     </div>
                 </div>
 
@@ -162,7 +170,7 @@
                     <div class="col">
                         <label for="placa" class="form-label">Plaća</label>
                         <input name="placa" value="{{data.placa}}" type="text" pattern="^\d+(\.\d{1,2})?$"
-                            class="form-control">
+                            class="form-control" required>
                     </div>
                 </div>
 
@@ -177,10 +185,9 @@
 </div>
 <script defer>
     // skripta za postavljanje dropdown vrijednosti
-        const el = document.getElementById('radno_mjesto');
-        const zanimanje = el.dataset.zanimanje;
-        const selectedElement = document.querySelector(`option[value="${zanimanje}"`);
-        selectedElement.setAttribute('selected', true);
+    const el = document.getElementById('radno_mjesto');
+    const zanimanje = el.dataset.zanimanje;
+    const selectedElement = document.querySelector(`option[value="${zanimanje}"`);
+    selectedElement.setAttribute('selected', true);
 </script>
 {% endblock %}
-
