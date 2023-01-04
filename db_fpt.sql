@@ -120,6 +120,45 @@ END IF;
 
 END//
 DELIMITER ;
+
+# TRIGGER koji provjerava datum prodaje automobila i datum zaposlenja zaposlenika
+DELIMITER //
+CREATE TRIGGER datum_prodaja_zaposlenje
+BEFORE INSERT ON racun_prodaje
+FOR EACH ROW
+BEGIN
+DECLARE d_zaposlenja,d_prodaje DATE;
+
+-- određivanje datuma zaposlenja
+SELECT datum_zaposlenja INTO d_zaposlenja
+FROM zaposlenik WHERE id = new.id_zaposlenik;
+
+
+IF d_zaposlenja > new.datum THEN
+	SIGNAL SQLSTATE '40000'
+	SET MESSAGE_TEXT = 'Datum zaposlenja je nakon datuma kreiranja računa!';
+END IF;
+
+END//
+DELIMITER ;
+
+# TRIGGER koji provjerava da datum prodaje automobila nije veći od trenutnog datuma
+DELIMITER //
+CREATE TRIGGER datum_prodaje
+BEFORE INSERT ON racun_prodaje
+FOR EACH ROW
+BEGIN
+DECLARE d_prodaje DATE;
+
+
+
+IF new.datum > (SELECT NOW() FROM DUAL) THEN
+	SIGNAL SQLSTATE '40001'
+	SET MESSAGE_TEXT = 'Datum kreiranja računa je veći od trenutnog datuma!';
+END IF;
+
+END//
+DELIMITER ;
 # TRIGGER koji daje dodatan popust ljudima iz ZG-a
 -- TIN GOTOVO
 

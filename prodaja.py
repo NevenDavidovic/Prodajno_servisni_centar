@@ -215,7 +215,7 @@ def createBill():
             statusKlijenta = get_client_status(klijentData.get('id'))
 
             # dodavanje podatka o plaći za klijenta AKO je on ujedno i zaposlenik
-            if statusKlijenta.klijent_zaposlenik:
+            if statusKlijenta.get('klijent_zaposlenik'):
                 klijentOib = str(klijentData.get('oib'))
                 klijentZaposlenikData = find_item('zaposlenik','oib',klijentOib)
                 
@@ -224,10 +224,6 @@ def createBill():
                     klijentData['placa'] = klijentZaposlenikData[0].get('placa')
             
             
-
-
-           
-
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
         return make_response(render_template("prodaja-kreiranje-racuna.html", data={"auto": autoData, "zaposlenik": zaposlenikData, "klijent": klijentData, "broj_racuna": brojRacuna, "status_klijenta":statusKlijenta}), 200)
