@@ -26,6 +26,44 @@ DELIMITER ;
 
 -- DARJAN FPO
 
+-- Napiši funkciju koja će u računu_prodaje vratiti vrijednost "DA" ako je vozilo prodano u posljednjih 6 mjeseci,
+-- u suprotnom će pisati "NE"
+
+DELIMITER //
+CREATE FUNCTION f_racun_datum (p_id_racun int) returns CHAR (2)
+DETERMINISTIC
+BEGIN
+declare dat datetime;
+select datum into dat
+from racun_prodaje
+where id = p_id_racun;
+if dat > (select now() - interval 6 month from dual) then
+return "DA";
+else return "NE";
+end if;
+end//
+DELIMITER ;
+
+-- Poziv funkcije
+
+-- select*, f_racun_datum(id) as "Prodan u zadnjih šest mjeseci" from racun_prodaje;
+
+-- Napiši funkciju koja će za svakog zaposlenika u firmi vratiti broj godina koliko radi kod nas
+
+DELIMITER //
+CREATE FUNCTION godina_u_firmi (p_datum date) returns INTEGER
+DETERMINISTIC
+BEGIN
+declare trenutni_datum date;
+select now() into trenutni_datum;
+return year(trenutni_datum) - year(p_datum);
+end//
+DELIMITER ;
+
+-- Poziv funkcije
+
+-- select ime, prezime, radno_mjesto, godina_u_firmi(datum_zaposlenja) as "Godina u firmi" from zaposlenik;
+
 -- Napravi okidač koji za postojećeg klijenta (kupca) smanjuje cijenu novog vozila kojeg je kupio/la za 10%
 DELIMITER //
 CREATE TRIGGER popust_10
