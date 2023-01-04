@@ -80,7 +80,7 @@ def addDio():
             dio=get_all_items('dio')
             
         except Exception as err:
-            return make_response(render_template("dodavanje-dijela-fail.html", error=err,data={"msg": "Odaberi već postojećeg proizvođača i naziv", "route": "/servis/stavka-dio-dodaj"}), 400)
+            return make_response(render_template("dodavanje-dijela-fail.html", error=err,data={"msg": "Odaberi već postojećeg proizvođača i naziv", "route": "/servis/stavka-dio-dodaj/<naziv>/<proizvodac>"},datan=data), 400)
         return make_response(render_template("dodavanje-dijela-success.html",data=data,dio=dio), 200)
     
         #return make_response(render_template("servis-dio-dodaj.html"), 200) 
@@ -90,8 +90,8 @@ def addDio():
   # napravi servis 
 
 # dodaj sve podatke o dijelu
-@servis.route("/servis/stavka-dio-dodaj", methods=['GET','POST'])
-def add_stavkaDio():
+@servis.route("/servis/stavka-dio-dodaj/<naziv>/<proizvodac>", methods=['GET','POST'])
+def add_stavkaDio(naziv,proizvodac):
     if request.method == "POST":
         try:
             table = 'stavka_dio'
@@ -106,7 +106,7 @@ def add_stavkaDio():
     
     response = get_all_items('dio')
     
-    return render_template("servis-stavka-dio-dodaj.html",data=response) 
+    return render_template("servis-stavka-dio-dodaj.html",data=response,naziv=naziv,proizvodac=proizvodac) 
 
 @servis.route("/servis/stavka-dio-ispis", methods=['GET','POST'])
 def ispisStavkaDio():
@@ -196,6 +196,21 @@ def ispisNarudzbenice():
 
 @servis.route("/servis/narudzbenica/popis/<int:id>", methods=['GET','POST'])
 def infoNarudzbenice(id):
+    if request.method == "POST":
+        try:
+            queryData = {}
+            for key, value in request.form.items():
+                queryData[key] = value
+
+            table = 'narudzbenicej'
+            attribut = queryData['identificator']
+            value = queryData['query']
+
+            response = find_item_like(table, attribut, value)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("servis-narudzbenice-ispis.html", data=response), 200)
+    
     a=int(id)
     
     table = 'narudzbenicej'

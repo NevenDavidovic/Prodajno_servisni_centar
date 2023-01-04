@@ -50,14 +50,15 @@
                     <img class="fail-icon" src="{{ url_for('static',filename='images/fail_icon.png') }}"
                         alt="fail-icon">
 
-                    <h1 id="headline">Naziv i proizvođač već postoje</h1>
+                    <h1 id="headline">Naziv: {{datan['naziv']}} i proizvođač: {{datan['proizvodac']}}  već postoje</h1>
                     <p class="fs-5" id="headline">Error message: {{ error }}</p>
                     <a href="javascript:history.back()" class="btn btn-outline-success">Vrati se natrag</a>
                     {% block content %}
                     
                     
-                    <h1 id="headline">{{data.msg}}</h1>
-                    <a href="{{data.route}}" class="btn btn-outline-success">Nastavi </a>
+                    <h1 id="headline">Proizvođač: {{datan['proizvodac']}} & Naziv: {{datan['naziv']}} </h1><br>
+                    <h3 id="headline"> Dodaj postojeće informacije i nastavi </h3>
+                    <a href="/servis/stavka-dio-dodaj/{{datan['naziv']}}/{{datan['proizvodac']}}" class="btn btn-outline-success"> Nastavi s dodavanjem</a>
                     {% endblock %}
                 </div>
             </div>
