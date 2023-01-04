@@ -56,7 +56,7 @@
                 <div class="row" id="input-global">
                     <div class="col">
                         <label for="datum" class="form-label">Datum prodaje</label>
-                        <input name="datum" type="date" class="form-control" required>
+                        <input name="datum" id="input-datum" type="date" class="form-control" required>
                     </div>
                 </div>
 
@@ -70,7 +70,7 @@
                  <p class="text-success">Prijašnji klijent! Popust na cijenu 10%</p> 
                 {% endif %}
                 {% if data.status_klijenta.klijent_zaposlenik == True %}
-                 <p class="text-success">Klijent zaposlenik! Popust na cijenu od X</p> 
+                 <p class="text-success">Klijent zaposlenik! Popust na cijenu od {{data.klijent.placa}} kn</p> 
                 {% endif %}
 
             </form>
@@ -80,6 +80,10 @@
     <button form="detalji-prodaje" class="btn btn-success" id="button" type="submit">Zaključi račun</button>
     <a href="javascript:history.back()" class="btn btn-outline-success" id="button"> Nazad </a>
 
+    <!-- Skripta za postavljanje datuma prodaje na trenutni datum -->
+    <script>
+        const input = document.getElementById("input-datum").valueAsDate = new Date();
+    </script>
 
     {% endblock %}
 

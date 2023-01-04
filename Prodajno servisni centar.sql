@@ -86,7 +86,7 @@ CREATE TABLE klijent(
 CREATE TABLE racun_prodaje(
 	id INTEGER AUTO_INCREMENT,
 	id_zaposlenik INTEGER,
-	id_auto INTEGER,
+	id_auto INTEGER UNIQUE,
 	id_klijent INTEGER,
 	broj_racuna INTEGER UNIQUE,
 	datum DATE NOT NULL,
@@ -94,7 +94,8 @@ CREATE TABLE racun_prodaje(
 	PRIMARY KEY (id),
 	FOREIGN KEY (id_zaposlenik) REFERENCES zaposlenik (id) on delete set null,
 	FOREIGN KEY (id_auto) REFERENCES auto (id) on delete set null,
-	FOREIGN KEY (id_klijent) REFERENCES klijent (id) on delete set null
+	FOREIGN KEY (id_klijent) REFERENCES klijent (id) on delete set null,
+    CONSTRAINT negativna_cijena CHECK (cijena >= 0)
 );
 
 

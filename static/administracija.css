@@ -27,9 +27,16 @@
     margin-bottom: 1vw;
 }
 
-.fs-3 {
+/* .fs-3 {
     border-bottom: 2px solid #212529;
     margin-top: 1vw;
+} */
+.fs-3 {
+    border-bottom: 2px solid #f3f3f3;
+    margin-top: 1vw;
+}
+h1,.fs-4 {
+    color:#212529;
 }
 
 #button {
@@ -52,8 +59,12 @@
 
 #end {
     padding-bottom: 3vw;
-    border-bottom: 2px solid #212529;
+    border-bottom: 2px solid #f3f3f3;
 }
+/* #end {
+    padding-bottom: 3vw;
+    border-bottom: 2px solid #212529;
+} */
 
 .search {
     margin-bottom: 3vw;
@@ -65,4 +76,7 @@ th {
 
 td {
     text-align: center;
+}
+.min-width-72 {
+    min-width: 72px;
 }
