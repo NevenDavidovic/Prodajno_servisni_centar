@@ -66,3 +66,6 @@ th {
 td {
     text-align: center;
 }
+.min-width-72 {
+    min-width: 72px;
+}

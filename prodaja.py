@@ -190,6 +190,7 @@ def createBill():
             for key, value in request.form.items():
                 data[key] = value
 
+        
             table = 'racun_prodaje'
             # dodavanje računa u tablicu račun_prodaje
             response = add_item(table, data)
@@ -212,6 +213,20 @@ def createBill():
 
             # provjera ima li klijent kakve popuste
             statusKlijenta = get_client_status(klijentData.get('id'))
+
+            # dodavanje podatka o plaći za klijenta AKO je on ujedno i zaposlenik
+            if statusKlijenta.klijent_zaposlenik:
+                klijentOib = str(klijentData.get('oib'))
+                klijentZaposlenikData = find_item('zaposlenik','oib',klijentOib)
+                
+                # ako postoji rezultat ( ne prazna lista ) dodaj podatak o placi zaposlenika-klijenta
+                if klijentZaposlenikData:
+                    klijentData['placa'] = klijentZaposlenikData[0].get('placa')
+            
+            
+
+
+           
 
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
@@ -283,3 +298,4 @@ def removeReceipt(id):
     return make_response(render_template("success.html", data={"msg": "Račun uspješno storniran!", "route": "/prodaja/ispis-svih-racuna"}), 200)
 
 # @prodaja.route
+
