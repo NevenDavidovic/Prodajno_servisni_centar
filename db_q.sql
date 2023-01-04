@@ -1,6 +1,6 @@
 -- MARIJA start
 -- 1. upit: Popis zaposlenika koji su servisirali aute kupljene u PSC
-
+/*
 CREATE VIEW narudzbenica_kupljeni AS
 SELECT *
 	FROM narudzbenica
@@ -17,7 +17,7 @@ SELECT *
 			WHERE servis.id_narudzbenica=narudzbenica_kupljeni.id
 			ORDER BY id_zaposlenik ASC
     );
-
+*/
 
 -- 2. upit: Marke auta sevisirane od strane mehaničara
 
