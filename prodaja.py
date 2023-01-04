@@ -202,7 +202,7 @@ def createBill():
             response = edit_table('auto', dataToEdit)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("success.html", data={"msg": "Račun uspješno kreiran!", "route": "/prodaja/ispis-svih-automobila"}), 200)
+        return make_response(render_template("success.html", data={"msg": "Račun uspješno kreiran!", "route": "/prodaja/ispis-svih-racuna"}), 200)
 
     else:
         try:

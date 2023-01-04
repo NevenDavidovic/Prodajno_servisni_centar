@@ -57,7 +57,7 @@ broj_narudzbe, datum_zaprimanja, datum_povratka-->
     </div>
 
   
-    <a href="/servis/brisanje-narudzbenica/{{data.id}}" class="btn btn-danger" id="button" onclick="areYouSure()"> Storno  </a>
+    <a onclick="areYouSure()" class="btn btn-danger" id="button" onclick="areYouSure()"> Storno  </a>
     
    
    
@@ -65,6 +65,13 @@ broj_narudzbe, datum_zaprimanja, datum_povratka-->
 
 
     {% endblock %}
+    <script>
+        function areYouSure(){
+            if (prompt("Stornirati ćete narudžbenicu! Za nastaviti upišite DA") == 'DA') {
+                window.location.href = "/servis/brisanje-narudzbenica/{{data.id}}";
+            }   
+        }
+    </script>
 
 
 </div>

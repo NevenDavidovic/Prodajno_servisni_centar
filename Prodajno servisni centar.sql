@@ -86,7 +86,7 @@ CREATE TABLE klijent(
 CREATE TABLE racun_prodaje(
 	id INTEGER AUTO_INCREMENT,
 	id_zaposlenik INTEGER,
-	id_auto INTEGER,
+	id_auto INTEGER UNIQUE,
 	id_klijent INTEGER,
 	broj_racuna INTEGER UNIQUE,
 	datum DATE NOT NULL,

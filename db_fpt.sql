@@ -52,7 +52,8 @@ DELIMITER ;
 
 -- TIN FUNKCIJE, PROCEDURE I OKIDACI
 -- FUNKCIJE ZA ODREĐIVANJE CIJENE PRODANIH AUTOMOBILA
-## Funkcija koja vraca namjmanju cijenu u tablici racun_prodaje
+
+-- Funkcija koja vraca namjmanju cijenu u tablici racun_prodaje
 DELIMITER //
 CREATE FUNCTION min_cijena() RETURNS INTEGER
 DETERMINISTIC
@@ -63,7 +64,7 @@ RETURN (SELECT MIN(cijena) FROM racun_prodaje);
 END//
 DELIMITER ;
 
-## Funkcija koja vraca najvecu cijenu u tablici racun_prodaje
+-- Funkcija koja vraca najvecu cijenu u tablici racun_prodaje
 DELIMITER //
 CREATE FUNCTION max_cijena() RETURNS INTEGER
 DETERMINISTIC
@@ -74,7 +75,7 @@ RETURN (SELECT MAX(cijena) FROM racun_prodaje);
 END//
 DELIMITER ;
 
-## Funkcija koja vraca raspon cijena u tablici racun_prodaje
+-- Funkcija koja vraca raspon cijena u tablici racun_prodaje
 DELIMITER //
 CREATE FUNCTION raspon_cijena() RETURNS INTEGER
 DETERMINISTIC
@@ -85,7 +86,7 @@ RETURN ((SELECT MAX(cijena) FROM racun_prodaje) - (SELECT MIN(cijena) FROM racun
 END//
 DELIMITER ;
 
-# TRIGGER koji daje klijentima koji su ujedno zaposlenici popust u visini od jedne njihove place
+-- TRIGGER koji daje klijentima koji su ujedno zaposlenici popust u visini od jedne njihove place
 DELIMITER //
 CREATE TRIGGER popust_za_zaposlenike_u_visini_jedne_place
 BEFORE INSERT ON racun_prodaje
@@ -121,7 +122,7 @@ END IF;
 END//
 DELIMITER ;
 
-# TRIGGER koji provjerava datum prodaje automobila i datum zaposlenja zaposlenika
+-- TRIGGER koji provjerava datum prodaje automobila i datum zaposlenja zaposlenika
 DELIMITER //
 CREATE TRIGGER datum_prodaja_zaposlenje
 BEFORE INSERT ON racun_prodaje
@@ -142,7 +143,7 @@ END IF;
 END//
 DELIMITER ;
 
-# TRIGGER koji provjerava da datum prodaje automobila nije veći od trenutnog datuma
+-- TRIGGER koji provjerava da datum prodaje automobila nije veći od trenutnog datuma
 DELIMITER //
 CREATE TRIGGER datum_prodaje
 BEFORE INSERT ON racun_prodaje
@@ -159,6 +160,30 @@ END IF;
 
 END//
 DELIMITER ;
-# TRIGGER koji daje dodatan popust ljudima iz ZG-a
+
+-- Procedura za ažuriranje cijene svih dijelova
+-- prihvaca i negativne postotke npr. -15 ili 15
+DELIMITER //
+CREATE PROCEDURE azuriraj_cijene_dijelova(postotak DECIMAL(8, 2))
+BEGIN
+UPDATE stavka_dio
+SET nabavna_cijena = nabavna_cijena + nabavna_cijena * (postotak/100);
+END //
+DELIMITER ;
+
+-- CALL azuriraj_cijene_dijelova(-15); oduzima 15%  nabavne cijene svih djelova
+
+-- Procedura za ažuriranje dostupne količine pojedinog dijela prema serijskom broju
+-- prihvaca i negativne kolicine npr. -15 ili 15
+DELIMITER //
+CREATE PROCEDURE azuriraj_dostupnu_kolicinu_dijela(p_serijski_broj VARCHAR(20), p_kolicina INTEGER)
+BEGIN
+UPDATE stavka_dio
+SET dostupna_kolicina = dostupna_kolicina + p_kolicina
+WHERE serijski_broj = p_serijski_broj;
+END //
+DELIMITER ;
+
+-- CALL azuriraj_dostupnu_kolicinu_dijela('55032099911',10); dodaje 10 na postojecu vrijednost
 -- TIN GOTOVO
 
