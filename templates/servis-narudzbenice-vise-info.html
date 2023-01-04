@@ -1,0 +1,71 @@
+{% extends "servis-base.html" %}
+{% block head %}
+<title>Narudžbenica | PSC</title>
+{% endblock %}
+
+{% block body %}
+
+
+<div class="text-center bg-image" id="h-global">
+    <div class="mask" style="background-color: rgba(255, 255, 255, 0.7);">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div>
+                <h1>Narudžbenica</h1>
+                
+                <p class="fs-4">Broj narudžbenice: {{data.broj_narudzbe}} </p>
+                <p class="fs-4">Datum zaprimanja: {{data.datum_zaprimanja}} </p>
+                <p class="fs-4">Datum povratka: {{data.datum_povratka}} </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" id="c-global">
+
+
+    {% block content %}
+   
+
+    <div class="row" id="end">
+        <div class="col">
+            <p class="fs-3">informacije o klijentu</p>
+            <p><b>Ime:</b> {{data.ime}}</p>
+            <p><b>Prezime:</b> {{data.prezime}}</p>
+            <p><b>OIB:</b> {{data.oib}}</p>
+            <p><b>Spol:</b> {% if data.spol=='ž' %} Žensko {% else %} Muško {% endif %}</p>
+            <p><b>Adresa:</b> {{data.adresa}}</p>
+            <p><b>Grad:</b> {{data.grad}}</p>
+        </div>
+        <div class="col">
+            <p class="fs-3">Kontakt informacije</p>
+            <p><b>Broj telefona:</b> {{data.broj_telefona}}</p>
+            
+ <!--narudzbenica.id,broj_sasije,oib, 
+marka_automobila, model, boja,dostupnost, snaga_motora, 
+kilometraza, tip_motora, ime, prezime, broj_telefona, adresa,grad,spol,
+broj_narudzbe, datum_zaprimanja, datum_povratka-->
+            <p class="fs-3">Informacije o autu</p>
+            <p><b>Broj šasije:</b> {{data.broj_sasije}}</p>
+            <p><b>Marka automobila: </b> {{data.marka_automobila}}</p>
+            <p><b>Model:</b> {{data.model}}</p>
+            
+            <p><b>Tip motora </b> {{data.tip_motora}}</p>
+            <p><b>Snaga motora: </b> {{data.snaga_motora}}</p>
+            <p><b>Kilometraža: </b> {{data.kilometraza}}</p>
+            
+        </div>
+    </div>
+
+  
+    <a href="/servis/brisanje-narudzbenica/{{data.id}}" class="btn btn-danger" id="button" onclick="areYouSure()"> Storno  </a>
+    
+   
+   
+    
+
+
+    {% endblock %}
+
+
+</div>
+{% endblock %}

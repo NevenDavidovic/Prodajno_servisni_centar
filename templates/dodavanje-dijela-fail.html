@@ -51,12 +51,13 @@
                         alt="fail-icon">
 
                     <h1 id="headline">Naziv i proizvođač već postoje</h1>
+                    <p class="fs-5" id="headline">Error message: {{ error }}</p>
                     <a href="javascript:history.back()" class="btn btn-outline-success">Vrati se natrag</a>
                     {% block content %}
                     
-                    <p class="fs-5" id="headline">Error message: {{ error }}</p>
+                    
                     <h1 id="headline">{{data.msg}}</h1>
-                    <a href="{{data.route}}" class="btn btn-outline-success">Dodaj naziv i proizvođača s popisa postojećeg popisa </a>
+                    <a href="{{data.route}}" class="btn btn-outline-success">Nastavi </a>
                     {% endblock %}
                 </div>
             </div>

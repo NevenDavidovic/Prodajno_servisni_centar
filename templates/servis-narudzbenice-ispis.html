@@ -1,6 +1,6 @@
 {% extends "servis-base.html" %}
 {% block head %}
-<title>Proizvođač i naziv dijela | PSC</title>
+<title>Narudzbenice | PSC</title>
 {% endblock %}
 
 {% block body %}
@@ -9,8 +9,8 @@
     <div class="mask" style="background-color: rgba(255, 255, 255, 0.7);">
         <div class="d-flex justify-content-center align-items-center h-100">
             <div>
-                <h1>Proizvođač i naziv dijela</h1>
-                <p class="fs-4">Pretraži proizvođača i naziv dijela</p>
+                <h1>Narudžbenice</h1>
+                <p class="fs-4">Pomoću forme pretražite narudžbenice</p>
             </div>
         </div>
     </div>
@@ -22,7 +22,7 @@
         <form method="post">
             <div class="d-flex">
                 <input name="naziv" value="{{request.form['naziv']}}" type="text" class="form-control"
-                    placeholder="Upisati naziv dijela" required>
+                    placeholder="Upisati naziv usluge (npr. Izmjena ulja)" required>
                 <input type="submit" class="btn btn-outline-success" value="Pretraži">
             </div>
         </form>
@@ -36,20 +36,31 @@
     <table class="table table-hover">
         <thead>
             <tr>
-                <th scope="col">Naziv</th>
-                <th scope="col">Proizvođač</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
+                <th scope="col">Oib klijenta</th>
+                <th scope="col">Marka automobila</th>
+                <th scope="col">Model</th>
+                <th scope="col">Broj šasije</th>
+                <th scope="col">Broj narudžbe</th>
+                <th scope="col">Datum zaprimanja</th>
+                <th scope="col">Datum povratka</th>
+                
             </tr>
         </thead>
         <tbody>
             {% for d in data %}
             <tr>
-                <td>{{d.naziv}}</td>
-                <td>{{d.proizvodac}}</td>
+                <td>{{d.oib}} </td>
+                <td>{{d.marka_automobila}} </td>
+                <td>{{d.model}} </td>
+                <td>{{d.broj_sasije}} </td>
+                <td>{{d.broj_narudzbe}} </td>
+                <td>{{d.datum_zaprimanja}} </td>
+                <td>{{d.datum_povratka}} </td>
+                
+                
                 <td>
-                    <a href="/servis/uredivanje-dijelova/{{d.id}}" class="btn btn-outline-success">Uredi</a>
-                    <a href="/servis/brisanje-dijelova/{{d.id}}" class="btn btn-outline-success">Ukloni</a>
+                    <a href="/servis/narudzbenica/popis/{{d.id}}" class="btn btn-outline-success"> Više informacija</a>
+                    
                 </td>
             </tr>
             {% endfor %}
@@ -58,7 +69,7 @@
     <!-- end of table -->
 
     {% else %}
-    <p class="fs-4 text-center">Nije pronađen niti jedan dio.</p>
+    <p class="fs-4 text-center">Nije pronađena niti jedna usluga.</p>
     {% endif %}
 
     {% endblock %}

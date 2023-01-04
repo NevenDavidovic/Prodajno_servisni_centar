@@ -175,4 +175,42 @@ def deleteStavkaDio(id):
 
 @servis.route('/narudzbenica/popis', methods=['GET','POST'])
 def ispisNarudzbenice():
-    return render_template("fail.htmml")
+        if request.method == "POST":
+            try:
+                table = 'narudzbenicej'
+                attribut = 'naziv'
+                value = request.form.get('naziv')
+                response = find_item_like(table, attribut, value)
+            except Exception as err:
+                return make_response(render_template("fail.html", error=err), 400)
+            return make_response(render_template("servis-dio-ispis.html", data=response), 200)
+        else:
+            try:
+                table = 'narudzbenicej'
+                response = get_all_items(table)
+            except Exception as err:
+                return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("servis-narudzbenice-ispis.html", data=response), 200)
+
+
+
+@servis.route("/servis/narudzbenica/popis/<int:id>", methods=['GET','POST'])
+def infoNarudzbenice(id):
+    a=int(id)
+    
+    table = 'narudzbenicej'
+    response = get_item(table,a)
+    
+    return render_template("servis-narudzbenice-vise-info.html", data=response)
+
+
+@servis.route("/servis/brisanje-narudzbenica/<int:id>",methods=['GET','POST'])
+def deletNarudzbenica(id):
+    try:
+        table = 'narudzbenica'
+        delete_item(table, id)
+    except Exception as err:
+        return make_response(render_template("fail.html", error=err), 400)
+    return make_response(render_template("success.html", data={"msg": "Uspješno stornirana narudžbenica!", "route": "/narudzbenica/popis"}), 200)
+    
+    
