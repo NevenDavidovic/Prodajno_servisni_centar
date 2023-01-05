@@ -117,7 +117,7 @@
                                
                         <select id="id_dio" name="id_dio" required>
                           {% for option in data %}
-                            <option name='id_dio' value="{{ option.id }}">{{ option.naziv }} & {{option.proizvodac}}</option>
+                            <option name='id_dio' value="{{ option.id }}" {% if proizvodac==option.proizvodac and naziv==option.naziv  %} selected {% endif %}>{{ option.naziv }} & {{option.proizvodac}}</option>
                           {% endfor %}
                         
                         </select>

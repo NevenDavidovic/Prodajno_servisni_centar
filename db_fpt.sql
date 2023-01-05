@@ -26,6 +26,44 @@ DELIMITER ;
 
 -- DARJAN FPO
 
+-- Napiši funkciju koja će u računu_prodaje vratiti vrijednost "DA" ako je vozilo prodano u posljednjih 6 mjeseci,
+-- u suprotnom će pisati "NE"
+
+DELIMITER //
+CREATE FUNCTION f_racun_datum (p_id_racun int) returns CHAR (2)
+DETERMINISTIC
+BEGIN
+declare dat datetime;
+select datum into dat
+from racun_prodaje
+where id = p_id_racun;
+if dat > (select now() - interval 6 month from dual) then
+return "DA";
+else return "NE";
+end if;
+end//
+DELIMITER ;
+
+-- Poziv funkcije
+
+-- select*, f_racun_datum(id) as "Prodan u zadnjih šest mjeseci" from racun_prodaje;
+
+-- Napiši funkciju koja će za svakog zaposlenika u firmi vratiti broj godina koliko radi kod nas
+
+DELIMITER //
+CREATE FUNCTION godina_u_firmi (p_datum date) returns INTEGER
+DETERMINISTIC
+BEGIN
+declare trenutni_datum date;
+select now() into trenutni_datum;
+return year(trenutni_datum) - year(p_datum);
+end//
+DELIMITER ;
+
+-- Poziv funkcije
+
+-- select ime, prezime, radno_mjesto, godina_u_firmi(datum_zaposlenja) as "Godina u firmi" from zaposlenik;
+
 -- Napravi okidač koji za postojećeg klijenta (kupca) smanjuje cijenu novog vozila kojeg je kupio/la za 10%
 DELIMITER //
 CREATE TRIGGER popust_10
@@ -48,6 +86,43 @@ DELIMITER ;
 
 -- okidač radi, cijena vozila na računu je umanjena za 10%
 
+-- Napravi okidač kojim će se zabraniti izmjena datuma računa prodaje (sa porukom greške)
+
+DELIMITER //
+CREATE TRIGGER datum_racuna
+BEFORE UPDATE ON racun_prodaje
+FOR EACH ROW
+BEGIN
+if old.datum != new.datum then
+signal sqlstate '40003'
+set message_text = "Datum računa nije moguće mijenjati!";
+end if;
+end//
+DELIMITER ;
+
+-- drop trigger datum_racuna;
+
+-- Napravi okidač koji će provjeriti upisanu dostupnu količinu u stavku_dio na sljedeći način:
+-- ako je upisana količina manja od nula, automatski dostupnu_kolicinu staviti na vrijednost 0.
+-- ako je upisana količina veća od 100 izbaciti će grešku sa porukom: "Nije moguće u inventaru imati više od 100 komada pojedinog artikla"
+
+DELIMITER //
+CREATE TRIGGER bi_dio_kolicina
+BEFORE INSERT ON stavka_dio
+FOR EACH ROW
+BEGIN
+if new.dostupna_kolicina > 100 then
+signal sqlstate '40004'
+set message_text = "Nije moguće u inventaru imati više od 100 komada pojedinog artikla";
+elseif new.dostupna_kolicina <= 0 then
+set new.dostupna_kolicina = 0;
+end if;
+end//
+DELIMITER ;
+
+ -- drop trigger bi_dio_kolicina;
+
+ -- DARJAN KRAJ
 
 
 -- TIN FUNKCIJE, PROCEDURE I OKIDACI
@@ -102,7 +177,7 @@ FROM klijent WHERE id = new.id_klijent;
 
 -- prebrojavanje zaposlenika sa oibom klijenta
 SELECT count(*) INTO br_zaposlenika
-FROM zaposlenik 
+FROM zaposlenik
 WHERE oib = klijent_oib;
 
 -- (vrijednost veca od 0 znaci klijent je ujedno i zaposlenik)
@@ -110,8 +185,8 @@ IF br_zaposlenika > 0 THEN
 	-- dobivanje place zaposlenika
 	SELECT placa INTO z_placa
 	FROM zaposlenik
-    WHERE oib = klijent_oib; 
-    
+    WHERE oib = klijent_oib;
+
     -- ako je cijena umanjena za placu veca od nule oduzmi, inace stavi na nulu (sprijecavamo negativne vrijednosti cijene)
     IF new.cijena - z_placa >= 0 THEN
 		SET new.cijena = new.cijena - z_placa;
@@ -186,4 +261,3 @@ DELIMITER ;
 
 -- CALL azuriraj_dostupnu_kolicinu_dijela('55032099911',10); dodaje 10 na postojecu vrijednost
 -- TIN GOTOVO
-
