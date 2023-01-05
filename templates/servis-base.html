@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- CSS only -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        crossorigin="anonymous">
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
@@ -104,6 +104,18 @@
         } else {
             footer.style.position = 'relative';
             footer.style.width = '100%';
+        }
+    </script>
+    <!-- skripta za dark mode -->
+    <script>
+        const elementHTML = document.querySelector('html');
+        const elementNav = document.querySelector('#nav');
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            elementHTML.setAttribute('data-bs-theme', 'dark');
+            elementNav.classList.add('bg-dark');
+        } else {
+            elementHTML.setAttribute('data-bs-theme', 'light');
+            elementNav.classList.remove('bg-dark');
         }
     </script>
 

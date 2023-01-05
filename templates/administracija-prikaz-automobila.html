@@ -52,9 +52,18 @@
     </div>
 
     <a href="/administracija/uredivanje-automobila/{{data.id}}" class="btn btn-outline-success" id="button">Uredi</a>
-    <a href="/administracija/brisanje-automobila/{{data.id}}" class="btn btn-outline-success" id="button">Ukloni</a>
+    <a onclick="areYouSure(event)" data-href="/administracija/brisanje-automobila/{{data.id}}" class="btn btn-outline-success" id="button">Ukloni</a>
 
     {% endblock %}
+
+    <script>
+        function areYouSure(event){
+            if (prompt("Obrisat ćete dio! Za nastaviti upišite DA") == 'DA') {
+                window.location.href = event.target.dataset.href;
+                
+            }   
+        }
+    </script>
 
 
 </div>
