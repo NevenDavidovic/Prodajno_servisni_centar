@@ -31,6 +31,7 @@
     border-bottom: 2px solid #212529;
     margin-top: 1vw;
 }
+
 @media (prefers-color-scheme: dark) {
     .fs-3 {
         border-bottom: 2px solid #f3f3f3;
@@ -38,8 +39,9 @@
     }
 }
 
-h1,.fs-4 {
-    color:#212529;
+h1,
+.fs-4 {
+    color: #212529;
 }
 
 #button {
@@ -66,12 +68,14 @@ h1,.fs-4 {
     padding-bottom: 3vw;
     border-bottom: 2px solid #212529;
 }
+
 @media (prefers-color-scheme: dark) {
     #end {
         padding-bottom: 3vw;
         border-bottom: 2px solid #f3f3f3;
     }
 }
+
 .search {
     margin-bottom: 3vw;
 }
@@ -83,6 +87,7 @@ th {
 td {
     text-align: center;
 }
+
 .min-width-72 {
     min-width: 72px;
 }
