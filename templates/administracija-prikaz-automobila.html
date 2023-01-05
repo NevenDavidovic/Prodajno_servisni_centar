@@ -10,7 +10,7 @@
         <div class="d-flex justify-content-center align-items-center h-100">
             <div>
                 <h1>Automobil</h1>
-                <p class="fs-4">Sve informacije o automobilu {{data.marka_automobila}} {{data.model}}</p>
+                <p class="fs-4">Sve informacije o automobilu {{data.auto.marka_automobila}} {{data.auto.model}}</p>
             </div>
         </div>
     </div>
@@ -24,19 +24,19 @@
     <div class="row" id="end">
         <div class="col">
             <p class="fs-3">Opće informacije</p>
-            <p><b>Marka:</b> {{data.marka_automobila}}</p>
-            <p><b>Model:</b> {{data.model}}</p>
-            <p><b>Godina proizvodnje:</b> {{data.godina_proizvodnje.strftime('%Y.')}}</p>
-            <p><b>Broj šasije:</b> {{data.broj_sasije}}</p>
+            <p><b>Marka:</b> {{data.auto.marka_automobila}}</p>
+            <p><b>Model:</b> {{data.auto.model}}</p>
+            <p><b>Godina proizvodnje:</b> {{data.auto.godina_proizvodnje.strftime('%Y.')}}</p>
+            <p><b>Broj šasije:</b> {{data.auto.broj_sasije}}</p>
 
             <br>
 
-            {% if data.servis_prodaja=='S' %}
+            {% if data.auto.servis_prodaja=='S' %}
             <p><b>Servis</b></p>
             {% else %}
             <p><b>Prodaja</b></p>
             {% endif %}
-            {% if data.dostupnost=='DA' %}
+            {% if data.auto.dostupnost=='DA' %}
             <p><b>Dostupnost:</b> <span class="text-success">Dostupno</span></p>
             {% else %}
             <p><b>Dostupnost:</b> <span class="text-danger">Nedostupno</span> </p>
@@ -44,15 +44,30 @@
         </div>
         <div class="col">
             <p class="fs-3">Tehničke informacije</p>
-            <p><b>Boja:</b> {{data.boja}}</p>
-            <p><b>Tip motora:</b> {{data.tip_motora}}</p>
-            <p><b>Snaga motora:</b> {{data.snaga_motora}} KW</p>
-            <p><b>Kilometraža:</b> {{data.kilometraza}} km</p>
+            <p><b>Boja:</b> {{data.auto.boja}}</p>
+            <p><b>Tip motora:</b> {{data.auto.tip_motora}}</p>
+            <p><b>Snaga motora:</b> {{data.auto.snaga_motora}} KW</p>
+            <p><b>Kilometraža:</b> {{data.auto.kilometraza}} km</p>
+
+            {% if data.oprema %}
+            <p class="fs-3">Dodatna oprema</p>
+            {% for d in data.oprema %}
+            <p>{{d.naziv}}</p>
+            {% endfor %}
+            {% endif %}
+
+
         </div>
     </div>
 
-    <a href="/administracija/uredivanje-automobila/{{data.id}}" class="btn btn-outline-success" id="button">Uredi</a>
-    <a href="/administracija/brisanje-automobila/{{data.id}}" class="btn btn-outline-success" id="button">Ukloni</a>
+    {% if data.auto.dostupnost=='DA' and data.auto.servis_prodaja=='P' %}
+    <a href="/administracija/ispis-sve-opreme-za-automobil?auto_id={{data.auto.id}}" class="btn btn-outline-success"
+        id="button">Dodaj opremu</a>
+    {% endif %}
+    <a href="/administracija/uredivanje-automobila/{{data.auto.id}}" class="btn btn-outline-success"
+        id="button">Uredi</a>
+    <a href="/administracija/brisanje-automobila/{{data.auto.id}}" class="btn btn-outline-success"
+        id="button">Ukloni</a>
 
     {% endblock %}
 

@@ -295,10 +295,22 @@ def getCar(id):
     try:
         table = 'auto'
         response = get_item(table, id)
+        oprema = find_item('oprema_vozila', 'id_auto', id)
+        print(oprema)
+
+        idList = []
+        for item in oprema:
+            idList.append(item['id_oprema'])
+        print(idList)
+
+        opremaData = []
+        for item in idList:
+            opremaData.append(get_item('oprema', item))
+        print(opremaData)
 
     except Exception as err:
         return make_response(render_template("fail.html", error=err), 400)
-    return make_response(render_template("administracija-prikaz-automobila.html", data=response), 200)
+    return make_response(render_template("administracija-prikaz-automobila.html", data={"auto": response, "oprema": opremaData}), 200)
 
 # ruta za brisanje određenog automobila
 
@@ -472,3 +484,59 @@ def deleteClient(id):
     except Exception as err:
         return make_response(render_template("fail.html", error=err), 400)
     return make_response(render_template("success.html", data={"msg": "Uspješno izbrisan klijent!", "route": "/administracija/ispis-svih-klijenata"}), 200)
+
+
+# ruta za dodavanje opreme automobilu
+
+@administracija.route("/administracija/dodavanje-opreme-automobilu", methods=['POST', 'GET'])
+def addCarEquipment():
+    if request.method == "POST":
+        try:
+            data = {
+                "id_auto": request.args.get('auto_id'),
+                "id_oprema": request.args.get('oprema_id')
+            }
+
+            for key, value in request.form.items():
+                data[key] = value
+
+            table = 'oprema_vozila'
+
+            add_item(table, data)
+
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("success.html", data={"msg": "Oprema uspješno dodana!", "route": "/administracija/ispis-svih-automobila"}), 200)
+
+    else:
+        try:
+            autoData = get_item('auto', request.args.get('auto_id'))
+            opremaData = get_item('oprema', request.args.get('oprema_id'))
+
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("administracija-dodavanje-opreme-automobilu.html", data={"auto": autoData, "oprema": opremaData}), 200)
+
+# ruta za ispis sve opreme (u svrhu dodavanja na automobil)
+
+
+@administracija.route("/administracija/ispis-sve-opreme-za-automobil", methods=['POST', 'GET'])
+def getCarEquipment():
+    if request.method == "POST":
+        try:
+            table = 'oprema'
+            attribut = 'naziv'
+            value = request.form.get('naziv')
+            response = find_item_like(table, attribut, value)
+            autoData = get_item('auto', request.args.get('auto_id'))
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("administracija-ispis-sve-opreme-za-automobil.html", data={"auto": autoData, "oprema": response}), 200)
+    else:
+        try:
+            table = 'oprema'
+            response = get_all_items(table)
+            autoData = get_item('auto', request.args.get('auto_id'))
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("administracija-ispis-sve-opreme-za-automobil.html", data={"auto": autoData, "oprema": response}), 200)

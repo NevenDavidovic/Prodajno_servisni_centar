@@ -87,6 +87,8 @@ def get_all_items(table) -> dict:
         myresult = mycursor.fetchall()
         return myresult
 ############################################################
+
+
 def get_all_cars_for_sale(table) -> dict:
     # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
@@ -99,9 +101,10 @@ def get_all_cars_for_sale(table) -> dict:
         except Exception as err:
             raise Exception(err)
         myresult = mycursor.fetchall()
-        
+
         return myresult
 ############################################################
+
 
 def get_all_salesmen(table) -> dict:
     # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
@@ -118,13 +121,15 @@ def get_all_salesmen(table) -> dict:
 
         return myresult
 ############################################################
+
+
 def get_client_status(p_id) -> dict:
     # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
         # da vraća rezultate tj. rows kao dictionaryje
         # definiranje pocetnih uvjeta
         clientStatus = {
-            "prijasnji_klijent" : False,
+            "prijasnji_klijent": False,
             "klijent_zaposlenik": False
         }
 
@@ -133,29 +138,31 @@ def get_client_status(p_id) -> dict:
         qstring1 = f'''SELECT count(id) as broj 
         FROM racun_prodaje
         where id_klijent = {p_id};'''
-        
+
         # upit koji provjerava je li klijent ujedno i zaposlenik
         qstring2 = f'''SELECT count(*) as broj
         FROM zaposlenik z
         WHERE oib = (SELECT oib FROM klijent WHERE id = {p_id});'''
 
         try:
-            
+
             mycursor.execute(qstring1)
             repeatedClientCount = mycursor.fetchone()
-            
+
             mycursor.execute(qstring2)
             employerClientCount = mycursor.fetchone()
         except Exception as err:
             raise Exception(err)
-        
+
         if int(repeatedClientCount.get('broj')):
             clientStatus['prijasnji_klijent'] = True
         if int(employerClientCount.get('broj')):
             clientStatus['klijent_zaposlenik'] = True
-        
+
         return clientStatus
 ############################################################
+
+
 def get_all_receipts() -> dict:
     # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
@@ -168,9 +175,11 @@ def get_all_receipts() -> dict:
         except Exception as err:
             raise Exception(err)
         myresult = mycursor.fetchall()
-        
+
         return myresult
 ############################################################
+
+
 def get_all_receipts_after_date(my_date) -> dict:
     # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
@@ -202,11 +211,13 @@ def get_item(table, id) -> dict:
             mycursor.execute(qstring)
             myresult = mycursor.fetchone()
             if myresult == None:
-                raise Exception("Zaposlenik nije pronađen u bazi!") 
+                raise Exception("Zaposlenik nije pronađen u bazi!")
         except Exception as err:
             raise Exception(err)
         return myresult
 ############################################################
+
+
 def get_receipt(id) -> dict:
     # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
@@ -218,7 +229,7 @@ def get_receipt(id) -> dict:
             mycursor.execute(qstring)
             myresult = mycursor.fetchone()
             if myresult == None:
-                raise Exception("Račun nije pronađen u bazi!") 
+                raise Exception("Račun nije pronađen u bazi!")
         except Exception as err:
             raise Exception(err)
         return myresult
@@ -240,8 +251,10 @@ def find_item(table, attribut: str, value) -> dict:
             mycursor.execute(qstring)
         except Exception as err:
             raise Exception(err)
-        return  mycursor.fetchall()
+        return mycursor.fetchall()
 ############################################################
+
+
 def find_item_like(table, attribut: str, value) -> dict:
     # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
@@ -257,7 +270,7 @@ def find_item_like(table, attribut: str, value) -> dict:
             mycursor.execute(qstring)
         except Exception as err:
             raise Exception(err)
-        return  mycursor.fetchall()
+        return mycursor.fetchall()
 ############################################################
 
 
