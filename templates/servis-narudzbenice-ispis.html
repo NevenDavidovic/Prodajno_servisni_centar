@@ -16,12 +16,12 @@
     </div>
 </div>
 
-<div class="container" id="c-global" width="100px">
+<div class="container" id="c-global" >
 
     <label for="identificator" class="form-label">Pretraži prema:</label>
-    <div class="search" width="50px">
+    <div class="search" width="100px">
         <form method="post" class="d-flex">
-            <select class="form-select" name="identificator" id="identificator" aria-label="Pretraži po" required value="{{request.form['identificator']}}">
+            <select class="select" name="identificator" id="identificator" aria-label="Pretraži po" required value="{{request.form['identificator']}}">
                 <option selected value="broj_sasije">Broj šasije</option>
                 <option value="model">Model</option>
                 <option value="marka_automobila">Marka</option>
@@ -29,7 +29,7 @@
                 
     
             </select>
-            <div class="d-flex search-box">
+            <div class="d-flex search-box" width="50px">
                 <input name="query" value="{{request.form['query']}}" type="text" class="form-control"
                     placeholder="Upisati traženi pojam" required>
                 <input type="submit" class="btn btn-outline-success" value="Pretraži">

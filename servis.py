@@ -173,17 +173,25 @@ def deleteStavkaDio(id):
 ################################################################################################################
 # NARUDŽBENICA
 
+
 @servis.route('/narudzbenica/popis', methods=['GET','POST'])
 def ispisNarudzbenice():
         if request.method == "POST":
             try:
+                queryData = {}
+                for key, value in request.form.items():
+                    queryData[key] = value
+
                 table = 'narudzbenicej'
-                attribut = 'naziv'
-                value = request.form.get('naziv')
+                attribut = queryData['identificator']
+                value = queryData['query']
+
                 response = find_item_like(table, attribut, value)
+            
             except Exception as err:
                 return make_response(render_template("fail.html", error=err), 400)
-            return make_response(render_template("servis-dio-ispis.html", data=response), 200)
+                
+            return make_response(render_template("servis-narudzbenice-ispis.html", data=response), 200)
         else:
             try:
                 table = 'narudzbenicej'
