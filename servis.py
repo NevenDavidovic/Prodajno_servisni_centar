@@ -108,6 +108,23 @@ def add_stavkaDio(naziv,proizvodac):
     
     return render_template("servis-stavka-dio-dodaj.html",data=response,naziv=naziv,proizvodac=proizvodac) 
 
+@servis.route("/servis/stavka-dio-dodaj", methods=['GET','POST'])
+def add_stavka_Dio():
+    if request.method == "POST":
+        try:
+            table = 'stavka_dio'
+            data = {}
+            for key, value in request.form.items():
+                data[key] = value
+
+            add_item(table, data)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("success.html", data={"msg": "Dio uspješno dodan!", "route": "/servis/stavka-dio-ispis"}), 200)
+    
+  
+
+
 @servis.route("/servis/stavka-dio-ispis", methods=['GET','POST'])
 def ispisStavkaDio():
     if request.method == "POST":
