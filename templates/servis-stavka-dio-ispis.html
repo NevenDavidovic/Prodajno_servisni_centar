@@ -44,6 +44,7 @@
                 <th scope="col">Nabavna cijena</th>
                 <th scope="col">Prodajna cijena</th>
                 <th scope="col">Dostupna količina</th>
+                <th> </th>
             </tr>
         </thead>
         <tbody>
@@ -57,10 +58,9 @@
                 <td>{{d.nabavna_cijena}} kn</td>
                 <td>{{d.prodajna_cijena}} kn</td>
                 <td>{{d.dostupna_kolicina}}</td>
-                
                 <td>
                     <a href="/servis/stavka-uredivanje-dijelova/{{d.id}}" class="btn btn-outline-success min-width-72 mb-1">Uredi</a>
-                    <a href="/servis/stavka-brisanje-dijelova/{{d.id}}" class="btn btn-outline-success min-width-72">Ukloni</a>
+                    <a onclick="areYouSure(event)" data-href="/servis/stavka-brisanje-dijelova/{{d.id}}" class="btn btn-outline-success min-width-72 mb-1">Ukloni</a>
                 </td>
             </tr>
             {% endfor %}
@@ -71,6 +71,15 @@
     {% else %}
     <p class="fs-4 text-center">Nije pronađen niti jedan dio.</p>
     {% endif %}
+
+    <script>
+        function areYouSure(event){
+            if (prompt("Obrisat ćete dio! Za nastaviti upišite DA") == 'DA') {
+                window.location.href = event.target.dataset.href;
+                console.log(event.target.dataset.href)
+            }   
+        }
+    </script>
 
     {% endblock %}
 

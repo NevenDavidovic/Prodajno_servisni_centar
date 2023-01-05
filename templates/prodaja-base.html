@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en" data-bs-theme="light">
 
 <head>
     <meta charset="UTF-8">
@@ -23,7 +23,7 @@
     {% endblock %}
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark" id="nav">
+    <nav class="navbar navbar-expand-lg bg-light" id="nav">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">Prodajno servisni centar</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -135,6 +135,17 @@
         } else {
             footer.style.position = 'relative';
             footer.style.width = '100%';
+        }
+    </script>
+    <script>
+        const elementHTML = document.querySelector('html');
+        const elementNav = document.querySelector('#nav');
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            elementHTML.setAttribute('data-bs-theme', 'dark');
+            elementNav.classList.add('bg-dark');
+        } else {
+            elementHTML.setAttribute('data-bs-theme', 'light');
+            elementNav.classList.remove('bg-dark');
         }
     </script>
 
