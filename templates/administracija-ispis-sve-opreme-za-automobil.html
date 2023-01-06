@@ -44,7 +44,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for d in data.oprema %}
+            {% for d in data.oprema[::-1] %}
             <tr>
                 <td>{{d.naziv}}</td>
                 <td>{{d.marka}}</td>
