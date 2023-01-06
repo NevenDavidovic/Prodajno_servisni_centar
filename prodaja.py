@@ -140,10 +140,23 @@ def getCar(id):
     try:
         table = 'auto'
         response = get_item(table, id)
+        
+        oprema = find_item('oprema_vozila', 'id_auto', id)
+        # print(oprema)
+
+        idList = []
+        for item in oprema:
+            idList.append(item['id_oprema'])
+        # print(idList)
+
+        opremaData = []
+        for item in idList:
+            opremaData.append(get_item('oprema', item))
+        # print(opremaData)
 
     except Exception as err:
         return make_response(render_template("fail.html", error=err), 400)
-    return make_response(render_template("prodaja-prikaz-auta.html", data=response), 200)
+    return make_response(render_template("prodaja-prikaz-auta.html", data=response, oprema=opremaData), 200)
 
 # PRIKAZ SVIH PRODAVAČA
 

@@ -41,6 +41,13 @@
             <p><b>Snaga motora:</b> {{data.snaga_motora}} KW</p>
             <p><b>Kilometraža:</b> {{data.kilometraza}}</p>
             <p><b>Tip motora:</b> {{data.tip_motora}}</p>
+
+            {% if oprema %}
+            <p class="fs-3">Dodatna oprema</p>
+            {% for d in oprema %}
+            <p>{{d.naziv.capitalize()}}</p>
+            {% endfor %}
+            {% endif %}
         </div>
     </div>
 

@@ -39,10 +39,16 @@
     }
 }
 
-h1,
-.fs-4 {
+h1, .fs-4 {
     color: #212529;
 }
+
+@media (prefers-color-scheme: dark) {
+    .not-found {
+        color: #f3f3f3;
+    }
+}
+
 
 #button {
     margin-top: 2vw;

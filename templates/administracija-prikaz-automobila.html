@@ -52,7 +52,7 @@
             {% if data.oprema %}
             <p class="fs-3">Dodatna oprema</p>
             {% for d in data.oprema %}
-            <p>{{d.naziv}}</p>
+            <p>{{d.naziv.capitalize()}}</p>
             {% endfor %}
             {% endif %}
 
