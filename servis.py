@@ -304,3 +304,22 @@ def createNarudzbenica():
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
         return make_response(render_template("servis-narudzbenica-dodaj.html", data={"auto": autoData, "klijent": klijentData, "broj_narudzbe": brojNarudzbe}), 200)
+
+
+@servis.route("/servis/dodavanje-novog-automobila", methods=['POST', 'GET'])
+def addCar():
+    if request.method == "POST":
+        try:
+            table = 'auto'
+            data = {}
+            for key, value in request.form.items():
+                if key == 'godina_proizvodnje':
+                    value = value + '-01-01'
+                data[key] = value
+
+            add_item(table, data)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("success.html", data={"msg": "Automobil uspješno dodan!", "route": "/"}), 200)
+    else:
+        return make_response(render_template("servis-dodavanje-novog-automobila.html"), 200)

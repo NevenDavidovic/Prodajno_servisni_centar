@@ -1,0 +1,161 @@
+{% extends "servis-base.html" %}
+{% block head %}
+<title>Dodavanje automobila | PSC</title>
+{% endblock %}
+
+{% block body %}
+
+<div class="text-center bg-image" id="h-global">
+    <div class="mask" style="background-color: rgba(255, 255, 255, 0.7);">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div>
+                <h1>Dodavanje automobila za servis</h1>
+                <p class="fs-4">Pomoću forme unesite podatke o novom automobilu</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" id="c-global">
+
+
+    {% block content %}
+    <form method="post">
+
+        <div class="row" id="end">
+            <div class="col">
+
+
+                <p class="fs-3">Opće informacije</p>
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="marka_automobila" class="form-label">Marka</label>
+                        <input name="marka_automobila" value="{{request.form['marka_automobila']}}" type="text"
+                            class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="model" class="form-label">Model</label>
+                        <input name="model" value="{{request.form['model']}}" type="text" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="godina_proizvodnje" class="form-label">Godina proizvodnje</label>
+                        <input name="godina_proizvodnje" value="{{request.form['godina_proizvodnje']}}" type="text"
+                            pattern="\d{4}" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="broj_sasije" class="form-label">Broj šasije</label>
+                        <input name="broj_sasije" value="{{request.form['broj_sasije']}}" type="text"
+                            class="form-control" required>
+                    </div>
+                </div>
+
+
+                <div class="row">
+
+                    <div class="col-6">
+
+                        <div class="row" id="input-global">
+                            <div class="col">
+                                <label for="servis_prodaja" class="form-label">Namjena</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="servis_prodaja" value="S"
+                                        id="servis" required checked>
+                                    <label class="form-check-label" for="servis">
+                                        Servis
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="servis_prodaja" value="P"
+                                        id="prodaja" disabled>
+                                    <label class="form-check-label" for="prodaja">
+                                        Prodaja
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-6">
+
+                        <div class="row" id="input-global">
+                            <div class="col">
+                                <label for="dostupnost" class="form-label">Dostupnost</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="dostupnost" value="DA"
+                                        id="dostupno" required>
+                                    <label class="form-check-label" for="dostupno">
+                                        Dostupno
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="dostupnost" value="NE"
+                                        id="nedostupno" required>
+                                    <label class="form-check-label" for="nedostupno">
+                                        Nedostupno
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="col">
+
+
+                <p class="fs-3">Tehničke informacije</p>
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="boja" class="form-label">Boja</label>
+                        <input name="boja" value="{{request.form['boja']}}" type="text" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="tip_motora" class="form-label">Tip motora</label>
+                        <input name="tip_motora" value="{{request.form['tip_motora']}}" type="text" class="form-control"
+                            required>
+                    </div>
+                </div>
+
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="snaga_motora" class="form-label">Snaga motora</label>
+                        <input name="snaga_motora" value="{{request.form['snaga_motora']}}" type="text"
+                            class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="kilometraza" class="form-label">Kilometraža</label>
+                        <input name="kilometraza" value="{{request.form['kilometraza']}}" type="text" pattern="\d*"
+                            class="form-control" required>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <button class="btn btn-outline-success" id="button" type="submit">Dodaj automobil</button>
+
+    </form>
+    {% endblock %}
+</div>
+{% endblock %}
