@@ -1,6 +1,7 @@
 -- MARIJA start
--- 1. upit: Popis zaposlenika koji su servisirali aute kupljene u PSC
 /*
+-- 1. upit: Popis zaposlenika koji su servisirali aute kupljene u PSC
+
 CREATE VIEW narudzbenica_kupljeni AS
 SELECT *
 	FROM narudzbenica
@@ -17,7 +18,6 @@ SELECT *
 			WHERE servis.id_narudzbenica=narudzbenica_kupljeni.id
 			ORDER BY id_zaposlenik ASC
     );
-*/
 
 -- 2. upit: Marke auta sevisirane od strane mehaničara
 
@@ -39,9 +39,6 @@ SELECT DISTINCT marka_automobila
     )
     ORDER BY marka_automobila ASC;
 
-
--- UPITI ZA ADMINISTRACIJA - STATISTIKA
-
 -- 1. UPIT: Kolicina prodanih automobila prema tipu motora i godini proizvodnje
 -- /tip motora - x os, godina proizvodnje - y os: graf sa stupcima/
 
@@ -50,12 +47,32 @@ SELECT DISTINCT tip_motora AS vrsta_vozila
 	FROM auto;
 
 # kolicina prodanih benzinskih automobila prema godini proizvodnje
-SELECT godina_proizvodnje, COUNT(godina_proizvodnje) AS kolicina
+SELECT godina_proizvodnje, COUNT(godina_proizvodnje) AS kolicina_benzin
 	FROM racun_prodaje, auto
     WHERE racun_prodaje.id_auto=auto.id AND tip_motora='benzinski'
     GROUP BY godina_proizvodnje
     ORDER BY godina_proizvodnje ASC;
 
+# kolicina prodanih dizelskih automobila prema godini proizvodnje
+SELECT godina_proizvodnje, COUNT(godina_proizvodnje) AS kolicina_dizel
+	FROM racun_prodaje, auto
+    WHERE racun_prodaje.id_auto=auto.id AND tip_motora='dizel'
+    GROUP BY godina_proizvodnje
+    ORDER BY godina_proizvodnje ASC;
+
+# kolicina prodanih elektricnih automobila prema godini proizvodnje
+SELECT godina_proizvodnje, COUNT(godina_proizvodnje) AS kolicina_elektricni
+	FROM racun_prodaje, auto
+    WHERE racun_prodaje.id_auto=auto.id AND tip_motora='električni'
+    GROUP BY godina_proizvodnje
+    ORDER BY godina_proizvodnje ASC;
+
+# kolicina prodanih hibridnih automobila prema godini proizvodnje
+SELECT godina_proizvodnje, COUNT(godina_proizvodnje) AS kolicina_hibridni
+	FROM racun_prodaje, auto
+    WHERE racun_prodaje.id_auto=auto.id AND tip_motora='hibridni'
+    GROUP BY godina_proizvodnje
+    ORDER BY godina_proizvodnje ASC;
 
 -- 2. UPIT: Kolicina automobila prema markama koji nisu prodani
 -- (niti jedan automobil navedenih marki nije prodan)
@@ -76,6 +93,65 @@ SELECT marka_automobila, COUNT(marka_automobila) AS kolicina
 			WHERE racun_prodaje.id_auto=auto.id)
     GROUP BY marka_automobila
     ORDER BY kolicina DESC;
+*/
+
+-- UPITI ZA ADMINISTRACIJA - STATISTIKA
+
+-- 1. UPIT: Koliko je automobila prodano po mjesecima u 2022. godini?
+
+# kolicina prodanih automobila u 2022. godini po mjesecima
+CREATE VIEW prodaja_automobila_po_mjesecima_2022 AS
+SELECT EXTRACT(MONTH FROM datum) AS mjesec, COUNT(datum) AS kolicina
+	FROM racun_prodaje
+    WHERE EXTRACT(YEAR FROM datum)="2022"
+    GROUP BY EXTRACT(MONTH FROM datum)
+    ORDER BY mjesec ASC;
+
+SELECT * FROM prodaja_automobila_po_mjesecima_2022;
+
+# mjesec sa najvise prodaja
+SELECT *
+	FROM prodaja_automobila_po_mjesecima_2022
+    WHERE kolicina IN (
+		SELECT MAX(kolicina)
+			FROM prodaja_automobila_po_mjesecima_2022
+    );
+
+# mjesec sa najmanje prodaja
+SELECT *
+	FROM prodaja_automobila_po_mjesecima_2022
+    WHERE kolicina IN (
+		SELECT MIN(kolicina)
+			FROM prodaja_automobila_po_mjesecima_2022
+    );
+
+-- 2. UPIT: Koliko je automobila servisirano po mjesecima u 2022. godini?
+
+# kolicina servisiranih automobila u 2022. godini po mjesecima
+CREATE VIEW servis_automobila_po_mjesecima_2022 AS
+SELECT EXTRACT(MONTH FROM datum_zaprimanja) AS mjesec, COUNT(datum_zaprimanja) AS kolicina
+	FROM narudzbenica
+    WHERE EXTRACT(YEAR FROM datum_zaprimanja)="2022"
+    GROUP BY EXTRACT(MONTH FROM datum_zaprimanja)
+    ORDER BY mjesec ASC;
+
+SELECT * FROM servis_automobila_po_mjesecima_2022;
+
+# mjesec sa najvise servisa
+SELECT *
+	FROM servis_automobila_po_mjesecima_2022
+    WHERE kolicina IN (
+		SELECT MAX(kolicina)
+			FROM servis_automobila_po_mjesecima_2022
+    );
+
+# mjesec sa najmanje servisa
+SELECT *
+	FROM servis_automobila_po_mjesecima_2022
+    WHERE kolicina IN (
+		SELECT MIN(kolicina)
+			FROM servis_automobila_po_mjesecima_2022
+    );
 -- MARIJA end
 
 -- NEVEN UPITI
