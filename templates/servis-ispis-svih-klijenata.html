@@ -1,0 +1,100 @@
+{% extends "servis-base.html" %}
+{% block head %}
+<title>Klijenti | PSC</title>
+{% endblock %}
+
+{% block body %}
+
+<div class="text-center bg-image" id="h-global">
+    <div class="mask" style="background-color: rgba(255, 255, 255, 0.7);">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div>
+                <h1>Klijenti</h1>
+                <p class="fs-4">Pomoću forme pretražite klijente</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" id="c-global">
+
+    <!-- <div class="search">
+        <form method="post">
+            <div class="d-flex">
+                <input name="ime" value="{{request.form['ime']}}" type="text" class="form-control"
+                    placeholder="Upisati ime (npr. Iva)" required>
+                <input type="submit" class="btn btn-outline-success" value="Pretraži">
+            </div>
+        </form>
+    </div> -->
+    <label for="identificator" class="form-label">Pretraži prema:</label>
+    <div class="search">
+        <form method="post" class="d-flex">
+            <select class="form-select" name="identificator" id="identificator" aria-label="Pretraži po" required
+                value="{{request.form['identificator']}}">
+                <option selected value="ime">Ime</option>
+                <option value="prezime">Prezime</option>
+                <option value="oib">OIB</option>
+                <option value="adresa">Adresa</option>
+                <option value="grad">Grad</option>
+
+            </select>
+            <div class="d-flex search-box">
+                <input name="query" value="{{request.form['query']}}" type="text" class="form-control"
+                    placeholder="Upisati traženi pojam" required>
+                <input type="submit" class="btn btn-outline-success" value="Pretraži">
+            </div>
+        </form>
+    </div>
+
+    {% block content %}
+
+    {% if data %}
+
+    <!-- table -->
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Ime</th>
+                <th scope="col">Prezime</th>
+                <th scope="col">OIB</th>
+                <th scope="col">Spol</th>
+                <th scope="col">Adresa</th>
+                <th scope="col">Grad</th>
+                <th scope="col">Broj telefona</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for d in data %}
+            <tr>
+                <td>{{d.ime}}</td>
+                <td>{{d.prezime}}</td>
+                <td>{{d.oib}}</td>
+                <td>{{d.spol}}</td>
+                <td>{{d.adresa}}</td>
+                <td>{{d.grad}}</td>
+                <td>{{d.broj_telefona}}</td>
+                <td><a href="#" class="btn btn-outline-success"> Uredi </a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <!-- end of table -->
+
+    {% else %}
+    <p class="fs-4 text-center not-found">Nije pronađen niti jedan klijent.</p>
+    <!--
+    <a href="/prodaja/dodavanje-novog-klijenta" class="btn btn-outline-success"> Dodaj novog klijenta </a>
+    <a href="/administracija/ispis-svih-zaposlenika" class="btn btn-outline-success"> Dodaj zaposlenika kao klijenta
+    </a>
+    -->
+    {% endif %}
+
+
+
+    {% endblock %}
+
+
+</div>
+{% endblock %}
