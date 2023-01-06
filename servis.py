@@ -2,6 +2,8 @@ from flask import Flask, Blueprint, render_template, request, make_response, jso
 from statsFunctions import uslugePoTipuMotora, najviseUtrosenihDjelova, zaspoleniciSaNajviseServisa, zaposleniciPoNajvisojCijeni, racuniPoKupcu, topSkupiDijelovi
 from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_item,find_item_like, get_last_record_identificator,get_all_cars_for_servis
 import mysql.connector
+from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table,get_all_cars_for_sale, get_item,find_item_like, get_last_record_identificator
+
 
 servis = Blueprint("servis", __name__)
 
@@ -60,28 +62,21 @@ def deleteDio(id):
     except Exception as err:
         return make_response(render_template("fail.html", error=err), 400)
     return make_response(render_template("success.html", data={"msg": "Uspješno izbrisan dio!", "route": "/servisi/ispis"}), 200)
-#####################################################################################################################################################
-#####################################################################################################################################################
-#####################################################################################################################################################
+
 #dodavanje dijela
 @servis.route("/servis/dodavanje", methods=['POST', 'GET'])
 def addDio():
-    
     if request.method == "POST":
         try:
             table = 'dio'
             data = {}
             for key, value in request.form.items():
                 data[key] = value
-            
+
             add_item(table, data)
-                   
-           
-            dio=get_all_items('dio')
-            
         except Exception as err:
-            return make_response(render_template("dodavanje-dijela-fail.html", error=err,data={"msg": "Odaberi već postojećeg proizvođača i naziv", "route": "/servis/stavka-dio-dodaj/<naziv>/<proizvodac>"},datan=data), 400)
-        return make_response(render_template("dodavanje-dijela-success.html",data=data,dio=dio), 200)
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("success.html", data={"msg": "Dio uspješno dodan!", "route": "/servisi/ispis"}), 200)
     
         #return make_response(render_template("servis-dio-dodaj.html"), 200) 
     return render_template("servis-dio-dodaj.html")    
@@ -90,8 +85,8 @@ def addDio():
   # napravi servis 
 
 # dodaj sve podatke o dijelu
-@servis.route("/servis/stavka-dio-dodaj/<naziv>/<proizvodac>", methods=['GET','POST'])
-def add_stavkaDio(naziv,proizvodac):
+@servis.route("/servis/stavka-dio-dodaj", methods=['GET','POST'])
+def add_stavkaDio():
     if request.method == "POST":
         try:
             table = 'stavka_dio'
@@ -106,30 +101,13 @@ def add_stavkaDio(naziv,proizvodac):
     
     response = get_all_items('dio')
     
-    return render_template("servis-stavka-dio-dodaj.html",data=response,naziv=naziv,proizvodac=proizvodac) 
-
-@servis.route("/servis/stavka-dio-dodaj", methods=['GET','POST'])
-def add_stavka_Dio():
-    if request.method == "POST":
-        try:
-            table = 'stavka_dio'
-            data = {}
-            for key, value in request.form.items():
-                data[key] = value
-
-            add_item(table, data)
-        except Exception as err:
-            return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("success.html", data={"msg": "Dio uspješno dodan!", "route": "/servis/stavka-dio-ispis"}), 200)
-    
-  
-
+    return render_template("servis-stavka-dio-dodaj.html",data=response) 
 
 @servis.route("/servis/stavka-dio-ispis", methods=['GET','POST'])
 def ispisStavkaDio():
     if request.method == "POST":
         try:
-            table = 'dijelovi'
+            table = 'stavka_dio'
             attribut = 'naziv'
             value = request.form.get('naziv')
             response = find_item_like(table, attribut, value)
@@ -174,7 +152,7 @@ def urediStavkaDio(id):
             return make_response(render_template("fail.html", error=err), 400)
         return make_response(render_template("servis-stavka-dio-uredivanje.html", data=response, dio=dio,dio1=id_dio), 200)
 
-# delete dio
+# delete dio 
 
 @servis.route("/servis/stavka-brisanje-dijelova/<int:id>", methods=['GET'])
 def deleteStavkaDio(id):
@@ -185,72 +163,144 @@ def deleteStavkaDio(id):
         return make_response(render_template("fail.html", error=err), 400)
     return make_response(render_template("success.html", data={"msg": "Uspješno izbrisan dio!", "route": "/servis/stavka-dio-ispis"}), 200)
 
+#ispis narudzbenice
 
-################################################################################################################
-################################################################################################################
-# NARUDŽBENICA
-
-
-@servis.route('/narudzbenica/popis', methods=['GET','POST'])
+@servis.route("/servis/narudzbenica-ispis", methods=['GET','POST'])
 def ispisNarudzbenice():
-        if request.method == "POST":
-            try:
-                queryData = {}
-                for key, value in request.form.items():
-                    queryData[key] = value
+    
+     if request.method == "POST":
+        try:
+            table = 'narudzbenica'
+            attribut = 'broj_narudzbe'
+            value = request.form.get('broj_narudzbe')
+            response = find_item_like(table, attribut, value)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("servis-narudzbenica-ispis.html", data=response), 200)
+     else:
+        try:
+            table = 'narudzbenica'
+            response = get_all_items(table)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("servis-narudzbenica-ispis.html", data=response), 200)
 
-                table = 'narudzbenicej'
-                attribut = queryData['identificator']
-                value = queryData['query']
+#brisanje narudzbenice
 
-                response = find_item_like(table, attribut, value)
-            
-            except Exception as err:
-                return make_response(render_template("fail.html", error=err), 400)
-                
-            return make_response(render_template("servis-narudzbenice-ispis.html", data=response), 200)
-        else:
-            try:
-                table = 'narudzbenicej'
-                response = get_all_items(table)
-            except Exception as err:
-                return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("servis-narudzbenice-ispis.html", data=response), 200)
+@servis.route("/servis/brisanje-narudzbenice/<int:id>", methods=['GET'])
+def deleteNarudzbenica(id):
+    try:
+        table = 'narudzbenica'
+        delete_item(table, id)
+    except Exception as err:
+        return make_response(render_template("fail.html", error=err), 400)
+    return make_response(render_template("success.html", data={"msg": "Uspješno izbrisana narudzbenica!", "route": "/servis/narudzbenica-ispis"}), 200)
 
+#dodavanje narudzbenice-ispis svih automobila
 
-
-@servis.route("/servis/narudzbenica/popis/<int:id>", methods=['GET','POST'])
-def infoNarudzbenice(id):
+@servis.route("/servis/ispis-svih-automobila", methods=['POST', 'GET'])
+def getAuti():
     if request.method == "POST":
         try:
             queryData = {}
             for key, value in request.form.items():
                 queryData[key] = value
 
-            table = 'narudzbenicej'
+            table = 'auto'
             attribut = queryData['identificator']
             value = queryData['query']
 
+            if attribut == 'godina_proizvodnje':
+                value = value + '-01-01'
+
+            response = find_item_like(table, attribut, value)
+
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("servis-narudzbenica-ispis-automobila.html", data=response), 200)
+    else:
+        try:
+            table = 'auto'
+            response = get_all_cars_for_sale(table)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("servis-narudzbenica-ispis-automobila.html", data=response), 200)
+
+#dodavanje narudzbenice- prikaz auta
+
+@servis.route("/servis/prikaz-auta/<int:id>", methods=['GET'])
+def getAUToo(id):
+    try:
+        table = 'auto'
+        response = get_item(table, id)
+
+    except Exception as err:
+        return make_response(render_template("fail.html", error=err), 400)
+    return make_response(render_template("servis-narudzbenica-prikaz-auta.html", data=response), 200)
+
+#dodavanje narudzbenice -prikaz svih klijenata
+
+# ISPIS SVIH KLIJENATA
+@servis.route("/servis/ispis-svih-klijenata", methods=['POST', 'GET'])
+def getKlijent():
+    if request.method == "POST":
+        try:
+            table = 'klijent'
+            attribut = 'ime'
+            value = request.form.get('ime')
             response = find_item_like(table, attribut, value)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("servis-narudzbenice-ispis.html", data=response), 200)
-    
-    a=int(id)
-    
-    table = 'narudzbenicej'
-    response = get_item(table,a)
-    
-    return render_template("servis-narudzbenice-vise-info.html", data=response)
+        return make_response(render_template("servis-narudzbenica-ispis-klijenata.html", data=response), 200)
+    else:
+        try:
+            table = 'klijent'
+            response = get_all_items(table)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("servis-narudzbenica-ispis-klijenata.html", data=response), 200)
 
 
-@servis.route("/servis/brisanje-narudzbenica/<int:id>",methods=['GET','POST'])
-def deletNarudzbenica(id):
-    try:
-        table = 'narudzbenica'
-        delete_item(table, id)
-    except Exception as err:
-        return make_response(render_template("fail.html", error=err), 400)
-    return make_response(render_template("success.html", data={"msg": "Uspješno stornirana narudžbenica!", "route": "/narudzbenica/popis"}), 200)
-    
-    
+#dodavanje narudzbenice-finale
+
+@servis.route("/servis/dodavanje-narudzbenice", methods=['POST', 'GET'])
+def createNarudzbenica():
+    if request.method == "POST":
+        try:
+
+            # kreiranje dictionary sa svim atributima potrebnim za tablicu racun_prodaje
+            # neki podaci su dobiveni iz argumenata rute, neki iz forme sa stranice, broj racuna preko funkcije
+
+            brojNarudzbe = get_last_record_identificator('narudzbenica', 'broj_narudzbe') + 1
+            data = {
+                "id_auto": request.args.get('car_id'),
+                "id_klijent": request.args.get('klijent_id'),
+                "broj_narudzbe": brojNarudzbe
+            }
+            # dodavanje podataka iz forme u dictionary data
+            for key, value in request.form.items():
+                data[key] = value
+
+            table = 'narudzbenica'
+            # dodavanje narudzbenice u tablicu narudzbenica
+            response = add_item(table, data)
+            # označavanje prodanog auta kao nedostupnog
+            dataToEdit = {
+                "id": request.args.get('car_id'),
+                "dostupnost": "NE"
+            }
+            response = edit_table('auto', dataToEdit)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("success.html", data={"msg": "Narudžbenica uspješno dodana!", "route": "/narudzbenica/popis"}), 200)
+
+    else:
+        try:
+            autoData = get_item('auto', request.args.get('car_id'))
+            klijentData = get_item('klijent', request.args.get('klijent_id'))
+            brojNarudzbe = get_last_record_identificator(
+                'narudzbenica', 'broj_narudzbe')+1
+
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("servis-narudzbenica-dodaj.html", data={"auto": autoData, "klijent": klijentData, "broj_narudzbe": brojNarudzbe}), 200)
