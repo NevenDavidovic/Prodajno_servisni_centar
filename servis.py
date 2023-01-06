@@ -357,14 +357,14 @@ def addClient():
             add_item(table, data)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("success.html", data={"msg": "Klijent uspješno dodan!", "route": "/servis/ispis-svih-klijenata"}), 200)
+        return make_response(render_template("success.html", data={"msg": "Klijent uspješno dodan!", "route": "/servis/svi-klijenti"}), 200)
     else:
         return make_response(render_template("servis-dodavanje-novog-klijenta.html"), 200)
 
 # ruta za ispis svih klijenata
 
 
-@servis.route("/servis/ispis-svih-klijenata", methods=['POST', 'GET'])
+@servis.route("/servis/svi-klijenti", methods=['POST', 'GET'])
 def getClients():
     if request.method == "POST":
         try:
@@ -389,3 +389,28 @@ def getClients():
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
         return make_response(render_template("servis-ispis-svih-klijenata.html", data=response), 200)
+
+# ruta za uredivanje pojedinog klijenta
+
+
+@servis.route("/servis/uredivanje-klijenta/<int:id>", methods=['POST', 'GET'])
+def editClient(id):
+    if request.method == "POST":
+        try:
+            table = 'klijent'
+            data = {}
+            for key, value in request.form.items():
+                data[key] = value
+            data["id"] = id
+
+            edit_table(table, data)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("success.html", data={"msg": "Podaci o klijentu uspješno promjenjeni!", "route": "/servis/svi-klijenti"}), 200)
+    else:
+        try:
+            table = 'klijent'
+            response = get_item(table, id)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("servis-uredivanje-klijenta.html", data=response), 200)
