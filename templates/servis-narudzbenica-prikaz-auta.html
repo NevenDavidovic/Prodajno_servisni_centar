@@ -1,0 +1,59 @@
+{% extends "servis-base.html" %}
+{% block head %}
+<title>Automobil | PSC</title>
+{% endblock %}
+
+{% block body %}
+
+<div class="text-center bg-image" id="h-global">
+    <div class="mask" style="background-color: rgba(255, 255, 255, 0.7);">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div>
+                <h1>Automobil</h1>
+                <p class="fs-4">Sve informacije o automobilu {{data.marka_automobila}} {{data.model}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" id="c-global">
+
+
+    {% block content %}
+
+    <div class="row" id="end">
+        <div class="col">
+            <p class="fs-3">Opće informacije</p>
+            <p><b>Broj Šasije:</b> {{data.broj_sasije}}</p>
+            <p><b>Marka:</b> {{data.marka_automobila}}</p>
+            <p><b>Model:</b> {{data.model}}</p>
+            <p><b>Godina proizvodnje:</b> {{data.godina_proizvodnje.strftime('%Y.')}}</p>
+
+            {% if data.dostupnost=='DA' %}
+            <p><b>Dostupnost:</b> <span class="text-success">Dostupno</span></p>
+            {% else %}  
+            <p><b>Dostupnost:</b> <span class="text-danger">Nedostupno</span> </p>
+            {% endif %}
+        </div>
+        <div class="col"> 
+            <p class="fs-3">Tehničke informacije</p>
+            <p><b>Boja:</b> {{data.boja}}</p>
+            <p><b>Snaga motora:</b> {{data.snaga_motora}} KW</p>
+            <p><b>Kilometraža:</b> {{data.kilometraza}}</p>
+            <p><b>Tip motora:</b> {{data.tip_motora}}</p>
+        </div>
+    </div>
+
+
+    {% if data.dostupnost=='DA' %} 
+    <a href="/servis/ispis-svih-klijenata?car_id={{data.id}}" class="btn btn-success" id="button"> Dodaj na narudžbenicu </a>
+    {% else %} 
+    <a href="javascript:history.back()" class="btn btn-outline-success" id="button"> Vrati se nazad </a>
+    {% endif %}
+
+
+    {% endblock %}
+
+
+</div>
+{% endblock %}

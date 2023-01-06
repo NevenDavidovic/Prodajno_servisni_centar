@@ -1,0 +1,80 @@
+{% extends "servis-base.html" %}
+{% block head %}
+<title>Narudžbenica | PSC</title>
+{% endblock %}
+
+{% block body %}
+
+<div class="text-center bg-image" id="h-global">
+    <div class="mask" style="background-color: rgba(255, 255, 255, 0.7);">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div>
+                <h1>Narudžbenica</h1>
+                <p class="fs-4">Informacije o narudžbenici broj {{data.broj_narudzbe}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" id="c-global">
+
+
+    {% block content %}
+
+    <div class="row" id="end"> 
+        <div class="col">
+            <p class="fs-3">Informacije o Klijentu</p>
+            <p><b>Ime:</b> {{data.klijent.ime}}</p>
+            <p><b>Prezime:</b> {{data.klijent.prezime}}</p>
+            <p><b>OIB:</b> PLACEHOLDER</p>
+            <p><b>Broj telefona:</b> {{data.klijent.broj_telefona}}</p>
+            <p><b>Adresa:</b> {{data.klijent.adresa}}</p>
+            <p><b>Grad:</b> {{data.klijent.grad}}</p>
+            <p><b>Spol:</b> {% if data.klijent.spol=='ž' %} Žensko {% else %} Muško {% endif %}</p>
+            <p class="text-white">_</p>
+
+            <p class="fs-3">Informacije o narudžbenici</p>
+            <form method="POST" id="detalji-prodaje">
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="datum_zaprimanja" class="form-label">Datum zaprimanja</label>
+                        <input name="datum_zaprimanja" type="date" class="form-control" required>
+                    </div>
+                </div>
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="datum_povratka" class="form-label">Datum povratka</label>
+                        <input name="datum_povratka" type="date" class="form-control" required>
+                    </div>
+                </div>
+
+        </div>
+        <div class="col">
+            
+
+            <p class="fs-3">Informacije o automobilu</p>
+            <p><b>Broj Šasije:</b> {{data.auto.broj_sasije}}</p>
+            <p><b>Marka:</b> {{data.auto.marka_automobila}}</p>
+            <p><b>Model:</b> {{data.auto.model}}</p>
+            <p><b>Godina proizvodnje:</b> {{data.auto.godina_proizvodnje.strftime('%Y.')}}</p>
+            <p><b>Boja:</b> {{data.auto.boja}}</p>
+            <p><b>Snaga motora:</b> {{data.auto.snaga_motora}} KW</p>
+            <p><b>Kilometraža:</b> {{data.auto.kilometraza}}</p>
+            <p><b>Tip motora:</b> {{data.auto.tip_motora}}</p>
+
+        
+              
+
+            </form>
+        </div>
+    </div>
+
+    <button form="detalji-prodaje" class="btn btn-success" id="button" type="submit">Dodaj narudžbenicu</button>
+    <a href="javascript:history.back()" class="btn btn-outline-success" id="button"> Nazad </a>
+
+
+    {% endblock %}
+
+
+</div>
+{% endblock %}
