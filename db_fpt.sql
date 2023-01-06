@@ -261,3 +261,69 @@ DELIMITER ;
 
 -- CALL azuriraj_dostupnu_kolicinu_dijela('55032099911',10); dodaje 10 na postojecu vrijednost
 -- TIN GOTOVO
+
+-- MARIJA start
+
+DROP PROCEDURE IF EXISTS konverzija_snage_motora;
+
+# konverzija KW u BHP (procedura nad tablicom auto)
+DELIMITER //
+
+CREATE PROCEDURE konverzija_snage_motora()
+DETERMINISTIC
+
+BEGIN
+	UPDATE auto
+    SET snaga_motora = snaga_motora * 1.341;
+END //
+
+DELIMITER ;
+
+CALL konverzija_snage_motora();
+SELECT * FROM auto;
+
+# promjena cijena iz kuna u eure (nad tablicama oprema, racun_prodaje, usluga_servis, stavka_dio)
+
+DROP FUNCTION IF EXISTS pronadi_tablice_sa_atributom;
+
+# funkcija koja pronalazi sve tablice koje sadrze trazeni atribut
+DELIMITER //
+
+CREATE FUNCTION pronadi_tablice_sa_atributom(naziv_atributa VARCHAR(255))
+RETURNS VARCHAR(255)
+DETERMINISTIC
+
+BEGIN
+	DECLARE table_name VARCHAR(255) DEFAULT '';
+    DECLARE results VARCHAR(255) DEFAULT '';
+
+	DECLARE done BOOLEAN DEFAULT FALSE;
+
+	DECLARE cursor_tables CURSOR FOR
+		SELECT table_name FROM information_schema.columns
+		WHERE column_name = naziv_atributa;
+
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+	OPEN cursor_tables;
+
+	get_tables: LOOP
+		FETCH cursor_tables INTO table_name;
+		IF done THEN
+		LEAVE get_tables;
+		END IF;
+
+	SET results = results + table_name;
+ 
+	END LOOP;
+
+	CLOSE cursor_tables;
+
+	RETURN results;
+END //
+
+DELIMITER ;
+
+SELECT pronadi_tablice_sa_atributom('naziv');
+
+-- MARIJA end
