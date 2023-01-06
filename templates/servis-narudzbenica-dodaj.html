@@ -38,7 +38,7 @@
                 <div class="row" id="input-global">
                     <div class="col">
                         <label for="datum_zaprimanja" class="form-label">Datum zaprimanja</label>
-                        <input name="datum_zaprimanja" type="date" class="form-control" required>
+                        <input name="datum_zaprimanja" type="date" class="form-control" required id="input-datum">
                     </div>
                 </div>
                 <div class="row" id="input-global">
@@ -74,7 +74,9 @@
 
 
     {% endblock %}
-
+    <script>
+        const input = document.getElementById("input-datum").valueAsDate = new Date();
+    </script>
 
 </div>
 {% endblock %}

@@ -176,14 +176,14 @@ def ispisNarudzbenice():
             response = find_item_like(table, attribut, value)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("servis-narudzbenica-ispis.html", data=response), 200)
+        return make_response(render_template("servis-narudzbenice-ispis.html", data=response), 200)
      else:
         try:
             table = 'narudzbenica'
             response = get_all_items(table)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("servis-narudzbenica-ispis.html", data=response), 200)
+        return make_response(render_template("servis-narudzbenice-ispis.html", data=response), 200)
 
 #brisanje narudzbenice
 
@@ -221,7 +221,7 @@ def getAuti():
     else:
         try:
             table = 'auto'
-            response = get_all_cars_for_sale(table)
+            response = get_all_cars_for_servis(table)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
         return make_response(render_template("servis-narudzbenica-ispis-automobila.html", data=response), 200)
