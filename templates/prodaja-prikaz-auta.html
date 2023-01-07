@@ -31,7 +31,7 @@
 
             {% if data.dostupnost=='DA' %}
             <p><b>Dostupnost:</b> <span class="text-success">Dostupno</span></p>
-            {% else %}  
+            {% else %}
             <p><b>Dostupnost:</b> <span class="text-danger">Nedostupno</span> </p>
             {% endif %}
         </div>
@@ -44,9 +44,11 @@
 
             {% if oprema %}
             <p class="fs-3">Dodatna oprema</p>
-            {% for d in oprema %}
-            <p>{{d.naziv.capitalize()}}</p>
-            {% endfor %}
+            <ul>
+                {% for d in oprema %}
+                <li>{{d.naziv.capitalize()}}</li>
+                {% endfor %}
+            </ul>
             {% endif %}
         </div>
     </div>
@@ -54,9 +56,9 @@
     <!-- <a href="/administracija/uredivanje-zaposlenika/{{data.id}}" class="btn btn-outline-success" id="button"> Uredi </a>
     <a href="/administracija/uredivanje-zaposlenika/{{data.id}}" class="btn btn-outline-success" id="button"> Uredi </a> -->
 
-    {% if data.dostupnost=='DA' %} 
+    {% if data.dostupnost=='DA' %}
     <a href="/prodaja/ispis-svih-klijenata?car_id={{data.id}}" class="btn btn-success" id="button"> Dodaj na račun </a>
-    {% else %} 
+    {% else %}
     <a href="javascript:history.back()" class="btn btn-outline-success" id="button"> Vrati se nazad </a>
     {% endif %}
 
