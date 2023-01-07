@@ -90,6 +90,31 @@ DELIMITER ;
 -- CALL PROMET_DANA("2022-11-11",@br_prodanih_stavki, @promet_dana);
 -- SELECT @promet_dana,@br_prodanih_stavki FROM DUAL;
 
+DELIMITER //
+CREATE TRIGGER bi_narudzbenica
+BEFORE INSERT ON narudzbenica
+FOR EACH ROW
+BEGIN
+IF new.datum_zaprimanja > CURDATE() THEN
+ SIGNAL SQLSTATE '40000'
+ SET MESSAGE_TEXT = 'Datum zaprimanja ne može biti veći od trenutačnog datuma';
+ END IF;
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER bi_narudzbenica1
+BEFORE INSERT ON narudzbenica
+FOR EACH ROW
+BEGIN
+IF new.datum_povratka < new.datum_zaprimanja THEN
+ SIGNAL SQLSTATE '40000'
+ SET MESSAGE_TEXT = 'Datum povratka ne može biti manji od datuma zaprimanja';
+ END IF;
+END//
+DELIMITER ;
+INSERT INTO narudzbenica VALUES (666, 25, 218, 1, "2023-01-08 00:00:00", "2023-01-10 00:00:00");
+
 
 -- SARA GOTOVA
 
