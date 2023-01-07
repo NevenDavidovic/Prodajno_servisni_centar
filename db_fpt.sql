@@ -20,6 +20,77 @@ DELIMITER ;
 
 -- SELECT d_ili_g(rashodi, prihodi) FROM rash_prih;
 
+-- PROCEDURA ZA IZRAČUNAVANJE PROMETA DANA ZA SERVIS
+
+
+
+DELIMITER //
+CREATE PROCEDURE SERVIS_PROMET_DANA(IN p_datum DATE,OUT br_prodanih_stavki_s INTEGER, OUT promet_dana_s DECIMAL(6,2))
+BEGIN
+	
+    SELECT SUM((IFNULL(cijena_dijelova, 0)+IFNULL(cijena_servisa, 0))) INTO promet_dana_s
+	FROM cijena__dijelova cd, cijena__servisa cs
+	WHERE cd.id_narudzbenica=cs.id_narudzbenica AND datum_povratka=p_datum
+	GROUP BY datum_povratka;
+    
+    SELECT COUNT(id_narudzbenica) INTO br_prodanih_stavki_s
+	FROM cijena__servisa
+	WHERE datum_povratka=p_datum
+	GROUP BY datum_povratka;
+    
+END //
+DELIMITER ;
+
+-- CALL SERVIS_PROMET_DANA("2022-05-30",@br_prodanih_stavki_s, @promet_dana_s);
+-- SELECT @promet_dana_s,@br_prodanih_stavki_s FROM DUAL;
+
+-- PROCEDURA ZA IZRAČUNAVANJE PROMETA DANA ZA PRODAJU
+-- DROP PROCEDURE PRODAJA_PROMET_DANA;
+
+
+DELIMITER //
+CREATE PROCEDURE PRODAJA_PROMET_DANA(IN p_datum_p DATE,OUT br_prodanih_stavki_p INTEGER, OUT promet_dana_p DECIMAL(12,2))
+BEGIN
+
+	SELECT SUM(cijena), COUNT(id) INTO promet_dana_p, br_prodanih_stavki_p
+	FROM racun_prodaje
+	WHERE datum=p_datum_p
+	GROUP BY datum;
+    
+  
+END //
+DELIMITER ;
+
+-- CALL PRODAJA_PROMET_DANA("2022-05-30",@br_prodanih_stavki_p, @promet_dana_p);
+-- SELECT @promet_dana_p,@br_prodanih_stavki_p FROM DUAL;
+
+-- PROCEDURA ZA IZRAČUNAVANJE PROMETA DANA (ADMINISTRACIJA)
+
+-- DROP PROCEDURE PROMET_DANA;
+
+DELIMITER //
+CREATE PROCEDURE PROMET_DANA(IN p_datum DATE,OUT br_prodanih_stavki INTEGER, OUT promet_dana DECIMAL(12,2))
+BEGIN
+	
+    DECLARE servis_p, prodaja_p DECIMAL(12,2);
+    DECLARE servis_br, prodaja_br INTEGER;
+
+	CALL PRODAJA_PROMET_DANA(p_datum,@brprodstav, @promet);
+	SELECT @promet,@brprodstav INTO prodaja_p, prodaja_br FROM DUAL;
+    
+    CALL SERVIS_PROMET_DANA(p_datum,@br_prod, @promets);
+	SELECT @promets,@br_prod INTO servis_p, servis_br FROM DUAL;
+    
+    SET br_prodanih_stavki= (IFNULL(prodaja_br, 0))+(IFNULL(servis_br, 0));
+    SET promet_dana=(IFNULL(prodaja_p, 0))+(IFNULL(servis_p, 0));
+
+END //
+DELIMITER ;
+
+-- CALL PROMET_DANA("2022-11-11",@br_prodanih_stavki, @promet_dana);
+-- SELECT @promet_dana,@br_prodanih_stavki FROM DUAL;
+
+
 -- SARA GOTOVA
 
 
