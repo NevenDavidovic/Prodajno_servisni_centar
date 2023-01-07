@@ -37,7 +37,17 @@
 
         </div>
         <div class="col">
-            <p class="fs-3">Informacije o opremi</p>
+            {% if data.p_oprema %}
+            <p class="fs-3">Postojeća dodatna oprema</p>
+            <ul>
+                {% for d in data.p_oprema %}
+                <li>{{d.naziv.capitalize()}}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+
+            <p class="fs-3">Informacije o dodanoj opremi</p>
             <p><b>Naziv:</b> {{data.oprema.naziv}}</p>
             <p><b>Marka:</b> {{data.oprema.marka}}</p>
             <p><b>Model:</b> {{data.oprema.model}} KW</p>

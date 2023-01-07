@@ -533,12 +533,25 @@ def addCarEquipment():
 
     else:
         try:
+            table = 'auto'
+            response = get_item(table, request.args.get('auto_id'))
+            oprema = find_item('oprema_vozila', 'id_auto',
+                               request.args.get('auto_id'))
+
+            idList = []
+            for item in oprema:
+                idList.append(item['id_oprema'])
+
+            pOpremaData = []
+            for item in idList:
+                pOpremaData.append(get_item('oprema', item))
+
             autoData = get_item('auto', request.args.get('auto_id'))
             opremaData = get_item('oprema', request.args.get('oprema_id'))
 
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("administracija-dodavanje-opreme-automobilu.html", data={"auto": autoData, "oprema": opremaData}), 200)
+        return make_response(render_template("administracija-dodavanje-opreme-automobilu.html", data={"auto": autoData, "oprema": opremaData, "p_oprema": pOpremaData}), 200)
 
 # ruta za ispis sve opreme (u svrhu dodavanja na automobil)
 
