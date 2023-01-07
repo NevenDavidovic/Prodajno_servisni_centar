@@ -442,3 +442,25 @@ DELIMITER ;
 SELECT pronadi_tablice_sa_atributom('naziv');
 
 -- MARIJA end
+
+
+-- NEVEN START
+
+-- TRIGGER - kod dodavanja novog auta da datum proizvodnji ne smije biti veći od jučerašnjeg dana.
+
+DELIMITER //
+
+CREATE TRIGGER bi_datum_proizvodnje
+BEFORE INSERT ON auto
+FOR EACH ROW
+BEGIN
+    IF NEW.godina_proizvodnje > CURDATE() THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Godina proizvodnje ne može biti u budućnosti';
+    END IF;
+END //
+
+DELIMITER ;
+
+
+
