@@ -306,6 +306,7 @@ def createNarudzbenica():
         return make_response(render_template("servis-narudzbenica-dodaj.html", data={"auto": autoData, "klijent": klijentData, "broj_narudzbe": brojNarudzbe}), 200)
 
 
+# Unos novog automobila na servis
 @servis.route("/servis/dodavanje-novog-automobila", methods=['POST', 'GET'])
 def addCar():
     if request.method == "POST":
@@ -320,6 +321,6 @@ def addCar():
             add_item(table, data)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("success.html", data={"msg": "Automobil uspješno dodan!", "route": "/"}), 200)
+        return make_response(render_template("success.html", data={"msg": "Automobil uspješno dodan!", "route": "/servis/ispis-svih-automobila"}), 200)
     else:
         return make_response(render_template("servis-dodavanje-novog-automobila.html"), 200)
