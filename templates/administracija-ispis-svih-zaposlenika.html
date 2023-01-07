@@ -18,11 +18,31 @@
 
 <div class="container" id="c-global">
 
-    <div class="search">
+    <!-- <div class="search">
         <form method="post">
             <div class="d-flex">
                 <input name="ime" value="{{request.form['ime']}}" type="text" class="form-control"
                     placeholder="Upisati ime (npr. Iva)">
+                <input type="submit" class="btn btn-outline-success" value="Pretraži">
+            </div>
+        </form>
+    </div> -->
+
+    <label for="identificator" class="form-label">Pretraži prema:</label>
+    <div class="search">
+        <form method="post" class="d-flex">
+            <select class="form-select" name="identificator" id="identificator" aria-label="Pretraži po" required
+                value="{{request.form['identificator']}}">
+                <option selected value="ime">Ime</option>
+                <option value="prezime">Prezime</option>
+                <option value="oib">OIB</option>
+                <option value="adresa">Adresa</option>
+                <option value="grad">Grad</option>
+
+            </select>
+            <div class="d-flex search-box">
+                <input name="query" value="{{request.form['query']}}" type="text" class="form-control"
+                    placeholder="Upisati traženi pojam" required>
                 <input type="submit" class="btn btn-outline-success" value="Pretraži">
             </div>
         </form>
@@ -38,8 +58,9 @@
             <tr>
                 <th scope="col">Ime</th>
                 <th scope="col">Prezime</th>
-                <th scope="col">Datum rođenja</th>
+                <th scope="col">OIB</th>
                 <th scope="col">Adresa</th>
+                <th scope="col">Grad</th>
                 <th scope="col"></th>
             </tr>
         </thead>
@@ -48,8 +69,9 @@
             <tr>
                 <td>{{d.ime}}</td>
                 <td>{{d.prezime}}</td>
-                <td>{{d.datum_rodenja.strftime('%d.%m.%Y.')}}</td>
+                <td>{{d.oib}}</td>
                 <td>{{d.adresa}}</td>
+                <td>{{d.grad}}</td>
                 <td><a href="/administracija/prikaz-zaposlenika/{{d.id}}" class="btn btn-outline-success"> Više
                         informacija </a></td>
             </tr>

@@ -18,11 +18,30 @@
 
 <div class="container" id="c-global">
 
-    <div class="search">
+    <!-- <div class="search">
         <form method="post">
             <div class="d-flex">
                 <input name="marka_automobila" value="{{request.form['marka_automobila']}}" type="text"
                     class="form-control" placeholder="Upisati marku automobila (npr. BMW)">
+                <input type="submit" class="btn btn-outline-success" value="Pretraži">
+            </div>
+        </form>
+    </div> -->
+
+    <label for="identificator" class="form-label">Pretraži prema:</label>
+    <div class="search">
+        <form method="post" class="d-flex">
+            <select class="form-select" name="identificator" id="identificator" aria-label="Pretraži po" required
+                value="{{request.form['identificator']}}">
+                <option selected value="marka_automobila">Marka</option>
+                <option value="model">Model</option>
+                <option value="godina_proizvodnje">Godina proizvodnje</option>
+                <option value="broj_sasije">Broj šasije</option>
+
+            </select>
+            <div class="d-flex search-box">
+                <input name="query" value="{{request.form['query']}}" type="text" class="form-control"
+                    placeholder="Upisati traženi pojam" required>
                 <input type="submit" class="btn btn-outline-success" value="Pretraži">
             </div>
         </form>

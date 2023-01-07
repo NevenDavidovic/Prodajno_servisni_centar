@@ -18,11 +18,29 @@
 
 <div class="container" id="c-global">
 
-    <div class="search">
+    <!-- <div class="search">
         <form method="post">
             <div class="d-flex">
                 <input name="naziv" value="{{request.form['naziv']}}" type="text" class="form-control"
                     placeholder="Upisati naziv opreme (npr. parkirna kamera)">
+                <input type="submit" class="btn btn-outline-success" value="Pretraži">
+            </div>
+        </form>
+    </div>-->
+
+    <label for="identificator" class="form-label">Pretraži prema:</label>
+    <div class="search">
+        <form method="post" class="d-flex">
+            <select class="form-select" name="identificator" id="identificator" aria-label="Pretraži po" required
+                value="{{request.form['identificator']}}">
+                <option selected value="naziv">Naziv</option>
+                <option value="marka">Marka</option>
+                <option value="model">Model</option>
+
+            </select>
+            <div class="d-flex search-box">
+                <input name="query" value="{{request.form['query']}}" type="text" class="form-control"
+                    placeholder="Upisati traženi pojam" required>
                 <input type="submit" class="btn btn-outline-success" value="Pretraži">
             </div>
         </form>
