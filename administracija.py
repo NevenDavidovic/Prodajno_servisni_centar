@@ -568,3 +568,28 @@ def getCarEquipment():
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
         return make_response(render_template("administracija-ispis-sve-opreme-za-automobil.html", data={"auto": autoData, "oprema": response}), 200)
+
+# ruta za dodavanje zaposlenika kao klijenta
+
+
+@administracija.route("/administracija/dodavanje-zaposlenika-kao-klijenta/<int:id>", methods=['GET'])
+def addEmployerAsClient(id):
+    try:
+        # dohvacanje podataka o zaposleniku
+        zaposlenikData = get_item('zaposlenik', id)
+        table = 'klijent'
+        # uzimanje relevantnih podataka za klijenta od zaposlenika
+        data = {
+            "oib": zaposlenikData.get('oib'),
+            "ime": zaposlenikData.get('ime'),
+            "prezime": zaposlenikData.get('prezime'),
+            "broj_telefona": zaposlenikData.get('broj_telefona'),
+            "adresa": zaposlenikData.get('adresa'),
+            "grad": zaposlenikData.get('grad'),
+            "spol": zaposlenikData.get('spol')
+        }
+        # dodavanje klijenta
+        add_item(table, data)
+    except Exception as err:
+        return make_response(render_template("fail.html", error=err), 400)
+    return make_response(render_template("success.html", data={"msg": "Zaposlenik uspješno dodan kao klijent!", "route": "/administracija/ispis-svih-klijenata"}), 200)
