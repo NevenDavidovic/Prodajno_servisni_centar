@@ -44,7 +44,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for d in data %}
+            {% for d in data[::-1] %}
             <tr>
                 <td>{{d.ime}}</td>
                 <td>{{d.prezime}}</td>

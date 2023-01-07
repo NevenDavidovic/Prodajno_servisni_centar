@@ -64,6 +64,25 @@ DELIMITER ;
 
 -- select ime, prezime, radno_mjesto, godina_u_firmi(datum_zaposlenja) as "Godina u firmi" from zaposlenik;
 
+-- Napravi proceduru koja će za vozila koja su na prodaji a imaju više od 200000 kilometara i starija su od 15 godina,
+-- promijeniti dostupnost u "NE" (vozila idu u rashod)
+
+delimiter //
+create procedure stari_auti_puno_kilometara ()
+begin
+update auto
+set dostupnost = "NE"
+where year(now()) - year(godina_proizvodnje) > 15
+and kilometraza > 200000
+and servis_prodaja = "P"
+and dostupnost = "DA";
+end//
+delimiter ;
+
+-- poziv PROCEDURE
+-- call stari_auti_puno_kilometara();
+-- select * from auto;
+
 -- Napravi okidač koji za postojećeg klijenta (kupca) smanjuje cijenu novog vozila kojeg je kupio/la za 10%
 DELIMITER //
 CREATE TRIGGER popust_10
@@ -261,3 +280,69 @@ DELIMITER ;
 
 -- CALL azuriraj_dostupnu_kolicinu_dijela('55032099911',10); dodaje 10 na postojecu vrijednost
 -- TIN GOTOVO
+
+-- MARIJA start
+
+DROP PROCEDURE IF EXISTS konverzija_snage_motora;
+
+# konverzija KW u BHP (procedura nad tablicom auto)
+DELIMITER //
+
+CREATE PROCEDURE konverzija_snage_motora()
+DETERMINISTIC
+
+BEGIN
+	UPDATE auto
+    SET snaga_motora = snaga_motora * 1.341;
+END //
+
+DELIMITER ;
+
+CALL konverzija_snage_motora();
+SELECT * FROM auto;
+
+# promjena cijena iz kuna u eure (nad tablicama oprema, racun_prodaje, usluga_servis, stavka_dio)
+
+DROP FUNCTION IF EXISTS pronadi_tablice_sa_atributom;
+
+# funkcija koja pronalazi sve tablice koje sadrze trazeni atribut
+DELIMITER //
+
+CREATE FUNCTION pronadi_tablice_sa_atributom(naziv_atributa VARCHAR(255))
+RETURNS VARCHAR(255)
+DETERMINISTIC
+
+BEGIN
+	DECLARE table_name VARCHAR(255) DEFAULT '';
+    DECLARE results VARCHAR(255) DEFAULT '';
+
+	DECLARE done BOOLEAN DEFAULT FALSE;
+
+	DECLARE cursor_tables CURSOR FOR
+		SELECT table_name FROM information_schema.columns
+		WHERE column_name = naziv_atributa;
+
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+	OPEN cursor_tables;
+
+	get_tables: LOOP
+		FETCH cursor_tables INTO table_name;
+		IF done THEN
+		LEAVE get_tables;
+		END IF;
+
+	SET results = results + table_name;
+
+	END LOOP;
+
+	CLOSE cursor_tables;
+
+	RETURN results;
+END //
+
+DELIMITER ;
+
+SELECT pronadi_tablice_sa_atributom('naziv');
+
+-- MARIJA end

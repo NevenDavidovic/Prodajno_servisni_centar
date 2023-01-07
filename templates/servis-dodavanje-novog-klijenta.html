@@ -1,0 +1,110 @@
+{% extends "servis-base.html" %}
+{% block head %}
+<title>Dodavanje klijenta | PSC</title>
+{% endblock %}
+
+{% block body %}
+
+<div class="text-center bg-image" id="h-global">
+    <div class="mask" style="background-color: rgba(255, 255, 255, 0.7);">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div>
+                <h1>Dodavanje klijenta</h1>
+                <p class="fs-4">Pomoću forme unesite podatke o novom klijentu</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" id="c-global">
+
+    {% block content %}
+    <!-- form -->
+    <form method="post">
+        <!-- main row -->
+        <div class="row" id="end">
+            <!-- col 1 -->
+            <div class="col">
+
+                <p class="fs-3">Opće informacije</p>
+
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="ime" class="form-label">Ime</label>
+                        <input name="ime" value="{{request.form['ime']}}" type="text" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="prezime" class="form-label">Prezime</label>
+                        <input name="prezime" value="{{request.form['prezime']}}" type="text" class="form-control"
+                            required>
+                    </div>
+                </div>
+
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="oib" class="form-label">OIB</label>
+                        <input name="oib" value="{{request.form['oib']}}" type="text" pattern="[0-9]{13}" minlength="13"
+                            maxlength="13" class="form-control" required>
+                    </div>
+                </div>
+
+                <!-- spol -->
+                <label for="spol" class="form-label">Spol</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="spol" value="m" id="musko" required>
+                    <label class="form-check-label" for="musko">
+                        Muško
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="spol" value="ž" id="zensko" required>
+                    <label class="form-check-label" for="zensko">
+                        Žensko
+                    </label>
+                </div>
+                <!-- end of spol -->
+
+            </div>
+            <!-- end of col1 -->
+
+            <!-- col 2 -->
+            <div class="col">
+                <p class="fs-3">Kontakt</p>
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="adresa" class="form-label">Adresa</label>
+                        <input name="adresa" value="{{request.form['adresa']}}" type="text" class="form-control"
+                            required>
+                    </div>
+                </div>
+
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="grad" class="form-label">Grad</label>
+                        <input name="grad" value="{{request.form['grad']}}" type="text" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="broj_telefona" class="form-label">Broj telefona</label>
+                        <input name="broj_telefona" value="{{request.form['broj_telefona']}}" type="text"
+                            class="form-control" required>
+                    </div>
+                </div>
+
+            </div>
+            <!-- end of col2 -->
+        </div>
+        <!-- end of main row -->
+
+        <button class="btn btn-outline-success" id="button" type="submit">Dodaj klijenta</button>
+
+    </form>
+    <!-- end of form -->
+    {% endblock %}
+</div>
+{% endblock %}

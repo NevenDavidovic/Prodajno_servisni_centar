@@ -39,7 +39,8 @@
     }
 }
 
-h1, .fs-4 {
+h1,
+.fs-4 {
     color: #212529;
 }
 
@@ -96,4 +97,21 @@ td {
 
 .min-width-72 {
     min-width: 72px;
+}
+
+#identificator {
+    width: 250px;
+}
+
+.search {
+    display: flex;
+}
+
+.search-box {
+    width: 100%;
+    padding-left: 1rem;
+}
+
+form {
+    width: 100%;
 }

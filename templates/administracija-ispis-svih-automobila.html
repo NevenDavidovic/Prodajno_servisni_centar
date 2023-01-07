@@ -46,7 +46,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for d in data %}
+            {% for d in data[::-1] %}
             <tr>
                 <td>{{d.marka_automobila}}</td>
                 <td>{{d.model}}</td>
