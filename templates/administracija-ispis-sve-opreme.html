@@ -70,7 +70,8 @@
                 <td>{{d.cijena}} kn</td>
                 <td>
                     <a href="/administracija/uredivanje-opreme/{{d.id}}" class="btn btn-outline-success">Uredi</a>
-                    <a href="/administracija/brisanje-opreme/{{d.id}}" class="btn btn-outline-success">Ukloni</a>
+                    <a data-href="/administracija/brisanje-opreme/{{d.id}}" class="btn btn-outline-success"
+                        onclick="areYouSure()">Ukloni</a>
                 </td>
             </tr>
             {% endfor %}
@@ -84,6 +85,14 @@
 
     {% endblock %}
 
+    <script>
+        function areYouSure() {
+            if (prompt("Izbrisat ćete opremu! Za nastavak upišite: DA") == 'DA') {
+                window.location.href = event.target.dataset.href;
+                console.log(event.target.dataset.href)
+            }
+        }
+    </script>
 
 </div>
 {% endblock %}

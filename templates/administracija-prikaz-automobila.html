@@ -68,10 +68,17 @@
     {% endif %}
     <a href="/administracija/uredivanje-automobila/{{data.auto.id}}" class="btn btn-outline-success"
         id="button">Uredi</a>
-    <a href="/administracija/brisanje-automobila/{{data.auto.id}}" class="btn btn-outline-success"
-        id="button">Ukloni</a>
+    <a class="btn btn-outline-success" id="button" onclick="areYouSure()">Ukloni</a>
 
     {% endblock %}
+
+    <script>
+        function areYouSure() {
+            if (prompt("Izbrisat ćete automobil! Za nastavak upišite: DA") == 'DA') {
+                window.location.href = "/administracija/brisanje-automobila/{{data.auto.id}}";
+            }
+        }
+    </script>
 
 </div>
 {% endblock %}

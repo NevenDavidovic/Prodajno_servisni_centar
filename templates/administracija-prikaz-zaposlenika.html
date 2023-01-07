@@ -47,11 +47,18 @@
     <a href="/administracija/dodavanje-zaposlenika-kao-klijenta/{{data.id}}" class="btn btn-outline-success"
         id="button"> Dodaj kao klijenta </a>
     <a href="/administracija/uredivanje-zaposlenika/{{data.id}}" class="btn btn-outline-success" id="button"> Uredi </a>
-    <a href="/administracija/brisanje-zaposlenika/{{data.id}}" class="btn btn-outline-success" id="button"> Ukloni </a>
+    <a class="btn btn-outline-success" id="button" onclick="areYouSure()"> Ukloni </a>
 
 
     {% endblock %}
 
+    <script>
+        function areYouSure() {
+            if (prompt("Izbrisat ćete zaposlenika! Za nastavak upišite: DA") == 'DA') {
+                window.location.href = "/administracija/brisanje-zaposlenika/{{data.id}}";
+            }
+        }
+    </script>
 
 </div>
 {% endblock %}
