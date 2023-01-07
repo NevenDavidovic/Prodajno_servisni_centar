@@ -64,6 +64,25 @@ DELIMITER ;
 
 -- select ime, prezime, radno_mjesto, godina_u_firmi(datum_zaposlenja) as "Godina u firmi" from zaposlenik;
 
+-- Napravi proceduru koja će za vozila koja su na prodaji a imaju više od 200000 kilometara i starija su od 15 godina,
+-- promijeniti dostupnost u "NE" (vozila idu u rashod)
+
+delimiter //
+create procedure stari_auti_puno_kilometara ()
+begin
+update auto
+set dostupnost = "NE"
+where year(now()) - year(godina_proizvodnje) > 15
+and kilometraza > 200000
+and servis_prodaja = "P"
+and dostupnost = "DA";
+end//
+delimiter ;
+
+-- poziv PROCEDURE
+-- call stari_auti_puno_kilometara();
+-- select * from auto;
+
 -- Napravi okidač koji za postojećeg klijenta (kupca) smanjuje cijenu novog vozila kojeg je kupio/la za 10%
 DELIMITER //
 CREATE TRIGGER popust_10
@@ -314,7 +333,7 @@ BEGIN
 		END IF;
 
 	SET results = results + table_name;
- 
+
 	END LOOP;
 
 	CLOSE cursor_tables;
