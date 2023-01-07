@@ -3,9 +3,8 @@ import mysql.connector
 ############################################################
 # funkcija kojom pronalazimo npr zadnji id ili zadnji broj narudžbe (najveći broj je zadnji)
 
-
 def get_last_record_identificator(table: str, column: str) -> int:
-    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    # Definiranje baze i kursora
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
         # da vraća rezultate tj. rows kao dictionaryje
         mycursor = db.cursor(dictionary=True)
@@ -22,9 +21,9 @@ def get_last_record_identificator(table: str, column: str) -> int:
 
 ############################################################
 
-
+# funkcija za dodavanje novog unosa u tablicu
 def add_item(table: str, data: dict) -> int:  # vraća id unesenog itema
-    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    # Definiranje baze i kursora
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
         # da vraća rezultate tj. rows kao dictionaryje
         mycursor = db.cursor(dictionary=True)
@@ -44,7 +43,7 @@ def add_item(table: str, data: dict) -> int:  # vraća id unesenog itema
         values = values[:-1] + ');'
 
         qstring = qstring + columns + ' VALUES ' + values
-        # print(qstring)
+        
         try:
             mycursor.execute(qstring)
         except Exception as err:
@@ -54,9 +53,9 @@ def add_item(table: str, data: dict) -> int:  # vraća id unesenog itema
 
 ############################################################
 
-
+# funkcija za brisanje podatka iz tablice
 def delete_item(table: str, item_id: int) -> int:
-    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    # Definiranje baze i kursora
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
         # da vraća rezultate tj. rows kao dictionaryje
         mycursor = db.cursor(dictionary=True)
@@ -71,10 +70,9 @@ def delete_item(table: str, item_id: int) -> int:
 
 
 ############################################################
-
-# -> znaci da vraca dictionary (google "python annotations" za vise info)
+# funkcija koja vraća sve zapise iz tablice
 def get_all_items(table) -> dict:
-    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    # Definiranje baze i kursora
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
         # da vraća rezultate tj. rows kao dictionaryje
         mycursor = db.cursor(dictionary=True)
@@ -88,9 +86,9 @@ def get_all_items(table) -> dict:
         return myresult
 ############################################################
 
-
+# funkcija koja vraća sve aute za prodaju
 def get_all_cars_for_sale(table) -> dict:
-    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    # Definiranje baze i kursora
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
         # da vraća rezultate tj. rows kao dictionaryje
         mycursor = db.cursor(dictionary=True)
@@ -104,8 +102,9 @@ def get_all_cars_for_sale(table) -> dict:
 
         return myresult
 ############################################################
+# funkcija koja vraća sve aute za prodaju
 def get_all_cars_for_servis(table) -> dict:
-    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    # Definiranje baze i kursora
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
         # da vraća rezultate tj. rows kao dictionaryje
         mycursor = db.cursor(dictionary=True)
@@ -120,9 +119,9 @@ def get_all_cars_for_servis(table) -> dict:
         return myresult
 ############################################################
 
-
+# funkcija koja vraća sve prodavače
 def get_all_salesmen(table) -> dict:
-    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    # Definiranje baze i kursora
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
         # da vraća rezultate tj. rows kao dictionaryje
         mycursor = db.cursor(dictionary=True)
@@ -137,9 +136,9 @@ def get_all_salesmen(table) -> dict:
         return myresult
 ############################################################
 
-
+# funkcija koja provjerava status klijenta
 def get_client_status(p_id) -> dict:
-    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    # Definiranje baze i kursora
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
         # da vraća rezultate tj. rows kao dictionaryje
         # definiranje pocetnih uvjeta
@@ -177,9 +176,9 @@ def get_client_status(p_id) -> dict:
         return clientStatus
 ############################################################
 
-
+# funkcija koja vraća sve račune
 def get_all_receipts() -> dict:
-    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    # Definiranje baze i kursora
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
         # da vraća rezultate tj. rows kao dictionaryje
         mycursor = db.cursor(dictionary=True)
@@ -194,9 +193,9 @@ def get_all_receipts() -> dict:
         return myresult
 ############################################################
 
-
+# funkcija koja vraća sve račune nakon određenog datuma
 def get_all_receipts_after_date(my_date) -> dict:
-    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    # Definiranje baze i kursora
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
         # da vraća rezultate tj. rows kao dictionaryje
         mycursor = db.cursor(dictionary=True)
@@ -213,10 +212,8 @@ def get_all_receipts_after_date(my_date) -> dict:
 ############################################################
 
 # dohvaca item iz tablice po id-ju
-
-
 def get_item(table, id) -> dict:
-    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    # Definiranje baze i kursora
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
         # da vraća rezultate tj. rows kao dictionaryje
         mycursor = db.cursor(dictionary=True)
@@ -226,15 +223,15 @@ def get_item(table, id) -> dict:
             mycursor.execute(qstring)
             myresult = mycursor.fetchone()
             if myresult == None:
-                raise Exception("Zaposlenik nije pronađen u bazi!")
+                raise Exception("Ne postoji zapis u bazi!")
         except Exception as err:
             raise Exception(err)
         return myresult
 ############################################################
 
-
+# funkcija dohvaća račun prema id-ju
 def get_receipt(id) -> dict:
-    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    # Definiranje baze i kursora
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
         # da vraća rezultate tj. rows kao dictionaryje
         mycursor = db.cursor(dictionary=True)
@@ -250,9 +247,9 @@ def get_receipt(id) -> dict:
         return myresult
 ############################################################
 
-
+# funkcija koja pronalazi određenu stavku iz tablice prema vrijednosti atributa
 def find_item(table, attribut: str, value) -> dict:
-    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    # Definiranje baze i kursora
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
         # da vraća rezultate tj. rows kao dictionaryje
         mycursor = db.cursor(dictionary=True)
@@ -271,7 +268,7 @@ def find_item(table, attribut: str, value) -> dict:
 
 
 def find_item_like(table, attribut: str, value) -> dict:
-    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    # Definiranje baze i kursora
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
         # da vraća rezultate tj. rows kao dictionaryje
         mycursor = db.cursor(dictionary=True)
@@ -290,7 +287,7 @@ def find_item_like(table, attribut: str, value) -> dict:
 
 
 def edit_table(table, data):
-    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    # Definiranje baze i kursora
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
         # da vraća rezultate tj. rows kao dictionaryje
         mycursor = db.cursor(dictionary=True)
@@ -306,86 +303,3 @@ def edit_table(table, data):
                 raise Exception(err)
 
 
-############################################################
-# PODACI ZA TESTIRANJE FUNKCIJA
-zaposlenik_1 = {
-    "ime": "John",
-    "prezime": "Doe",
-    "datum_rodenja": "1998-05-12",
-    "adresa": "Školska 17",
-    "grad": "Pula",
-    "spol": "m",
-    "broj_telefona": "098669412",
-    "datum_zaposlenja": "2012-07-12",
-    "e_mail": "jdoe@gmail.com",
-    "placa": "12500",
-    "radno_mjesto": "mehanicar",
-}
-zaposlenik_2 = {
-    "ime": "Srki",
-    "prezime": "Bućac",
-    "datum_rodenja": "1991-07-12",
-    "adresa": "Školska 18",
-    "grad": "Pula",
-    "spol": "m",
-    "broj_telefona": "091669413",
-    "datum_zaposlenja": "2012-07-13",
-    "e_mail": "srke@gmail.com",
-    "placa": "10500",
-    "radno_mjesto": "prodavac",
-}
-
-update_z1 = {
-    # vazno je da je id uvijek prisutan u dictionaryju sa podacima za UPDATE(kako bi se moglo pronaci koji record treba updateat) i da je tipa int
-    "id": 680,
-    "adresa": "Marca Garbina 2",
-    "placa": "14200",
-    "radno_mjesto": "prodavac"}
-
-
-# narudzbenica_31 = {
-# 	"id_klijent": 10,
-# 	"id_auto": 3,
-# 	"broj_narudzbe": get_last_record_identificator("narudzbenica", "broj_narudzbe") + 1,
-# 	"datum_zaprimanja": "2022-09-09",
-# 	"datum_povratka" : "2022-09-15",
-# }
-
-update_auto1 = {
-    "id": 1,
-    "boja": "zlatna metallic",
-    "snaga_motora": "850"
-}
-
-#### POZIVI FUNKCIJA #####
-# dodavanje itema
-# add_item("zaposlenik",zaposlenik_1)
-# add_item("zaposlenik",zaposlenik_2)
-# add_item("narudzbenica",narudzbenica_31)
-
-# update itema
-# edit_table("zaposlenik",update_z1)
-# edit_table("auto",update_auto1)
-
-# vracanje svih itema iz tablice
-# print(get_all_items("zaposlenik"))
-
-# pronalazak odredenog itema prema nekom atributu
-# print(find_item("zaposlenik","ime","John"))
-# print(find_item("zaposlenik","id",680))
-# print(find_item("zaposlenik","grad","Zagreb"))
-# print(find_item("auto","id",10))
-
-# brisanje itema
-# delete_item("zaposlenik",680)
-# delete_item("auto",575)
-
-# dobivanje zadnjeg identifikatora
-# print(get_last_record_identificator("narudzbenica","broj_narudzbe")) # daje zadnji broj_narudzbe u tablici
-# print(get_last_record_identificator("auto","id")) # daje id zadnjeg auta u tablici
-
-# db.commit()
-# mycursor.close()
-# db.close()
-
-# TO DO: -uvesti kaskadno brisanje podataka na sve tablice gdje je potrebno

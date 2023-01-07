@@ -65,7 +65,6 @@ def getClients():
 
             response = find_item_like(table, attribut, value)
             
-            response = find_item_like(table, attribut, value)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
         return make_response(render_template("prodaja-ispis-svih-klijenata.html", data=response), 200)
