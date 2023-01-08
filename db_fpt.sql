@@ -715,7 +715,7 @@ BEGIN
     DECLARE dostupan VARCHAR (2);
     SELECT COUNT(*) INTO dostupan
     FROM auto
-    WHERE marka_automobila = model_auta AND model = model_auta;
+    WHERE marka_automobila = marka_auta AND model = model_auta;
     IF dostupan = 'DA' THEN
         RETURN 'Automobil je dostupan';
     ELSE
@@ -731,8 +731,8 @@ SELECT dostupan_auto('BMW','X5');
 -- funkcije koja za uneseno ime i prezime klijenta vraca da li ima povijest kupnje vozila
 
 DELIMITER //
-CREATE FUNCTION provjera_klijenta (ime_klijenta VARCHAR(255), prezime_klijenta VARCHAR(255))
-RETURNS VARCHAR(255)
+CREATE FUNCTION provjera_klijenta (ime_klijenta VARCHAR(50), prezime_klijenta VARCHAR(50))
+RETURNS VARCHAR(50)
 DETERMINISTIC
 BEGIN
      DECLARE broj_kupnji INT DEFAULT 0;
