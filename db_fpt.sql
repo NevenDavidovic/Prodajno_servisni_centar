@@ -688,6 +688,8 @@ DELIMITER ;
 -- CALL dobit_godine(@ukupan_dobit_godine);
 -- SELECT @ukupan_dobit_godine;
 
+--------------------------------------------------------------------------------------
+
 -- funkcija koja za unesenu marku i model auta vraca je li taj auto dostupan
 
 DELIMITER //
@@ -709,6 +711,7 @@ DELIMITER ;
 
 SELECT dostupan_auto('BMW','X5');
  
+-----------------------------------------------------------------------------------------------
 
 -- funkcije koja za uneseno ime i prezime klijenta vraca da li ima povijest kupnje vozila
 
@@ -731,6 +734,20 @@ END //
 DELIMITER ;
 
 SELECT provjera_klijenta('Mladen', 'Barišić');
+
+
+-------------------------------------------------------------------------------------------
+-- okidac koji za zaposlenike koji rade duze od dvije godine povisi placu za 10%
+
+DELIMITER //
+CREATE TRIGGER povisenje_place AFTER INSERT ON zaposlenik
+FOR EACH ROW
+BEGIN
+  IF (YEAR(CURDATE()) - YEAR(NEW.datum_zaposlenja)) > 2 THEN
+    UPDATE zaposlenik SET placa = placa * 1.1 WHERE id = NEW.id;
+  END IF;
+END //
+DELIMITER ;
 
 -- --------------------------------------------KRAJ--------------------------------------------------
 
