@@ -491,8 +491,42 @@ DELIMITER ;
 
 -- CALL update_dostupnost_auta(1, '2023-01-01 00:00:00');
 
--- procedura za update svih auta kojima je datum na narudzbenici manji ili jednak trenutnom. 
+
+PROCEDURA 2. 
+-- procedura za update svih auta kojima je datum na narudzbenici manji ili jednak trenutnom te promjena dostupnosti u DA. 
+-- Izbacuje rezultat svaki put kad promijeni vrijednost
+-- Poziva proceduru update_dostupnost_svih_auta()
+
+DELIMITER //
+
+CREATE PROCEDURE update_dostupnost_svih_auta2()
+BEGIN
+    DECLARE done INT DEFAULT FALSE;
+    DECLARE p_auto_id INT;
+    DECLARE p_datum_povratka_date DATETIME;
+
+    DECLARE cur CURSOR FOR
+        SELECT id_auto, datum_povratka
+        FROM narudzbenica;
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+    OPEN cur;
+
+    REPEAT
+        FETCH cur INTO p_auto_id, p_datum_povratka_date;
+        IF NOT done THEN
+            CALL update_dostupnost_auta(p_auto_id, p_datum_povratka_date);
+        END IF;
+    UNTIL done END REPEAT;
+
+    CLOSE cur;
+
+END//
+
+DELIMITER ;
 
 
+-- CALL update_dostupnost_svih_auta2();
 
-
+--
