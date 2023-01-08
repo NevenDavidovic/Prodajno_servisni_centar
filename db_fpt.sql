@@ -766,4 +766,126 @@ DELIMITER ;
 
 -- --------------------------------------------KRAJ--------------------------------------------------
 
+-- -------------------------------------------NEVEN--------------------------------------------------
+
+-- NEVEN START
+
+-- TRIGGER - kod dodavanja novog auta da datum proizvodnji ne smije biti veći od jučerašnjeg dana.
+
+DELIMITER //
+
+CREATE TRIGGER bi_datum_proizvodnje
+BEFORE INSERT ON auto
+FOR EACH ROW
+BEGIN
+    IF NEW.godina_proizvodnje > CURDATE() THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Godina proizvodnje ne može biti u budućnosti';
+    END IF;
+END //
+
+DELIMITER ;
+
+-- test data INSERT INTO auto VALUES (2, "Y7NV3NIFJYYUGY00V", "VOLKSWAGEN", "TRANSPORTER", "siva", STR_TO_DATE("2025-01-01", "%Y-%m-%d"), "DA", "88", "127342", "benzinski","P");
+
+-- PROCEDURA 1.
+-- Procedura počinje izvršavanjem naredbe UPDATE na tablici "auto". Ova naredba postavlja stupac "dostupnost" na 'DA' 
+-- za redak s "id"-om koji odgovara "p_auto_id", pod uvjetom da je "p_datum_povratka_date" manji ili jednak trenutnom datumu (CURDATE()).
+-- Procedura zatim izvršava naredbu SELECT koja dohvaća stupce "id", "model", "dostupnost" i "datum_povratka" iz tablica "auto" i "narudzbenica", spojenih na stupac "id" iz tablica "auto" i stupac "id_auto" iz tablica "narudzbenica". 
+-- Naredba SELECT vraća redove gdje je stupac "datum_povratka" manji ili jednak trenutnom datumu.
+DELIMITER //
+
+CREATE PROCEDURE update_dostupnost_auta (IN p_auto_id INT, IN p_datum_povratka_date DATETIME)
+BEGIN
+    UPDATE auto
+    SET dostupnost = 'DA'
+    WHERE id = p_auto_id AND p_datum_povratka_date <= CURDATE();
+
+    SELECT a.id, a.model,a.dostupnost,n.datum_povratka
+    FROM auto as a
+        INNER JOIN narudzbenica as n
+        ON a.id = n.id_auto
+    WHERE n.datum_povratka <= CURDATE();
+END//
+
+DELIMITER ;
+
+-- CALL update_dostupnost_auta(1, '2023-01-01 00:00:00');
+
+
+-- PROCEDURA 2. 
+-- procedura za update svih auta kojima je datum na narudzbenici manji ili jednak trenutnom te promjena dostupnosti u DA. 
+-- Izbacuje rezultat svaki put kad promijeni vrijednost
+-- u sebi sadrzi prethodnu proceduru
+--  Vraća samo jedan rezultat 
+
+DELIMITER //
+
+CREATE PROCEDURE update_dostupnost_svih_autax()
+BEGIN
+    DECLARE p_auto_id INT;
+    DECLARE p_datum_povratka_date DATETIME;
+
+    SELECT a.id, a.model,a.dostupnost,n.datum_povratka
+    FROM auto as a
+        INNER JOIN narudzbenica as n
+        ON a.id = n.id_auto
+    WHERE n.datum_povratka <= CURDATE();
+
+    UPDATE auto
+    SET dostupnost = 'DA'
+    WHERE id IN (
+        SELECT id_auto
+        FROM narudzbenica
+        WHERE datum_povratka <= CURDATE()
+    );
+END//
+
+DELIMITER ;
+
+-- call update_dostupnost_svih_autax();
+
+-- FUNKCIJa koja nam govori koji proizvod je jeftin a koji skup
+
+DELIMITER //
+CREATE FUNCTION cijena_usluge(cijena DECIMAL(8,2))
+RETURNS VARCHAR(50) DETERMINISTIC
+BEGIN
+    DECLARE kategorija VARCHAR(50);
+    IF cijena < 100 THEN
+        SET kategorija = 'Proizvod je jeftin';
+    ELSE
+        SET kategorija = 'Proizvod je skup';
+    END IF;
+    RETURN kategorija;
+END//
+DELIMITER ;
+
+-- SELECT *,cijena_usluge(cijena) as Jeftino_Skupo FROM usluga_servis;
+
+
+-- PROCEDURA U sklopu procedure nalazi se 
+-- naredba za ažuriranje koja ažurira stupac "komentar" u tablici "servis" na temelju vrijednosti stupca "datum_povratka" u tablici "narudžbenica".
+
+DELIMITER //
+CREATE PROCEDURE update_komentar_servisa()
+BEGIN
+    UPDATE servis as s
+    INNER JOIN narudzbenica as n
+        ON s.id_narudzbenica = n.id
+    SET s.komentar = CASE
+        WHEN n.datum_povratka < CURDATE() THEN 'Automobil spreman za preuzimanje'
+        ELSE 'Servis u tijeku'
+    END
+    WHERE n.datum_povratka <= CURDATE() ;
+END//
+
+DELIMITER ;
+
+-- call update_komentar_servisa();
+
+-- SELECT * FROM servis, narudzbenica WHERE servis.id_narudzbenica=narudzbenica.id;
+
+
+------------------------------------------------------------- NEVEN END------------------------------------------------------------------
 
