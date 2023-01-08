@@ -495,11 +495,9 @@ DELIMITER ;
 PROCEDURA 2. 
 -- procedura za update svih auta kojima je datum na narudzbenici manji ili jednak trenutnom te promjena dostupnosti u DA. 
 -- Izbacuje rezultat svaki put kad promijeni vrijednost
--- Poziva proceduru update_dostupnost_svih_auta()
+-- u sebi sadrzi prethodnu proceduru
 
-DELIMITER //
-
-CREATE PROCEDURE update_dostupnost_svih_auta2()
+CREATE PROCEDURE update_dostupnost_svih_auta()
 BEGIN
     DECLARE done INT DEFAULT FALSE;
     DECLARE p_auto_id INT;
@@ -516,7 +514,15 @@ BEGIN
     REPEAT
         FETCH cur INTO p_auto_id, p_datum_povratka_date;
         IF NOT done THEN
-            CALL update_dostupnost_auta(p_auto_id, p_datum_povratka_date);
+            UPDATE auto
+            SET dostupnost = 'DA'
+            WHERE id = p_auto_id AND p_datum_povratka_date <= CURDATE();
+
+            SELECT a.id, a.model,a.dostupnost,n.datum_povratka
+            FROM auto as a
+                INNER JOIN narudzbenica as n
+                ON a.id = n.id_auto
+            WHERE n.datum_povratka <= CURDATE();
         END IF;
     UNTIL done END REPEAT;
 
@@ -526,7 +532,35 @@ END//
 
 DELIMITER ;
 
+-- call update_dostupnost_svih_auta();
 
--- CALL update_dostupnost_svih_auta2();
+-- PROCEDURA 3. Vraća samo jedan rezultat za razliku od prethodne
 
---
+DELIMITER //
+
+CREATE PROCEDURE update_dostupnost_svih_autax()
+BEGIN
+    DECLARE p_auto_id INT;
+    DECLARE p_datum_povratka_date DATETIME;
+
+    SELECT a.id, a.model,a.dostupnost,n.datum_povratka
+    FROM auto as a
+        INNER JOIN narudzbenica as n
+        ON a.id = n.id_auto
+    WHERE n.datum_povratka <= CURDATE();
+
+    UPDATE auto
+    SET dostupnost = 'DA'
+    WHERE id IN (
+        SELECT id_auto
+        FROM narudzbenica
+        WHERE datum_povratka <= CURDATE()
+    );
+END//
+
+DELIMITER ;
+
+-- call update_dostupnost_svih_autax();
+
+-- PROCEDURA 4.
+
