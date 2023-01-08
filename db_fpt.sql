@@ -90,7 +90,7 @@ DELIMITER ;
 -- CALL PROMET_DANA("2022-11-11",@br_prodanih_stavki, @promet_dana);
 
 --  PROCEDURA: ako je količina djelova manja od 5 – popis djelova koje treba naručit
---  DROP PROCEDURE dijelovi_za_narudzbu;
+--  DROP PROCEDURE  dijelovi_za_narudzbu;
 
 
 DELIMITER //
