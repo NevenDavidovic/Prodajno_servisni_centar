@@ -416,7 +416,7 @@ BEGIN
 
 	DECLARE cursor_tables CURSOR FOR
 		SELECT table_name FROM information_schema.columns
-		WHERE column_name = naziv_atributa;
+			WHERE column_name = naziv_atributa;
 
 	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
 
@@ -427,19 +427,22 @@ BEGIN
 		IF done THEN
 		LEAVE get_tables;
 		END IF;
-
-	SET results = results + table_name;
+	
+	SET results = CONCAT(results, table_name);
 
 	END LOOP;
 
 	CLOSE cursor_tables;
 
-	RETURN results;
+    RETURN 'abc';
 END //
 
 DELIMITER ;
 
-SELECT pronadi_tablice_sa_atributom('naziv');
+SELECT table_name FROM information_schema.columns
+	WHERE column_name = 'komentar';
+
+SELECT pronadi_tablice_sa_atributom('komentar');
 
 -- MARIJA end
 
