@@ -688,6 +688,50 @@ DELIMITER ;
 -- CALL dobit_godine(@ukupan_dobit_godine);
 -- SELECT @ukupan_dobit_godine;
 
+-- funkcija koja za unesenu marku i model auta vraca je li taj auto dostupan
+
+DELIMITER //
+CREATE FUNCTION dostupan_auto (model_auta VARCHAR(255), marka_auta VARCHAR(255))
+RETURNS VARCHAR(255)
+DETERMINISTIC
+BEGIN
+    DECLARE dostupan VARCHAR (2);
+    SELECT COUNT(*) INTO dostupan
+    FROM auto
+    WHERE marka_automobila = model_auta AND model = model_auta;
+    IF dostupan = 'DA' THEN
+        RETURN 'Automobil je dostupan';
+    ELSE
+        RETURN 'Automobil je nedostupan';
+    END IF;
+END //
+DELIMITER ;
+
+SELECT dostupan_auto('BMW','X5');
+ 
+
+-- funkcije koja za uneseno ime i prezime klijenta vraca da li ima povijest kupnje vozila
+
+DELIMITER //
+CREATE FUNCTION provjera_klijenta (ime_klijenta VARCHAR(255), prezime_klijenta VARCHAR(255))
+RETURNS VARCHAR(255)
+DETERMINISTIC
+BEGIN
+     DECLARE broj_kupnji INT DEFAULT 0;
+    SELECT COUNT(*) INTO broj_kupnji
+    FROM racun_prodaje rp
+    INNER JOIN klijent k ON rp.id_klijent = k.id
+    WHERE k.ime = ime_klijenta AND k.prezime = prezime_klijenta;
+    IF broj_kupnji > 0 THEN
+        RETURN 'Klijent ima povijest kupnji';
+    ELSE
+        RETURN 'Klijent nema povijest kupnji';
+    END IF;
+END //
+DELIMITER ;
+
+SELECT provjera_klijenta('Mladen', 'Barišić');
+
 -- --------------------------------------------KRAJ--------------------------------------------------
 
 
