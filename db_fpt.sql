@@ -514,6 +514,25 @@ DELIMITER ;
 -- INSERT INTO auto VALUES (1299, "L76FPA95UU1WGKKVKM", "BMW", "760LI", "crvena", STR_TO_DATE("2024-01-01", "%Y-%m-%d"), "NE", "111", "159384", "benzinski","P");
 -- SELECT * FROM auto;
 
+# funkcija koja prema id-ju provjerava da li automobil sadrži dodatnu opremu
+DELIMITER //
+CREATE FUNCTION dodatna_oprema_automobila(id INTEGER) RETURNS VARCHAR(255)
+DETERMINISTIC
+BEGIN
+
+IF id IN (SELECT id_auto FROM oprema_vozila)
+	THEN RETURN 'Automobil sadrži dodatnu opremu!';
+ELSE RETURN 'Automobil ne sadrži dodatnu opremu!'; 
+END IF;
+
+END//
+DELIMITER ;
+
+-- SELECT * FROM oprema_vozila;
+-- SELECT *, dodatna_oprema_automobila(id)
+-- 	FROM auto;
+-- SELECT dodatna_oprema_automobila(1);
+-- SELECT dodatna_oprema_automobila(57);
 
 -- MARIJA end
 
