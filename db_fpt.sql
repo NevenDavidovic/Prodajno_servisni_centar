@@ -394,8 +394,8 @@ END //
 
 DELIMITER ;
 
-CALL konverzija_snage_motora();
-SELECT * FROM auto;
+-- CALL konverzija_snage_motora();
+-- SELECT * FROM auto;
 
 # promjena cijena iz kuna u eure (nad tablicama oprema, racun_prodaje, usluga_servis, stavka_dio)
 
@@ -436,7 +436,7 @@ END//
 
 DELIMITER ;
 
-CALL get_tables_with_column();
+-- CALL get_tables_with_column();
 
 SELECT * FROM oprema;
 
@@ -555,8 +555,8 @@ BEGIN
 END //
 DELIMITER ;
 
-CALL prihod_godine_servisa(2022,@koristeni_dijelovi, @prihod_servisa);
-SELECT @koristeni_dijelovi, @prihod_servisa FROM DUAL;
+-- CALL prihod_godine_servisa(2022,@koristeni_dijelovi, @prihod_servisa);
+-- SELECT @koristeni_dijelovi, @prihod_servisa FROM DUAL;
 -----------------------------------------------------------------------------------------------------------------------
 -- procedura za prihod godine prodaje
 -- DROP PROCEDURE prihod_godine_prodaja
@@ -573,8 +573,8 @@ BEGIN
 END //
 DELIMITER ;
 
-CALL prihod_godine_prodaja(2022,@kolicina_prodaje, @prihod_prodaje);
-SELECT @kolicina_prodaje, @prihod_prodaje FROM DUAL;
+-- CALL prihod_godine_prodaja(2022,@kolicina_prodaje, @prihod_prodaje);
+-- SELECT @kolicina_prodaje, @prihod_prodaje FROM DUAL;
 
 --------------------------------------------------------------------------------------------------------
 -- procedura za ukupan prihod godine
@@ -599,8 +599,8 @@ BEGIN
 END //
 DELIMITER ;
 
-CALL prihod_godine(2022,@uk_kolicina, @uk_prihod_godine);
-SELECT @uk_kolicina, @uk_prihod_godine FROM DUAL;
+-- CALL prihod_godine(2022,@uk_kolicina, @uk_prihod_godine);
+-- SELECT @uk_kolicina, @uk_prihod_godine FROM DUAL;
 
 -----------------------------------------------------------------------------------
 -- procedura za rashod godine placa
@@ -617,8 +617,8 @@ FROM zaposlenik;
 END //
 DELIMITER ;
 
-CALL rashod_godine_placa(@ukupni_trosak_placa);
-SELECT @ukupni_trosak_placa;
+-- CALL rashod_godine_placa(@ukupni_trosak_placa);
+-- SELECT @ukupni_trosak_placa;
 
 -----------------------------------------------------------------------------------
 -- procedura za rashod godine dijelova
@@ -635,8 +635,8 @@ FROM stavka_dio;
 END //
 DELIMITER ;
 
-CALL rashod_godine_dijelova(@ukupni_trosak_dijelova);
-SELECT @ukupni_trosak_dijelova;
+-- CALL rashod_godine_dijelova(@ukupni_trosak_dijelova);
+-- SELECT @ukupni_trosak_dijelova;
 
 -----------------------------------------------------------------------------------
 -- procedura za ukupni rashod godine 
@@ -660,8 +660,8 @@ SET ukupan_rashod = (uk_rashod_dijelova)+(uk_rashod_placa);
 END //
 DELIMITER ;
 
-CALL rashod_godine(@ukupan_rashod);
-SELECT @ukupan_rashod;
+-- CALL rashod_godine(@ukupan_rashod);
+-- SELECT @ukupan_rashod;
 
 ---------------------------------------------------------------------
 -- procedura za dobit u godini
@@ -685,8 +685,8 @@ SET ukupan_dobit_godine = (ukupan_prihod_godine)-(ukupan_rashod_godine);
 END //
 DELIMITER ;
 
-CALL dobit_godine(@ukupan_dobit_godine);
-SELECT @ukupan_dobit_godine;
+-- CALL dobit_godine(@ukupan_dobit_godine);
+-- SELECT @ukupan_dobit_godine;
 
 -- --------------------------------------------KRAJ--------------------------------------------------
 

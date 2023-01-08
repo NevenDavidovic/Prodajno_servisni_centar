@@ -301,8 +301,8 @@
 
     <!-- table 11 -->
     <div class="col px-4">
-      <p class="fs-5">MARIJA UPIT 3</p>
-      <table class="table table-hover">
+      <p class="fs-5">Broj prodanih auta po mjesecima (2022.)</p>
+      <!-- <table class="table table-hover">
         <thead>
           <tr>
             <th scope="col">#</th>
@@ -319,15 +319,16 @@
           </tr>
           {% endfor %}
         </tbody>
-      </table>
+      </table> -->
+      <canvas id="table11" width="100" height="50"></canvas>
       <p class="text-muted credit">autor: Marija Ilić</p>
     </div>
     <!-- end of table 11 -->
 
     <!-- table 12 -->
     <div class="col px-4">
-      <p class="fs-5">MARIJA UPIT 2</p>
-      <table class="table table-hover">
+      <p class="fs-5">Broj servisiranih auta po mjesecima (2022.)</p>
+      <!-- <table class="table table-hover">
         <thead>
           <tr>
             <th scope="col">#</th>
@@ -344,7 +345,8 @@
           </tr>
           {% endfor %}
         </tbody>
-      </table>
+      </table> -->
+      <canvas id="table12" width="100" height="50"></canvas>
       <p class="text-muted credit">autor: Marija Ilić</p>
     </div>
     <!-- end of table 12 -->
@@ -572,6 +574,60 @@
           }
         }
         const chart10 = new Chart(graph10, config10)
+        
+      // graph 11
+        
+        var data11 = {
+          labels:{{x_table11|safe}},
+          datasets:[{
+              label:"Broj prodanih auta",
+              backgroundColor: ["#31373d"],
+              borderColor: "red",
+              data: {{y_table11|safe}}
+              }]
+            }
+            
+            const graph11 = document.getElementById("table11")
+            const config11 = {
+          type:"line",
+          data:data11,
+          options: {
+            indexAxis: 'x',
+            scale: {
+              ticks: {
+                precision: 0
+              }
+            }
+          }
+        }
+        const chart11 = new Chart(graph11, config11)
+
+      // graph 12
+        
+        var data12 = {
+          labels:{{x_table12|safe}},
+          datasets:[{
+              label:"Broj prodanih auta",
+              backgroundColor: ["#31373d"],
+              borderColor: "red",
+              data: {{y_table12|safe}}
+              }]
+            }
+            
+            const graph12 = document.getElementById("table12")
+            const config12 = {
+          type:"line",
+          data:data12,
+          options: {
+            indexAxis: 'x',
+            scale: {
+              ticks: {
+                precision: 0
+              }
+            }
+          }
+        }
+        const chart12 = new Chart(graph12, config12)
 
 </script>
       
