@@ -399,50 +399,54 @@ SELECT * FROM auto;
 
 # promjena cijena iz kuna u eure (nad tablicama oprema, racun_prodaje, usluga_servis, stavka_dio)
 
-DROP FUNCTION IF EXISTS pronadi_tablice_sa_atributom;
+# procedura koja pronalazi sve tablice koje sadrze atribut cijena
 
-# funkcija koja pronalazi sve tablice koje sadrze trazeni atribut
+DROP PROCEDURE IF EXISTS get_tables_with_column;
 DELIMITER //
 
-CREATE FUNCTION pronadi_tablice_sa_atributom(naziv_atributa VARCHAR(255))
-RETURNS VARCHAR(255)
-DETERMINISTIC
-
+CREATE PROCEDURE get_tables_with_column()
 BEGIN
-	DECLARE table_name VARCHAR(255) DEFAULT '';
-    DECLARE results VARCHAR(255) DEFAULT '';
-
-	DECLARE done BOOLEAN DEFAULT FALSE;
-
-	DECLARE cursor_tables CURSOR FOR
-		SELECT table_name FROM information_schema.columns
-			WHERE column_name = naziv_atributa;
-
-	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
-
-	OPEN cursor_tables;
-
-	get_tables: LOOP
-		FETCH cursor_tables INTO table_name;
-		IF done THEN
-		LEAVE get_tables;
-		END IF;
+	DECLARE done INT DEFAULT FALSE;
+	DECLARE naziv VARCHAR(255);
+	DECLARE kursor CURSOR FOR
+	SELECT DISTINCT c.TABLE_NAME
+		FROM INFORMATION_SCHEMA.COLUMNS c
+        JOIN INFORMATION_SCHEMA.TABLES t
+        ON c.TABLE_NAME = t.TABLE_NAME
+        WHERE c.COLUMN_NAME LIKE 'cijena'
+        AND t.TABLE_TYPE = 'BASE TABLE';
 	
-	SET results = CONCAT(results, table_name);
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
 
-	END LOOP;
+	OPEN kursor;
+    
+    petlja: LOOP
+    FETCH kursor INTO naziv;
+    IF done THEN LEAVE petlja;
+    END IF;
+    
+	SET @sql = CONCAT('UPDATE ', naziv, ' SET cijena = cijena / 7.534');
+    PREPARE stmt FROM @sql;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+    
+    END LOOP;
+    
+    CLOSE kursor;
 
-	CLOSE cursor_tables;
-
-    RETURN 'abc';
-END //
+END//
 
 DELIMITER ;
 
-SELECT table_name FROM information_schema.columns
-	WHERE column_name = 'komentar';
+CALL get_tables_with_column();
 
-SELECT pronadi_tablice_sa_atributom('komentar');
+SELECT * FROM oprema;
+
+
+/*
+SELECT table_name FROM information_schema.columns
+	WHERE column_name = 'cijena';
+*/
 
 -- MARIJA end
 
@@ -491,7 +495,7 @@ DELIMITER ;
 
 -- CALL update_dostupnost_auta(1, '2023-01-01 00:00:00');
 
-
+/*
 PROCEDURA 2. 
 -- procedura za update svih auta kojima je datum na narudzbenici manji ili jednak trenutnom te promjena dostupnosti u DA. 
 -- Izbacuje rezultat svaki put kad promijeni vrijednost
@@ -531,7 +535,7 @@ BEGIN
 END//
 
 DELIMITER ;
-
+*/
 -- call update_dostupnost_svih_auta();
 
 -- PROCEDURA 3. Vraća samo jedan rezultat za razliku od prethodne
