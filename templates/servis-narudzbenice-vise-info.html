@@ -13,8 +13,8 @@
                 <h1>Narudžbenica</h1>
                 
                 <p class="fs-4">Broj narudžbenice: {{data.broj_narudzbe}} </p>
-                <p class="fs-4">Datum zaprimanja: {{data.datum_zaprimanja}} </p>
-                <p class="fs-4">Datum povratka: {{data.datum_povratka}} </p>
+                <p class="fs-4">Datum zaprimanja: {{data.datum_zaprimanja.strftime('%d.%m.%Y.')}} </p>
+                <p class="fs-4">Datum povratka: {{data.datum_povratka.strftime('%d.%m.%Y.')}} </p>
             </div>
         </div>
     </div>
@@ -52,6 +52,8 @@ broj_narudzbe, datum_zaprimanja, datum_povratka-->
             <p><b>Tip motora </b> {{data.tip_motora}}</p>
             <p><b>Snaga motora: </b> {{data.snaga_motora}}</p>
             <p><b>Kilometraža: </b> {{data.kilometraza}}</p>
+            <p><b>Godina proizvodnje:</b> {{data.godina_proizvodnje.strftime('%Y.')}}</p>
+            
             
         </div>
     </div>
