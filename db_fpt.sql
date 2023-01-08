@@ -88,6 +88,21 @@ END //
 DELIMITER ;
 
 -- CALL PROMET_DANA("2022-11-11",@br_prodanih_stavki, @promet_dana);
+
+--  PROCEDURA: ako je količina djelova manja od 5 – popis djelova koje treba naručit
+--  DROP PROCEDURE dijelovi_za_narudzbu;
+
+
+DELIMITER //
+CREATE PROCEDURE dijelovi_za_narudzbu()
+BEGIN
+	SELECT d.naziv, d.proizvodac
+	FROM stavka_dio sd, dio d
+	WHERE  sd.id_dio=d.id AND dostupna_kolicina<5;
+END //
+DELIMITER ;
+
+-- CALL dijelovi_za_narudzbu();
 -- SELECT @promet_dana,@br_prodanih_stavki FROM DUAL;
 
 DELIMITER //
