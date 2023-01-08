@@ -464,3 +464,8 @@ BEGIN
 END //
 
 DELIMITER ;
+
+-- test data INSERT INTO auto VALUES (2, "Y7NV3NIFJYYUGY00V", "VOLKSWAGEN", "TRANSPORTER", "siva", STR_TO_DATE("2025-01-01", "%Y-%m-%d"), "DA", "88", "127342", "benzinski","P");
+
+-- procedura
+
