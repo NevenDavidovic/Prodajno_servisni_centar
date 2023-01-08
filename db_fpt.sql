@@ -399,8 +399,6 @@ SELECT * FROM auto;
 
 # promjena cijena iz kuna u eure (nad tablicama oprema, racun_prodaje, usluga_servis, stavka_dio)
 
-# procedura koja pronalazi sve tablice koje sadrze atribut cijena
-
 DROP PROCEDURE IF EXISTS get_tables_with_column;
 DELIMITER //
 
