@@ -446,6 +446,160 @@ SELECT pronadi_tablice_sa_atributom('komentar');
 
 -- MARIJA end
 
+------------------------------------------------NOEL--------------------------------------------------------
+-- procedura za prihod godine servisa
+-- DROP PROCEDURE prihod_godine_servisa
 
+DELIMITER //
+CREATE PROCEDURE prihod_godine_servisa(IN godina INT ,OUT koristeni_dijelovi INTEGER, OUT prihod_servisa DECIMAL(12,2))
+BEGIN
+	
+    SELECT SUM((IFNULL(cijena_dijelova, 0)+IFNULL(cijena_servisa, 0))) INTO prihod_servisa
+	FROM cijena__dijelova cd, cijena__servisa cs
+	WHERE cd.id_narudzbenica=cs.id_narudzbenica AND YEAR(datum_povratka)=godina
+	GROUP BY YEAR(datum_povratka);
+    
+    SELECT COUNT(id_narudzbenica) INTO koristeni_dijelovi
+	FROM cijena__servisa
+	WHERE YEAR(datum_povratka)=godina
+	GROUP BY YEAR(datum_povratka);
+    
+END //
+DELIMITER ;
+
+CALL prihod_godine_servisa(2022,@koristeni_dijelovi, @prihod_servisa);
+SELECT @koristeni_dijelovi, @prihod_servisa FROM DUAL;
+-----------------------------------------------------------------------------------------------------------------------
+-- procedura za prihod godine prodaje
+-- DROP PROCEDURE prihod_godine_prodaja
+
+DELIMITER //
+CREATE PROCEDURE prihod_godine_prodaja(IN godina INT,OUT kolicina_prodaje INTEGER, OUT prihod_prodaje DECIMAL(12,2))
+BEGIN
+
+	SELECT SUM(cijena), COUNT(id) INTO prihod_prodaje, kolicina_prodaje
+	FROM racun_prodaje
+	WHERE YEAR(datum)=godina;
+    
+  
+END //
+DELIMITER ;
+
+CALL prihod_godine_prodaja(2022,@kolicina_prodaje, @prihod_prodaje);
+SELECT @kolicina_prodaje, @prihod_prodaje FROM DUAL;
+
+--------------------------------------------------------------------------------------------------------
+-- procedura za ukupan prihod godine
+-- DROP PROCEDURE prihod_godine;
+
+DELIMITER //
+CREATE PROCEDURE prihod_godine(IN godina INT,OUT uk_kolicina INTEGER, OUT uk_prihod_godine DECIMAL(12,2))
+BEGIN
+	
+    DECLARE servis_prihodi, prodaja_prihodi DECIMAL(12,2);
+    DECLARE servis_kolicina, prodaja_kolicina INTEGER;
+
+	CALL prihod_godine_prodaja(godina,@brprodstav, @promet);
+	SELECT @promet,@brprodstav INTO prodaja_prihodi, prodaja_kolicina FROM DUAL;
+    
+    CALL prihod_godine_servisa(godina,@br_prod, @promets);
+	SELECT @promets,@br_prod INTO servis_prihodi, servis_kolicina FROM DUAL;
+    
+    SET uk_kolicina= (IFNULL(prodaja_kolicina, 0))+(IFNULL(servis_kolicina, 0));
+    SET uk_prihod_godine=(IFNULL(prodaja_prihodi, 0))+(IFNULL(servis_prihodi, 0));
+
+END //
+DELIMITER ;
+
+CALL prihod_godine(2022,@uk_kolicina, @uk_prihod_godine);
+SELECT @uk_kolicina, @uk_prihod_godine FROM DUAL;
+
+-----------------------------------------------------------------------------------
+-- procedura za rashod godine placa
+-- DROP PROCEDURE rashod_godine_placa
+
+DELIMITER //
+CREATE PROCEDURE rashod_godine_placa( OUT ukupni_trosak_placa DECIMAL(12,2))
+BEGIN
+
+SELECT SUM(placa*12) INTO ukupni_trosak_placa 
+FROM zaposlenik;
+
+  
+END //
+DELIMITER ;
+
+CALL rashod_godine_placa(@ukupni_trosak_placa);
+SELECT @ukupni_trosak_placa;
+
+-----------------------------------------------------------------------------------
+-- procedura za rashod godine dijelova
+-- DROP PROCEDURE rashod_godine_dijelova
+
+DELIMITER //
+CREATE PROCEDURE rashod_godine_dijelova( OUT ukupni_trosak_dijelova DECIMAL(12,2))
+BEGIN
+
+SELECT SUM((nabavna_cijena*dostupna_kolicina)) INTO ukupni_trosak_dijelova
+FROM stavka_dio;
+
+  
+END //
+DELIMITER ;
+
+CALL rashod_godine_dijelova(@ukupni_trosak_dijelova);
+SELECT @ukupni_trosak_dijelova;
+
+-----------------------------------------------------------------------------------
+-- procedura za ukupni rashod godine 
+-- DROP PROCEDURE rashod_godine
+
+DELIMITER //
+CREATE PROCEDURE rashod_godine(OUT ukupan_rashod DECIMAL(12,2))
+BEGIN
+
+DECLARE uk_rashod_placa DECIMAL(12,2);
+DECLARE uk_rashod_dijelova DECIMAL(12,2);
+
+CALL rashod_godine_placa(@ukupni_trosak_placa);
+SELECT @ukupni_trosak_placa INTO uk_rashod_placa;
+
+CALL rashod_godine_dijelova(@ukupni_trosak_dijelova);
+SELECT @ukupni_trosak_dijelova INTO uk_rashod_dijelova;
+
+SET ukupan_rashod = (uk_rashod_dijelova)+(uk_rashod_placa);
+
+END //
+DELIMITER ;
+
+CALL rashod_godine(@ukupan_rashod);
+SELECT @ukupan_rashod;
+
+---------------------------------------------------------------------
+-- procedura za dobit u godini
+-- DROP PROCEDURE dobit_godine
+
+DELIMITER //
+CREATE PROCEDURE dobit_godine(OUT ukupan_dobit_godine DECIMAL(12,2))
+BEGIN
+
+DECLARE ukupan_prihod_godine DECIMAL(12,2);
+DECLARE ukupan_rashod_godine DECIMAL(12,2);
+
+CALL prihod_godine(2022,@uk_kolicina, @uk_prihod_godine);
+SELECT @uk_prihod_godine  INTO ukupan_prihod_godine;
+
+CALL rashod_godine(@ukupan_rashod);
+SELECT @ukupan_rashod INTO ukupan_rashod_godine;
+
+SET ukupan_dobit_godine = (ukupan_prihod_godine)-(ukupan_rashod_godine);
+
+END //
+DELIMITER ;
+
+CALL dobit_godine(@ukupan_dobit_godine);
+SELECT @ukupan_dobit_godine;
+
+----------------------------------------------KRAJ--------------------------------------------------
 
 
