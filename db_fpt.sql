@@ -562,5 +562,47 @@ DELIMITER ;
 
 -- call update_dostupnost_svih_autax();
 
--- PROCEDURA 4.
+-- FUNKCIJa koja nam govori koji proizvod je jeftin a koji skup
+
+DELIMITER //
+CREATE FUNCTION cijena_usluge(cijena DECIMAL(8,2))
+RETURNS VARCHAR(50) DETERMINISTIC
+BEGIN
+    DECLARE kategorija VARCHAR(50);
+    IF cijena < 100 THEN
+        SET kategorija = 'Proizvod je jeftin';
+    ELSE
+        SET kategorija = 'Proizvod je skup';
+    END IF;
+    RETURN kategorija;
+END//
+DELIMITER ;
+
+-- SELECT *,cijena_usluge(cijena) as Jeftino_Skupo FROM usluga_servis;
+
+
+-- PROCEDURA U sklopu procedure nalazi se 
+-- naredba za ažuriranje koja ažurira stupac "komentar" u tablici "servis" na temelju vrijednosti stupca "datum_povratka" u tablici "narudžbenica".
+
+DELIMITER //
+CREATE PROCEDURE update_komentar_servisa()
+BEGIN
+    UPDATE servis as s
+    INNER JOIN narudzbenica as n
+        ON s.id_narudzbenica = n.id
+    SET s.komentar = CASE
+        WHEN n.datum_povratka < CURDATE() THEN 'Servis u tijeku'
+        ELSE 'Automobil spreman za preuzimanje'
+    END
+    WHERE n.datum_povratka <= CURDATE() ;
+END//
+
+DELIMITER ;
+
+call update_komentar_servisa();
+
+SELECT *FROM servis, narudzbenica WHERE servis.id_narudzbenica=narudzbenica.id;
+
+
+-- NEVEN END
 
