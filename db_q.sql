@@ -161,7 +161,7 @@ CREATE VIEW dijelovi AS
 SELECT stavka_dio.id,naziv,proizvodac,serijski_broj,opis, kategorija, nabavna_cijena,prodajna_cijena,dostupna_kolicina FROM dio,stavka_dio WHERE dio.id=stavka_dio.id_dio;
 
 CREATE VIEW narudzbenicej AS
-SELECT narudzbenica.id,broj_sasije,oib, marka_automobila, model, boja,dostupnost, snaga_motora, kilometraza, tip_motora, ime, prezime, broj_telefona, adresa,grad,spol,broj_narudzbe, datum_zaprimanja, datum_povratka  FROM auto, klijent, narudzbenica WHERE auto.id=narudzbenica.id_auto AND klijent.id=narudzbenica.id_klijent AND servis_prodaja='S' AND dostupnost='NE';
+SELECT narudzbenica.id,broj_sasije,oib, marka_automobila, model, boja,dostupnost,godina_proizvodnje, snaga_motora, kilometraza, tip_motora, ime, prezime, broj_telefona, adresa,grad,spol,broj_narudzbe, datum_zaprimanja, datum_povratka  FROM auto, klijent, narudzbenica WHERE auto.id=narudzbenica.id_auto AND klijent.id=narudzbenica.id_klijent AND servis_prodaja='S' AND dostupnost='NE';
 
 
 SELECT CONCAT(z.ime ,' ', z.prezime) AS Ime_i_prezime,COUNT(z.id) as broj_servisa
