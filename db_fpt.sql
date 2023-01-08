@@ -448,6 +448,73 @@ SELECT table_name FROM information_schema.columns
 	WHERE column_name = 'cijena';
 */
 
+DROP TRIGGER IF EXISTS datum_rodenja_zaposlenika;
+# datum rodenja nesmje biti manji od danas - 18 godina
+DELIMITER //
+CREATE TRIGGER datum_rodenja_zaposlenika
+BEFORE INSERT ON zaposlenik
+FOR EACH ROW
+BEGIN
+DECLARE razlika DATE;
+
+SET razlika = NOW()-INTERVAL 18 YEAR;
+
+IF new.datum_rodenja > razlika THEN
+	SIGNAL SQLSTATE '49000'
+	SET MESSAGE_TEXT = 'Zaposlenik nije punoljetan!';
+END IF;
+
+END//
+DELIMITER ;
+
+-- INSERT INTO zaposlenik VALUES(19, "5412610278033", "Matija", "Vuković", "2000-01-15 00:00:00", "Jardasi 23", "Zagreb", "m",
+-- "496588144", "2010-07-13 00:00:00", "m.vuković1@yahoo.com", 6073.036628185772, "autoelektricar");
+
+-- SELECT * FROM zaposlenik;
+
+DROP TRIGGER IF EXISTS datum_zaposlenja_zaposlenika;
+# datum zaposlenja nesmje biti manji od trenutnog
+DELIMITER //
+CREATE TRIGGER datum_zaposlenja_zaposlenika
+BEFORE INSERT ON zaposlenik
+FOR EACH ROW
+BEGIN
+
+IF new.datum_zaposlenja < NOW() THEN
+	SIGNAL SQLSTATE '49001'
+	SET MESSAGE_TEXT = 'Neispravan datum zaposlenja!';
+END IF;
+
+END//
+DELIMITER ;
+
+-- DELETE FROM zaposlenik WHERE id = 19;
+-- INSERT INTO zaposlenik VALUES(19, "5412610278033", "Matija", "Vuković", "2000-01-15 00:00:00", "Jardasi 23", "Zagreb", "m", 
+-- "496588144", "2023-07-13 00:00:00", "m.vuković1@yahoo.com", 6073.036628185772, "autoelektricar");
+
+-- SELECT * FROM zaposlenik;
+
+DROP TRIGGER IF EXISTS  godina_proizvodnje_automobila;
+# godina proizvodnje automobila nesmje biti veća od trenutne
+DELIMITER //
+CREATE TRIGGER godina_proizvodnje_automobila
+BEFORE INSERT ON auto
+FOR EACH ROW
+BEGIN
+
+IF YEAR(new.godina_proizvodnje) > YEAR(NOW()) THEN
+	SIGNAL SQLSTATE '49002'
+	SET MESSAGE_TEXT = 'Neispravna godina proizvodnje!';
+END IF;
+
+END//
+DELIMITER ;
+
+-- DELETE FROM auto WHERE id=1299;
+-- INSERT INTO auto VALUES (1299, "L76FPA95UU1WGKKVKM", "BMW", "760LI", "crvena", STR_TO_DATE("2024-01-01", "%Y-%m-%d"), "NE", "111", "159384", "benzinski","P");
+-- SELECT * FROM auto;
+
+
 -- MARIJA end
 
 -- ----------------------------------------------NOEL--------------------------------------------------------
