@@ -467,5 +467,28 @@ DELIMITER ;
 
 -- test data INSERT INTO auto VALUES (2, "Y7NV3NIFJYYUGY00V", "VOLKSWAGEN", "TRANSPORTER", "siva", STR_TO_DATE("2025-01-01", "%Y-%m-%d"), "DA", "88", "127342", "benzinski","P");
 
--- procedura
+-- procedura koja mijenja tj updatea dostupnost auta prema id-u auta i prema datumu povratka koji se uspoređuje sa sadašnjim datumom. Ispisuje sve aute koji imaju datum_povratka na narudzbenici manji ili jednak trenutnom
+DELIMITER //
+
+CREATE PROCEDURE update_dostupnost_auta (IN p_auto_id INT, IN p_datum_povratka_date DATETIME)
+BEGIN
+    UPDATE auto
+    SET dostupnost = 'DA'
+    WHERE id = p_auto_id AND p_datum_povratka_date <= CURDATE();
+
+    SELECT a.id, a.model,a.dostupnost,n.datum_povratka
+    FROM auto as a
+        INNER JOIN narudzbenica as n
+        ON a.id = n.id_auto
+    WHERE n.datum_povratka <= CURDATE();
+END//
+
+DELIMITER ;
+
+-- CALL update_dostupnost_auta(1, '2023-01-01 00:00:00');
+
+-- procedura za update svih auta kojima je datum na narudzbenici manji ili jednak trenutnom. 
+
+
+
 
