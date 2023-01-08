@@ -450,163 +450,160 @@ SELECT table_name FROM information_schema.columns
 
 -- MARIJA end
 
-
--- NEVEN START
-
--- TRIGGER - kod dodavanja novog auta da datum proizvodnji ne smije biti veći od jučerašnjeg dana.
+------------------------------------------------NOEL--------------------------------------------------------
+-- procedura za prihod godine servisa
+-- DROP PROCEDURE prihod_godine_servisa
 
 DELIMITER //
-
-CREATE TRIGGER bi_datum_proizvodnje
-BEFORE INSERT ON auto
-FOR EACH ROW
+CREATE PROCEDURE prihod_godine_servisa(IN godina INT ,OUT koristeni_dijelovi INTEGER, OUT prihod_servisa DECIMAL(12,2))
 BEGIN
-    IF NEW.godina_proizvodnje > CURDATE() THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Godina proizvodnje ne može biti u budućnosti';
-    END IF;
+	
+    SELECT SUM((IFNULL(cijena_dijelova, 0)+IFNULL(cijena_servisa, 0))) INTO prihod_servisa
+	FROM cijena__dijelova cd, cijena__servisa cs
+	WHERE cd.id_narudzbenica=cs.id_narudzbenica AND YEAR(datum_povratka)=godina
+	GROUP BY YEAR(datum_povratka);
+    
+    SELECT COUNT(id_narudzbenica) INTO koristeni_dijelovi
+	FROM cijena__servisa
+	WHERE YEAR(datum_povratka)=godina
+	GROUP BY YEAR(datum_povratka);
+    
 END //
-
 DELIMITER ;
 
--- test data INSERT INTO auto VALUES (2, "Y7NV3NIFJYYUGY00V", "VOLKSWAGEN", "TRANSPORTER", "siva", STR_TO_DATE("2025-01-01", "%Y-%m-%d"), "DA", "88", "127342", "benzinski","P");
-
--- PROCEDURA 1.
--- Procedura počinje izvršavanjem naredbe UPDATE na tablici "auto". Ova naredba postavlja stupac "dostupnost" na 'DA' 
--- za redak s "id"-om koji odgovara "p_auto_id", pod uvjetom da je "p_datum_povratka_date" manji ili jednak trenutnom datumu (CURDATE()).
--- Procedura zatim izvršava naredbu SELECT koja dohvaća stupce "id", "model", "dostupnost" i "datum_povratka" iz tablica "auto" i "narudzbenica", spojenih na stupac "id" iz tablica "auto" i stupac "id_auto" iz tablica "narudzbenica". 
--- Naredba SELECT vraća redove gdje je stupac "datum_povratka" manji ili jednak trenutnom datumu.
-DELIMITER //
-
-CREATE PROCEDURE update_dostupnost_auta (IN p_auto_id INT, IN p_datum_povratka_date DATETIME)
-BEGIN
-    UPDATE auto
-    SET dostupnost = 'DA'
-    WHERE id = p_auto_id AND p_datum_povratka_date <= CURDATE();
-
-    SELECT a.id, a.model,a.dostupnost,n.datum_povratka
-    FROM auto as a
-        INNER JOIN narudzbenica as n
-        ON a.id = n.id_auto
-    WHERE n.datum_povratka <= CURDATE();
-END//
-
-DELIMITER ;
-
--- CALL update_dostupnost_auta(1, '2023-01-01 00:00:00');
-
-/*
-PROCEDURA 2. 
--- procedura za update svih auta kojima je datum na narudzbenici manji ili jednak trenutnom te promjena dostupnosti u DA. 
--- Izbacuje rezultat svaki put kad promijeni vrijednost
--- u sebi sadrzi prethodnu proceduru
-
-CREATE PROCEDURE update_dostupnost_svih_auta()
-BEGIN
-    DECLARE done INT DEFAULT FALSE;
-    DECLARE p_auto_id INT;
-    DECLARE p_datum_povratka_date DATETIME;
-
-    DECLARE cur CURSOR FOR
-        SELECT id_auto, datum_povratka
-        FROM narudzbenica;
-
-    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
-
-    OPEN cur;
-
-    REPEAT
-        FETCH cur INTO p_auto_id, p_datum_povratka_date;
-        IF NOT done THEN
-            UPDATE auto
-            SET dostupnost = 'DA'
-            WHERE id = p_auto_id AND p_datum_povratka_date <= CURDATE();
-
-            SELECT a.id, a.model,a.dostupnost,n.datum_povratka
-            FROM auto as a
-                INNER JOIN narudzbenica as n
-                ON a.id = n.id_auto
-            WHERE n.datum_povratka <= CURDATE();
-        END IF;
-    UNTIL done END REPEAT;
-
-    CLOSE cur;
-
-END//
-
-DELIMITER ;
-*/
--- call update_dostupnost_svih_auta();
-
--- PROCEDURA 3. Vraća samo jedan rezultat za razliku od prethodne
+CALL prihod_godine_servisa(2022,@koristeni_dijelovi, @prihod_servisa);
+SELECT @koristeni_dijelovi, @prihod_servisa FROM DUAL;
+-----------------------------------------------------------------------------------------------------------------------
+-- procedura za prihod godine prodaje
+-- DROP PROCEDURE prihod_godine_prodaja
 
 DELIMITER //
-
-CREATE PROCEDURE update_dostupnost_svih_autax()
+CREATE PROCEDURE prihod_godine_prodaja(IN godina INT,OUT kolicina_prodaje INTEGER, OUT prihod_prodaje DECIMAL(12,2))
 BEGIN
-    DECLARE p_auto_id INT;
-    DECLARE p_datum_povratka_date DATETIME;
 
-    SELECT a.id, a.model,a.dostupnost,n.datum_povratka
-    FROM auto as a
-        INNER JOIN narudzbenica as n
-        ON a.id = n.id_auto
-    WHERE n.datum_povratka <= CURDATE();
-
-    UPDATE auto
-    SET dostupnost = 'DA'
-    WHERE id IN (
-        SELECT id_auto
-        FROM narudzbenica
-        WHERE datum_povratka <= CURDATE()
-    );
-END//
-
+	SELECT SUM(cijena), COUNT(id) INTO prihod_prodaje, kolicina_prodaje
+	FROM racun_prodaje
+	WHERE YEAR(datum)=godina;
+    
+  
+END //
 DELIMITER ;
 
--- call update_dostupnost_svih_autax();
+CALL prihod_godine_prodaja(2022,@kolicina_prodaje, @prihod_prodaje);
+SELECT @kolicina_prodaje, @prihod_prodaje FROM DUAL;
 
--- FUNKCIJa koja nam govori koji proizvod je jeftin a koji skup
+--------------------------------------------------------------------------------------------------------
+-- procedura za ukupan prihod godine
+-- DROP PROCEDURE prihod_godine;
 
 DELIMITER //
-CREATE FUNCTION cijena_usluge(cijena DECIMAL(8,2))
-RETURNS VARCHAR(50) DETERMINISTIC
+CREATE PROCEDURE prihod_godine(IN godina INT,OUT uk_kolicina INTEGER, OUT uk_prihod_godine DECIMAL(12,2))
 BEGIN
-    DECLARE kategorija VARCHAR(50);
-    IF cijena < 100 THEN
-        SET kategorija = 'Proizvod je jeftin';
-    ELSE
-        SET kategorija = 'Proizvod je skup';
-    END IF;
-    RETURN kategorija;
-END//
+	
+    DECLARE servis_prihodi, prodaja_prihodi DECIMAL(12,2);
+    DECLARE servis_kolicina, prodaja_kolicina INTEGER;
+
+	CALL prihod_godine_prodaja(godina,@brprodstav, @promet);
+	SELECT @promet,@brprodstav INTO prodaja_prihodi, prodaja_kolicina FROM DUAL;
+    
+    CALL prihod_godine_servisa(godina,@br_prod, @promets);
+	SELECT @promets,@br_prod INTO servis_prihodi, servis_kolicina FROM DUAL;
+    
+    SET uk_kolicina= (IFNULL(prodaja_kolicina, 0))+(IFNULL(servis_kolicina, 0));
+    SET uk_prihod_godine=(IFNULL(prodaja_prihodi, 0))+(IFNULL(servis_prihodi, 0));
+
+END //
 DELIMITER ;
 
--- SELECT *,cijena_usluge(cijena) as Jeftino_Skupo FROM usluga_servis;
+CALL prihod_godine(2022,@uk_kolicina, @uk_prihod_godine);
+SELECT @uk_kolicina, @uk_prihod_godine FROM DUAL;
 
-
--- PROCEDURA U sklopu procedure nalazi se 
--- naredba za ažuriranje koja ažurira stupac "komentar" u tablici "servis" na temelju vrijednosti stupca "datum_povratka" u tablici "narudžbenica".
+-----------------------------------------------------------------------------------
+-- procedura za rashod godine placa
+-- DROP PROCEDURE rashod_godine_placa
 
 DELIMITER //
-CREATE PROCEDURE update_komentar_servisa()
+CREATE PROCEDURE rashod_godine_placa( OUT ukupni_trosak_placa DECIMAL(12,2))
 BEGIN
-    UPDATE servis as s
-    INNER JOIN narudzbenica as n
-        ON s.id_narudzbenica = n.id
-    SET s.komentar = CASE
-        WHEN n.datum_povratka < CURDATE() THEN 'Servis u tijeku'
-        ELSE 'Automobil spreman za preuzimanje'
-    END
-    WHERE n.datum_povratka <= CURDATE() ;
-END//
 
+SELECT SUM(placa*12) INTO ukupni_trosak_placa 
+FROM zaposlenik;
+
+  
+END //
 DELIMITER ;
 
-call update_komentar_servisa();
+CALL rashod_godine_placa(@ukupni_trosak_placa);
+SELECT @ukupni_trosak_placa;
 
-SELECT *FROM servis, narudzbenica WHERE servis.id_narudzbenica=narudzbenica.id;
+-----------------------------------------------------------------------------------
+-- procedura za rashod godine dijelova
+-- DROP PROCEDURE rashod_godine_dijelova
 
+DELIMITER //
+CREATE PROCEDURE rashod_godine_dijelova( OUT ukupni_trosak_dijelova DECIMAL(12,2))
+BEGIN
 
--- NEVEN END
+SELECT SUM((nabavna_cijena*dostupna_kolicina)) INTO ukupni_trosak_dijelova
+FROM stavka_dio;
+
+  
+END //
+DELIMITER ;
+
+CALL rashod_godine_dijelova(@ukupni_trosak_dijelova);
+SELECT @ukupni_trosak_dijelova;
+
+-----------------------------------------------------------------------------------
+-- procedura za ukupni rashod godine 
+-- DROP PROCEDURE rashod_godine
+
+DELIMITER //
+CREATE PROCEDURE rashod_godine(OUT ukupan_rashod DECIMAL(12,2))
+BEGIN
+
+DECLARE uk_rashod_placa DECIMAL(12,2);
+DECLARE uk_rashod_dijelova DECIMAL(12,2);
+
+CALL rashod_godine_placa(@ukupni_trosak_placa);
+SELECT @ukupni_trosak_placa INTO uk_rashod_placa;
+
+CALL rashod_godine_dijelova(@ukupni_trosak_dijelova);
+SELECT @ukupni_trosak_dijelova INTO uk_rashod_dijelova;
+
+SET ukupan_rashod = (uk_rashod_dijelova)+(uk_rashod_placa);
+
+END //
+DELIMITER ;
+
+CALL rashod_godine(@ukupan_rashod);
+SELECT @ukupan_rashod;
+
+---------------------------------------------------------------------
+-- procedura za dobit u godini
+-- DROP PROCEDURE dobit_godine
+
+DELIMITER //
+CREATE PROCEDURE dobit_godine(OUT ukupan_dobit_godine DECIMAL(12,2))
+BEGIN
+
+DECLARE ukupan_prihod_godine DECIMAL(12,2);
+DECLARE ukupan_rashod_godine DECIMAL(12,2);
+
+CALL prihod_godine(2022,@uk_kolicina, @uk_prihod_godine);
+SELECT @uk_prihod_godine  INTO ukupan_prihod_godine;
+
+CALL rashod_godine(@ukupan_rashod);
+SELECT @ukupan_rashod INTO ukupan_rashod_godine;
+
+SET ukupan_dobit_godine = (ukupan_prihod_godine)-(ukupan_rashod_godine);
+
+END //
+DELIMITER ;
+
+CALL dobit_godine(@ukupan_dobit_godine);
+SELECT @ukupan_dobit_godine;
+
+----------------------------------------------KRAJ--------------------------------------------------
+
 
