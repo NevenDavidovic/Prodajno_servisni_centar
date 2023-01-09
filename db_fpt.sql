@@ -128,7 +128,7 @@ IF new.datum_povratka < new.datum_zaprimanja THEN
  END IF;
 END//
 DELIMITER ;
-INSERT INTO narudzbenica VALUES (666, 25, 218, 1, "2023-01-08 00:00:00", "2023-01-10 00:00:00");
+-- INSERT INTO narudzbenica VALUES (666, 25, 218, 1, "2023-01-08 00:00:00", "2023-01-10 00:00:00");
 
 
 -- SARA GOTOVA

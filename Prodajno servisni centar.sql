@@ -2,7 +2,6 @@ DROP DATABASE IF EXISTS Prodajno_servisni_centar;
 CREATE DATABASE Prodajno_servisni_centar;
 USE Prodajno_servisni_centar;
 
-
 -- DONE
 CREATE TABLE zaposlenik(
 	id INTEGER AUTO_INCREMENT,
@@ -105,7 +104,7 @@ CREATE TABLE narudzbenica(
 	id INTEGER AUTO_INCREMENT,
 	id_klijent INTEGER,
 	id_auto INTEGER,
-	broj_narudzbe INTEGER,
+	broj_narudzbe INTEGER UNIQUE,
 	datum_zaprimanja DATE NOT NULL,
 	datum_povratka DATETIME NOT NULL,
 	PRIMARY KEY (id),

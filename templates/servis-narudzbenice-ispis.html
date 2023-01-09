@@ -21,7 +21,7 @@
     <label for="identificator" class="form-label">Pretraži prema:</label>
     <div class="search" >
         <form method="post" class="d-flex">
-            <select class="select" name="identificator" id="identificator" aria-label="Pretraži po" required value="{{request.form['identificator']}}">
+            <select class="form-select" name="identificator" id="identificator" aria-label="Pretraži po" required value="{{request.form['identificator']}}">
                 <option selected value="broj_sasije">Broj šasije</option>
                 <option value="model">Model</option>
                 <option value="marka_automobila">Marka</option>
@@ -61,8 +61,8 @@
                 <td>{{d.model}} </td>
                 <td>{{d.broj_sasije}} </td>
                 <td>{{d.broj_narudzbe}} </td>
-                <td>{{d.datum_zaprimanja}} </td>
-                <td>{{d.datum_povratka}} </td>
+                <td>{{d.datum_zaprimanja.strftime('%d.%m.%Y.')}} </td>
+                <td>{{d.datum_povratka.strftime('%d.%m.%Y.')}} </td>
                 
                 
                 <td>
@@ -76,7 +76,7 @@
     <!-- end of table -->
 
     {% else %}
-    <p class="fs-4 text-center">Nije pronađena niti jedna usluga.</p>
+    <p class="fs-4 text-center not-found">Nije pronađena niti jedna naruđbenica.</p>
     {% endif %}
 
     {% endblock %}
