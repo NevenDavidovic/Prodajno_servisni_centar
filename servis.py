@@ -134,7 +134,7 @@ def add_stavka_Dio():
 def ispisStavkaDio():
     if request.method == "POST":
         try:
-            table = 'stavka_dio'
+            table = 'dijelovi'
             attribut = 'naziv'
             value = request.form.get('naziv')
             response = find_item_like(table, attribut, value)
@@ -463,3 +463,9 @@ def editClient(id):
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
         return make_response(render_template("servis-uredivanje-klijenta.html", data=response), 200)
+
+# ruta za ispis servisa
+
+@servis.route("/servis/ispis-servisa", methods=['POST', 'GET'])
+def ispisPodatakaServis():
+    return render_template()
