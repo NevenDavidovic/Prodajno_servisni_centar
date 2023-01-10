@@ -1,5 +1,5 @@
 from flask import Flask, Blueprint, render_template, request, make_response, jsonify
-from statsFunctions import uslugePoTipuMotora, najviseUtrosenihDjelova, zaspoleniciSaNajviseServisa, zaposleniciPoNajvisojCijeni, racuniPoKupcu, topSkupiDijelovi, topProdavaci, topMarkeAutomobila, mjesečniPrihodiProdaja, mjesečniPrihodiServis,prodanihAutaPoMjesecima,servisiranihAutaPoMjesecima
+from statsFunctions import uslugePoTipuMotora, najviseUtrosenihDjelova, zaspoleniciSaNajviseServisa, zaposleniciPoNajvisojCijeni, racuniPoKupcu, topSkupiDijelovi, topProdavaci, topMarkeAutomobila, mjesečniPrihodiProdaja, mjesečniPrihodiServis, prodanihAutaPoMjesecima, servisiranihAutaPoMjesecima
 from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_item, find_item_like
 
 
@@ -65,12 +65,12 @@ def showStats():
                           for obj in responses[9]]
         table10_data = [int(obj.get('ukupna_cijena_servisa'))
                         for obj in responses[9]]
-        
+
         table11_labels = [str(obj.get('mjesec')).capitalize()
                           for obj in responses[10]]
         table11_data = [int(obj.get('kolicina'))
                         for obj in responses[10]]
-        
+
         table12_labels = [str(obj.get('mjesec')).capitalize()
                           for obj in responses[11]]
         table12_data = [int(obj.get('kolicina'))
@@ -103,10 +103,10 @@ def showStats():
 
                                          x_table10=table10_labels,
                                          y_table10=table10_data,
-                                         
+
                                          x_table11=table11_labels,
                                          y_table11=table11_data,
-                                         
+
                                          x_table12=table12_labels,
                                          y_table12=table12_data,
 
