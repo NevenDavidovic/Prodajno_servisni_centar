@@ -29,39 +29,39 @@ Korisničko sučelje administracija nudi sljedeće mogućnosti:
 
 * Python (https://www.python.org/downloads/)
 * MySQL Workbench (https://www.mysql.com/products/workbench/)
-* Virtual enviroment (https://www.youtube.com/watch?v=CHpQF1rdUMY)
+* Python Virtual Environment (https://www.youtube.com/watch?v=CHpQF1rdUMY)
 
-*Koraci za instalaciju virtual enviromenta:*
+*Koraci za instalaciju virtual environmenta:*
 
 1. Preuzmite repozitorij i raspakirajte ga
 2. Otvorite terminal u datoteci u kojoj se nalazi projekt
-3. Kako bi kreirali enviroment upišite:
+3. Kako bi kreirali environment upišite:
 `python -m venv myVenv`
-4. Kako bi aktivirali enviroment upišite:
+4. Kako bi aktivirali environment upišite:
 `.\myVenv\Scripts\activate`
-5. Kako bi instalirali sve potrebno za rad aplikacije upišite: 
+5. Kako bi instalirali sve potrebno za rad web aplikacije upišite: 
 `pip install requirements.txt`
 
-### Upute za lokalno pokretanje aplikacije
+### Upute za lokalno pokretanje web aplikacije
 
 **Kreiranje baze podataka**
 
-Za ispravan rad baze podataka, prije pokretanja aplikacije, potrebno je kreirati bazu podataka.
+Za ispravan rad baze podataka, prije pokretanja web aplikacije, potrebno je kreirati bazu podataka.
 
 *Koraci za kreiranje baze podataka:*
 
 1. Unutar MySQL Workbencha kreirati korisnika sa korisničkim imenom "**root**" i lozinkom "**root**"
-2. Pokrenuti sljedeće sql fajlove unutar "**root**" korisnika sljedećim redosljedom:
+2. Pokrenuti sljedeće SQL fajlove unutar "**root**" korisnika sljedećim redosljedom:
     * Prodajno servisni centar.sql
     * db_data.sql
     * db_fpt.sql
     * db_q.sql
 
-**Pokretanje aplikacije**
+**Pokretanje web aplikacije**
 
 1. Otvorite terminal u datoteci u kojoj se nalazi projekt
-2. Kako bi aktivirali enviroment upišite:
+2. Kako bi aktivirali environment upišite:
 `.\myVenv\Scripts\activate`
-3. Kako bi pokrenuli aplikaciju upišite:
+3. Kako bi pokrenuli web aplikaciju upišite:
 `flask run`
 4. Otvorite dobivenu lokalnu adresu u bilo kojem internet pregledniku
