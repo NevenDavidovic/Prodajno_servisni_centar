@@ -284,7 +284,7 @@ def getAuti():
     else:
         try:
             table = 'auto'
-            response = get_all_cars_for_servis(table)
+            response = get_all_items(table)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
         return make_response(render_template("servis-narudzbenica-ispis-automobila.html", data=response), 200)

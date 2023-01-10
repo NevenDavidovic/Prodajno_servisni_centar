@@ -45,7 +45,9 @@
     </div>
 
 
-    {% if data.dostupnost=='DA' %} 
+    {% if data.dostupnost=='NE' and data.servis_prodaja=='P' %} 
+    <a href="/servis/ispis-svih-klijenata?car_id={{data.id}}" class="btn btn-success" id="button"> Dodaj na narudžbenicu </a>
+    {% elif data.dostupnost=='DA' and data.servis_prodaja=='S' %}
     <a href="/servis/ispis-svih-klijenata?car_id={{data.id}}" class="btn btn-success" id="button"> Dodaj na narudžbenicu </a>
     {% else %} 
     <a href="javascript:history.back()" class="btn btn-outline-success" id="button"> Vrati se nazad </a>
