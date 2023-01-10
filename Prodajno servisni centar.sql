@@ -155,7 +155,8 @@ CREATE TABLE dio_na_servisu(
 	kolicina INTEGER NOT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (id_servis) REFERENCES servis (id) on delete set null,
-	FOREIGN KEY (id_dio) REFERENCES dio (id) on delete set null
+	FOREIGN KEY (id_dio) REFERENCES dio (id) on delete set null,
+	UNIQUE KEY (id_servis, id_dio)
 );
 
 

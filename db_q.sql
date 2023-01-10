@@ -299,6 +299,17 @@ INNER JOIN zaposlenik z ON rp.id_zaposlenik = z.id
 INNER JOIN auto a ON rp.id_auto = a.id
 INNER JOIN klijent k ON rp.id_klijent = k.id;
 
+-- view koji prikazuje kolicinu i informacije o djelovima ugrađenim u zadnjih mjesec dana
+CREATE VIEW dijelovi_ugradeni_u_zadnjih_mjesec_dana AS
+SELECT dns.id_dio, nabavna_cijena, prodajna_cijena, (prodajna_cijena - nabavna_cijena) as profitna_razlika, SUM(kolicina) as ukupno_ugradeno_dijelova, datum_povratka as datum_ugradnje
+FROM stavka_dio sd 
+INNER JOIN dio_na_servisu dns ON dns.id_dio = sd.id_dio
+INNER JOIN servis s ON dns.id_servis = s.id
+INNER JOIN narudzbenica n ON s.id_narudzbenica = n.id
+WHERE datum_povratka > (SELECT NOW() - INTERVAL 1 MONTH FROM DUAL)
+GROUP BY dns.id_dio
+ORDER BY ukupno_ugradeno_dijelova DESC;
+
 -- TIN KRAJ UPITA
 
 
