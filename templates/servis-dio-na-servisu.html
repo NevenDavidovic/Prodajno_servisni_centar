@@ -1,0 +1,182 @@
+{% extends "servis-base.html" %}
+{% block head %}
+<title>Podaci o servisu| PSC</title>
+<style>
+    #searchInput {
+      width: 50%;
+      height: 2em;
+      background-color: #eee;
+      font-size: 16px;
+      border: 1px solid #ccc;
+    }
+  
+    #id_dio {
+      width: 50%;
+      height: 2em;
+      background-color: #eee;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+    }
+
+    #s {
+      color: red;
+    }
+
+  </style>
+{% endblock %}
+
+{% block body %}
+
+<script>
+    function searchFunction() {
+      // Get the search input
+      var input = document.getElementById("searchInput");
+      // Get the select element
+      var select = document.getElementById("id_dio");
+      // Get the options
+      var options = select.options;
+      // Flag to keep track of whether a matching option was found
+      var foundMatch = false;
+      // Loop through the options and show only those that match the search input
+      for (var i = 0; i < options.length; i++) {
+        if (options[i].text.toLowerCase().includes(input.value.toLowerCase())) {
+          options[i].style.display = "";
+          // If the option text contains the search input (case-insensitive), set it as selected
+          if (!foundMatch) {
+            options[i].selected = true;
+            foundMatch = true;
+          }
+        } else {
+          options[i].style.display = "none";
+        }
+      }
+    }
+  </script>
+
+
+<div class="text-center bg-image" id="h-global">
+    <div class="mask" style="background-color: rgba(255, 255, 255, 0.7);">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div>
+                <h1>Podaci o servisu</h1>
+                
+                <p class="fs-4">Broj narudžbenice: {{servis[0].broj_narudzbe}} </p>
+                <p class="fs-4">Datum zaprimanja:  {{servis[0].datum_zaprimanja.strftime('%d.%m.%Y.')}}</p>
+                <p class="fs-4">Datum povratka: {{servis[0].datum_povratka.strftime('%d.%m.%Y.')}} </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" id="c-global">
+    {% block content %}
+    <!-- row 1 -->
+    <div class="row row-cols-2">
+        <!-- column 1 -->
+        <div class="col">
+            <p class="fs-3">Informacije o klijentu</p>
+            <p><b>Ime:</b> {{servis[0]['klijent_ime']}}</p>
+            <p><b>Prezime:</b> {{servis[0].klijent_prezime}}</p>
+            <p><b>OIB:</b> {{servis[0].klijent_oib}}</p>
+            <p><b>Spol:</b> {% if servis[0].klijent_spol=='ž' %} Žensko {% else %} Muško {% endif %}</p>
+            <p><b>Adresa:</b> {{servis[0]['klijent_adresa']}}</p>
+            <p><b>Grad:</b> {{servis[0].klijent_grad}}</p>
+            <p><b>Broj telefona:</b> {{data[0].klijent_broj_telefona}}</p>
+            <br>
+        </div>
+
+        <!-- column 2 -->
+        <div class="col">
+            <p class="fs-3">Zaposlenik koji je odradio servis</p>
+            <p><b>Ime:</b> {{servis[0].zaposlenik_ime}}</p>
+            <p><b>Prezime:</b> {{servis[0].zaposlenik_prezime}}</p>
+            <p><b>Spol:</b> {{servis[0].zaposlenik_spol}}</p>
+            <p><b>OIB:</b> {{servis[0].zaposlenik_oib}}</p>
+            <p><b>Datum rođenja:</b> {{servis[0].zaposlenik_datum_rodenja.strftime('%d.%m.%Y.')}}</p>
+            <p><b>Adresa</b> {{servis[0].zaposlenik_adresa}}</p>
+            <p><b>Grad:</b> {{servis[0].zaposlenik_grad}}</p>
+            <p><b>Radno mjesto:</b> {{servis[0].zaposlenik_radno_mjesto}}</p>
+        </div>
+
+        <!-- column 3 -->
+        <div class="col">
+            <p class="fs-3">Informacije o autu</p>
+            <p><b>Broj šasije:</b> {{servis[0].broj_sasije}}</p>
+            <p><b>Marka automobila: </b> {{servis[0].marka_automobila}}</p>
+            <p><b>Model:</b> {{servis[0].model}}</p>
+            <p><b>Boja:</b> {{servis[0].boja}}</p>
+            
+            <p><b>Tip motora </b> {{servis[0].tip_motora}}</p>
+            <p><b>Snaga motora: </b> {{servis[0].snaga_motora}}</p>
+            <p><b>Kilometraža: </b> {{servis[0].kilometraza}}</p>
+            <p><b>Godina proizvodnje:</b> {{servis[0].godina_proizvodnje.strftime('%Y.')}}</p>   
+        </div>
+        
+        <!-- column 4 -->
+        <div class="col">
+            <p class="fs-3">Status servisa: </p>
+            <p><b>Komentar servisa:</b> {{servis[0].komentar}}</p>
+            <p><b>Naziv usluge:</b> {{servis[0].usluga_servis_naziv}}</p>
+            <p><b>Cijena usluge:</b> {{servis[0].usluga_servis_cijena}} kn </p>
+        </div>
+    </div>
+    <!-- end of row 1 -->
+
+    <!-- row 2 -->
+    <div class="row"  id="end">
+        <div class="col">
+            <p class="fs-3">Odaberi dio: </p>
+            <div class="row">
+                <div class="col">
+                    <form method="post">
+                    <div>
+                        <label for="id-dio"> <span id="s" >*</span> Naziv dijela & Proizvođač & Serijski Broj & d.opis & Dostupna Količina</label> <br>
+                      <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="Search...">
+                     
+                             
+                      <select id="id_dio" name="id_dio" required>
+                        {% for d in data %}
+                          <option name='id_dio' value="{{ d.id_dio }}"> {{ d.naziv }} & {{d.proizvodac}} & <b> Ser.N.:</b> {{d.serijski_broj}} & {{d.opis }} & {{d.dostupna_kolicina}} </option>
+                        {% endfor %}
+                    </select>
+                    {% set id_dio = request.form['id_dio'] %}
+                   
+                    <div class="row" id="input-global">
+                        <div class="col">
+                            <label><span id="s" >*</span> Odaberi količinu: </label>
+                            <input name="kolicina" value="{{request.form['kolicina']}}" type="number"
+                                class="form-control" placeholder=" Unesi broj" required>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+                <button class="btn btn-outline-success" id="button" type="submit">Dodaj dio</button> 
+        </div>
+
+                  </form>
+                  <br>   
+                  <br>
+            
+   
+  
+    {% endblock %}
+   
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

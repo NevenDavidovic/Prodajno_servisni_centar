@@ -624,9 +624,43 @@ def createServis():
         return make_response(render_template("servis-servis-dodaj.html", narudzbenica= narudzbenica_id, zaposlenik= zaposlenik_id, usluga=usluga_id ), 200)
     
 @servis.route("/servis/servis-dodaj-dio/<id>", methods=['GET','POST'] )
-def dodajDio_naServis():
+def dodajDio_naServis(id):
+    if request.method == "POST":
+        try:
+            table = 'dio_na_servisu'
+            data = {}
+            data["id_servis"] = id
+            for key, value in request.form.items():
+                data[key] = int(value)
+            
+            print(data)
+            add_item(table, data)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("success.html", data={"msg": "Dodan dio na servis", "route": "/servis/ispis-servisa"}), 200)
+    else:
+        try:
+           
+            response = get_all_items('dijelovi')
+            
+            table = 'podaci_o_servisu'
+            attribut = 'servis_id'
+            value = id
+            responseServis = find_item_like(table, attribut, value)
+            
+            #print(responseServis)
+            #print(response)
+        except Exception as err:
+            return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("servis-dio-na-servisu.html", data=response, servis=responseServis), 200)
     
-    svi_dijelovi=get_all_items('dijelovi')
+            
+        
+        
+        
+        
+        svi_dijelovi=get_all_items('dijelovi')
+    
     
     return render_template()
     
