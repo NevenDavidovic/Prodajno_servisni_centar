@@ -2,7 +2,7 @@ import mysql.connector
 
 # STATISTIKE TIN
 def uslugePoTipuMotora():
-    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    # Definiranje baze i kursora 
     with mysql.connector.connect(host="localhost",user="root",passwd="root",database="Prodajno_servisni_centar") as db:
         mycursor = db.cursor(dictionary=True) # da vraća rezultate tj. rows kao dictionaryje
 
@@ -25,7 +25,7 @@ def uslugePoTipuMotora():
 
 
 def najviseUtrosenihDjelova():
-    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    # Definiranje baze i kursora 
     with mysql.connector.connect(host="localhost",user="root",passwd="root",database="Prodajno_servisni_centar") as db:
         mycursor = db.cursor(dictionary=True) # da vraća rezultate tj. rows kao dictionaryje
 
@@ -47,7 +47,7 @@ def najviseUtrosenihDjelova():
 
 # STATISTIKE NEVEN
 def zaspoleniciSaNajviseServisa():
-    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    # Definiranje baze i kursora 
     with mysql.connector.connect(host="localhost",user="root",passwd="root",database="Prodajno_servisni_centar") as db:
         mycursor = db.cursor(dictionary=True) # da vraća rezultate tj. rows kao dictionaryje
 
@@ -66,7 +66,7 @@ def zaspoleniciSaNajviseServisa():
         return result
 
 def zaposleniciPoNajvisojCijeni():
-    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    # Definiranje baze i kursora 
     with mysql.connector.connect(host="localhost",user="root",passwd="root",database="Prodajno_servisni_centar") as db:
         mycursor = db.cursor(dictionary=True) # da vraća rezultate tj. rows kao dictionaryje
 
@@ -82,7 +82,7 @@ def zaposleniciPoNajvisojCijeni():
 # STATISTIKE DARJAN
 
 def racuniPoKupcu():
-    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    # Definiranje baze i kursora 
     with mysql.connector.connect(host="localhost",user="root",passwd="root",database="Prodajno_servisni_centar") as db:
         mycursor = db.cursor(dictionary=True) # da vraća rezultate tj. rows kao dictionaryje
 
@@ -102,7 +102,7 @@ def racuniPoKupcu():
 
 
 def topSkupiDijelovi():
-    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    # Definiranje baze i kursora 
     with mysql.connector.connect(host="localhost",user="root",passwd="root",database="Prodajno_servisni_centar") as db:
         mycursor = db.cursor(dictionary=True) # da vraća rezultate tj. rows kao dictionaryje
 
@@ -120,7 +120,7 @@ def topSkupiDijelovi():
 
     # STATISTIKE NOEL
 def topProdavaci():
-    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    # Definiranje baze i kursora 
     with mysql.connector.connect(host="localhost",user="root",passwd="root",database="Prodajno_servisni_centar") as db:
         mycursor = db.cursor(dictionary=True) # da vraća rezultate tj. rows kao dictionaryje
 
@@ -135,7 +135,7 @@ def topProdavaci():
         return result
 
 def topMarkeAutomobila():
-    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    # Definiranje baze i kursora 
     with mysql.connector.connect(host="localhost",user="root",passwd="root",database="Prodajno_servisni_centar") as db:
         mycursor = db.cursor(dictionary=True) # da vraća rezultate tj. rows kao dictionaryje
 
@@ -152,7 +152,7 @@ def topMarkeAutomobila():
 
 # STATISTIKE SARA
 def mjesečniPrihodiProdaja():
-    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    # Definiranje baze i kursora 
     with mysql.connector.connect(host="localhost",user="root",passwd="root",database="Prodajno_servisni_centar") as db:
         mycursor = db.cursor(dictionary=True) # da vraća rezultate tj. rows kao dictionaryje
 
@@ -167,7 +167,7 @@ def mjesečniPrihodiProdaja():
         return result
 
 def mjesečniPrihodiServis():
-    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    # Definiranje baze i kursora 
     with mysql.connector.connect(host="localhost",user="root",passwd="root",database="Prodajno_servisni_centar") as db:
         mycursor = db.cursor(dictionary=True) # da vraća rezultate tj. rows kao dictionaryje
 
@@ -182,7 +182,7 @@ def mjesečniPrihodiServis():
         return result
 
 def prodanihAutaPoMjesecima():
-    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    # Definiranje baze i kursora 
     with mysql.connector.connect(host="localhost",user="root",passwd="root",database="Prodajno_servisni_centar") as db:
         mycursor = db.cursor(dictionary=True) # da vraća rezultate tj. rows kao dictionaryje
 
@@ -196,7 +196,7 @@ def prodanihAutaPoMjesecima():
         return result
 
 def servisiranihAutaPoMjesecima():
-    # Definiranje baze i kursora ( kasnije dodati nove korisnike sa ogranicenjima, za sada root user)
+    # Definiranje baze i kursora 
     with mysql.connector.connect(host="localhost",user="root",passwd="root",database="Prodajno_servisni_centar") as db:
         mycursor = db.cursor(dictionary=True) # da vraća rezultate tj. rows kao dictionaryje
 

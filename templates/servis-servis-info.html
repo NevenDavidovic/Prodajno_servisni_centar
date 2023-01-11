@@ -21,12 +21,10 @@
 </div>
 
 <div class="container" id="c-global">
-
-
     {% block content %}
-   
-
-    <div class="row" id="end">
+    <!-- row 1 -->
+    <div class="row row-cols-2">
+        <!-- column 1 -->
         <div class="col">
             <p class="fs-3">Informacije o klijentu</p>
             <p><b>Ime:</b> {{data[0].klijent_ime}}</p>
@@ -37,31 +35,9 @@
             <p><b>Grad:</b> {{data[0].klijent_grad}}</p>
             <p><b>Broj telefona:</b> {{data[0].klijent_broj_telefona}}</p>
             <br>
-
-            <p class="fs-3">Informacije o ugrađenim dijelovima</p>
-            {%for d in dijelovi %}
-            <div border="1px">
-                
-            <p><b>Naziv dijela:</b> {{d.dio_naziv}}</p>
-            <p><b>Proizvođač:</b> {{d.proizvodac}}</p>
-            <p><b>Serijski broj:</b> {{d.serijski_broj}}</p>
-            <p><b>Opis:</b> {{d.opis}}</p>
-            <p><b>Kategorija:</b> {{d.kategorija}}</p>
-            
-            <p><b>Nabavna cijena:</b> {{d.nabavna_cijena}}</p>
-            <p><b>Prodajna cijena:</b> {{d.prodajna_cijena}}</p>
-            <p><b>Količina korištena za servis:</b> {{d.kolicina}}</p>
-            </div>
-            <br>
-            {% endfor %}
-            <p class="fs-3">Status servisa: </p>
-            <p><b>Komentar servisa:</b> {{data[0].komentar}}</p>
-            <p><b>Naziv usluge:</b> {{data[0].usluga_servis_naziv}}</p>
-            <p><b>Cijena usluge:</b> {{data[0].usluga_servis_cijena}} kn </p>
-            
-
-
         </div>
+
+        <!-- column 2 -->
         <div class="col">
             <p class="fs-3">Zaposlenik koji je odradio servis</p>
             <p><b>Ime:</b> {{data[0].zaposlenik_ime}}</p>
@@ -72,11 +48,10 @@
             <p><b>Adresa</b> {{data[0].zaposlenik_adresa}}</p>
             <p><b>Grad:</b> {{data[0].zaposlenik_grad}}</p>
             <p><b>Radno mjesto:</b> {{data[0].zaposlenik_radno_mjesto}}</p>
-            
- <!--narudzbenica.id,broj_sasije,oib, 
-marka_automobila, model, boja,dostupnost, snaga_motora, 
-kilometraza, tip_motora, ime, prezime, broj_telefona, adresa,grad,spol,
-broj_narudzbe, datum_zaprimanja, datum_povratka-->
+        </div>
+
+        <!-- column 3 -->
+        <div class="col">
             <p class="fs-3">Informacije o autu</p>
             <p><b>Broj šasije:</b> {{data[0].broj_sasije}}</p>
             <p><b>Marka automobila: </b> {{data[0].marka_automobila}}</p>
@@ -86,20 +61,60 @@ broj_narudzbe, datum_zaprimanja, datum_povratka-->
             <p><b>Tip motora </b> {{data[0].tip_motora}}</p>
             <p><b>Snaga motora: </b> {{data[0].snaga_motora}}</p>
             <p><b>Kilometraža: </b> {{data[0].kilometraza}}</p>
-            <p><b>Godina proizvodnje:</b> {{data[0].godina_proizvodnje.strftime('%Y.')}}</p>
-            
-            
+            <p><b>Godina proizvodnje:</b> {{data[0].godina_proizvodnje.strftime('%Y.')}}</p>   
+        </div>
+        
+        <!-- column 4 -->
+        <div class="col">
+            <p class="fs-3">Status servisa: </p>
+            <p><b>Komentar servisa:</b> {{data[0].komentar}}</p>
+            <p><b>Naziv usluge:</b> {{data[0].usluga_servis_naziv}}</p>
+            <p><b>Cijena usluge:</b> {{data[0].usluga_servis_cijena}} kn </p>
         </div>
     </div>
+    <!-- end of row 1 -->
 
+    <!-- row 2 -->
+    <div class="row"  id="end">
+        <div class="col">
+            <p class="fs-3">Informacije o ugrađenim dijelovima</p>
+            <div class="row">
+                <div class="col">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Naziv dijela</th>
+                            <th scope="col">Proizvođač</th>
+                            <th scope="col">Serijski broj</th>
+                            <th scope="col">Opis</th>
+                            <th scope="col">Kategorija</th>
+                            <th scope="col">Nabavna cijena</th>
+                            <th scope="col">Prodajna cijena</th>
+                            <th scope="col">Količina</th>
+        
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for d in dijelovi %}
+                        <tr>
+                            <td>{{d.dio_naziv}}</td>
+                            <td>{{d.proizvodac}}</td>
+                            <td>{{d.serijski_broj}} KW</td>
+                            <td>{{d.opis}}</td>
+                            <td>{{d.kategorija}}</td>
+                            <td>{{d.nabavna_cijena}}</td>
+                            <td>{{d.prodajna_cijena}}</td>
+                            <td>{{d.kolicina}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+            <a onclick="areYouSure()" class="btn btn-danger" id="button" onclick="areYouSure()"> Obriši  </a>
+    </div>
+    <!-- end of row 2 -->
   
-    <a onclick="areYouSure()" class="btn btn-danger" id="button" onclick="areYouSure()"> Obriši  </a>
-    
-   
-   
-    
-
-
     {% endblock %}
     <script>
         function areYouSure(){
@@ -108,7 +123,22 @@ broj_narudzbe, datum_zaprimanja, datum_povratka-->
             }   
         }
     </script>
-
-
 </div>
+<!-- end of container -->
 {% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

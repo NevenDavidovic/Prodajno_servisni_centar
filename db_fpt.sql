@@ -333,7 +333,7 @@ CREATE TRIGGER datum_prodaja_zaposlenje
 BEFORE INSERT ON racun_prodaje
 FOR EACH ROW
 BEGIN
-DECLARE d_zaposlenja,d_prodaje DATE;
+DECLARE d_zaposlenja DATE;
 
 -- određivanje datuma zaposlenja
 SELECT datum_zaposlenja INTO d_zaposlenja
@@ -354,9 +354,6 @@ CREATE TRIGGER datum_prodaje
 BEFORE INSERT ON racun_prodaje
 FOR EACH ROW
 BEGIN
-DECLARE d_prodaje DATE;
-
-
 
 IF new.datum > (SELECT NOW() FROM DUAL) THEN
 	SIGNAL SQLSTATE '40001'
