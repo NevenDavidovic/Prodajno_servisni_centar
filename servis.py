@@ -619,7 +619,14 @@ def createServis():
             narudzbenicaData = find_item_like(table, attribut, value)
             
             zap='zaposlenik'
-            id_zap=
+            id_zap='id'
+            val=request.args.get('zaposlenik_id')
+            zaposlenikData = find_item_like(zap, id_zap, val)
+            
+            zap='usluga_servis'
+            id_us='id'
+            val=request.args.get('usluga_id')
+            zaposlenikData = find_item_like(zap, id_zap, val)
             
             
             
@@ -629,4 +636,4 @@ def createServis():
 
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("servis-servis-dodaj.html", data={"naruddzbenica": narudzbenicaData, "klijent": klijentData, "broj_narudzbe": brojNarudzbe}), 200)
+        return make_response(render_template("servis-servis-dodaj.html", data={"narudzbenica": narudzbenicaData, "zaposlenik": zaposlenikData, "broj_narudzbe": brojNarudzbe}), 200)
