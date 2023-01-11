@@ -39,16 +39,21 @@
             <br>
 
             <p class="fs-3">Informacije o ugrađenim dijelovima</p>
-            <p><b>Naziv dijela:</b> {{dijelovi[0].dio_naziv}}</p>
-            <p><b>Proizvođač:</b> {{dijelovi[0].proizvodac}}</p>
-            <p><b>Serijski broj:</b> {{dijelovi[0].serijski_broj}}</p>
-            <p><b>Opis:</b> {{dijelovi[0].opis}}</p>
-            <p><b>Kategorija:</b> {{dijelovi[0].kategorija}}</p>
+            {%for d in dijelovi %}
+            <div border="1px">
+                
+            <p><b>Naziv dijela:</b> {{d.dio_naziv}}</p>
+            <p><b>Proizvođač:</b> {{d.proizvodac}}</p>
+            <p><b>Serijski broj:</b> {{d.serijski_broj}}</p>
+            <p><b>Opis:</b> {{d.opis}}</p>
+            <p><b>Kategorija:</b> {{d.kategorija}}</p>
             
-            <p><b>Nabavna cijena:</b> {{dijelovi[0].nabavna_cijena}}</p>
-            <p><b>Prodajna cijena:</b> {{dijelovi[0].prodajna_cijena}}</p>
-            <p><b>Količina korištena za servis:</b> {{dijelovi[0].kolicina}}</p>
+            <p><b>Nabavna cijena:</b> {{d.nabavna_cijena}}</p>
+            <p><b>Prodajna cijena:</b> {{d.prodajna_cijena}}</p>
+            <p><b>Količina korištena za servis:</b> {{d.kolicina}}</p>
+            </div>
             <br>
+            {% endfor %}
             <p class="fs-3">Status servisa: </p>
             <p><b>Komentar servisa:</b> {{data[0].komentar}}</p>
             <p><b>Naziv usluge:</b> {{data[0].usluga_servis_naziv}}</p>
