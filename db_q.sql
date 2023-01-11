@@ -163,7 +163,8 @@ FROM dio,stavka_dio
 WHERE dio.id=stavka_dio.id_dio;
 
 CREATE VIEW narudzbenicej AS
-SELECT narudzbenica.id,broj_sasije,oib, marka_automobila, model, boja,dostupnost,godina_proizvodnje, snaga_motora, kilometraza, tip_motora, 
+SELECT narudzbenica.id,broj_sasije,oib, marka_automobila, model, boja,
+dostupnost,godina_proizvodnje, snaga_motora, kilometraza, tip_motora, 
 ime, prezime, broj_telefona, adresa,grad,spol,broj_narudzbe, datum_zaprimanja, datum_povratka  
 FROM auto, klijent, narudzbenica 
 WHERE auto.id=narudzbenica.id_auto 
