@@ -202,7 +202,7 @@ AND dio.id=dio_na_servisu.id_dio;
 
 SELECT CONCAT(z.ime ,' ', z.prezime) AS Ime_i_prezime,COUNT(z.id) as broj_servisa
 FROM servis AS s, usluga_servis AS u, zaposlenik AS z
-WHERE z.id=id_zaposlenik AND u.id=id_usluga_servis
+WHERE z.id=s.id_zaposlenik AND u.id=id_usluga_servis
 GROUP BY z.id
 ORDER BY broj_servisa
 DESC LIMIT 3;
