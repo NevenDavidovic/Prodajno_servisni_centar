@@ -158,7 +158,7 @@ def urediStavkaDio(id):
         try:
             table = 'stavka_dio'
             data = {}
-            print(data)
+            #print(data)
             for key, value in request.form.items():
                 data[key] = value
             data["id"] = id
@@ -242,7 +242,7 @@ def infoNarudzbenice(id):
     
     table = 'narudzbenicej'
     response = get_item(table,a)
-    print(response)
+    #print(response)
     
     return render_template("servis-narudzbenice-vise-info.html", data=response)
 
@@ -552,7 +552,7 @@ def getZaposlenik():
         try:
             table = 'zaposlenik'
             response = get_all_items(table)
-            print(response)
+            #print(response)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
         return make_response(render_template("servis-servis-dodavanje-zaposlenika.html", data=response), 200)
@@ -572,7 +572,7 @@ def addZaposlenik_toServis():
         try:
             table = 'usluga_servis'
             response = get_all_items(table)
-            print(response)
+            #print(response)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
         return make_response(render_template("servis-servis-dodavanje-usluga.html", data=response), 200)
@@ -612,28 +612,9 @@ def createServis():
         return make_response(render_template("success.html", data={"msg": "Račun uspješno kreiran!", "route": "/prodaja/ispis-svih-racuna"}), 200)
 
     else:
-        try:
-            table = 'narudzbenica'
-            attribut = 'id'
-            value = request.args.get('narudzbenica_id')
-            narudzbenicaData = find_item_like(table, attribut, value)
+        #try:
             
-            zap='zaposlenik'
-            id_zap='id'
-            val=request.args.get('zaposlenik_id')
-            zaposlenikData = find_item_like(zap, id_zap, val)
-            
-            zap='usluga_servis'
-            id_us='id'
-            val=request.args.get('usluga_id')
-            zaposlenikData = find_item_like(zap, id_zap, val)
-            
-            
-            
-            klijentData = get_item('zaposlenik', request.args.get('klijent_id'))
-            brojNarudzbe = get_last_record_identificator(
-                'narudzbenica', 'broj_narudzbe')+1
 
-        except Exception as err:
-            return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("servis-servis-dodaj.html", data={"narudzbenica": narudzbenicaData, "zaposlenik": zaposlenikData, "broj_narudzbe": brojNarudzbe}), 200)
+        #except Exception as err:
+            #return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("servis-servis-dodaj.html"))
