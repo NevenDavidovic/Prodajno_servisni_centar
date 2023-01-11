@@ -1,0 +1,109 @@
+{% extends "servis-base.html" %}
+{% block head %}
+<title>Podaci o servisu| PSC</title>
+{% endblock %}
+
+{% block body %}
+
+
+<div class="text-center bg-image" id="h-global">
+    <div class="mask" style="background-color: rgba(255, 255, 255, 0.7);">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div>
+                <h1>Podaci o servisu</h1>
+                
+                <p class="fs-4">Broj narudžbenice: {{data[0].broj_narudzbe}} </p>
+                <p class="fs-4">Datum zaprimanja: {{data[0].datum_zaprimanja.strftime('%d.%m.%Y.')}} </p>
+                <p class="fs-4">Datum povratka: {{data[0].datum_povratka.strftime('%d.%m.%Y.')}} </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" id="c-global">
+
+
+    {% block content %}
+   
+
+    <div class="row" id="end">
+        <div class="col">
+            <p class="fs-3">Informacije o klijentu</p>
+            <p><b>Ime:</b> {{data[0].klijent_ime}}</p>
+            <p><b>Prezime:</b> {{data[0].klijent_prezime}}</p>
+            <p><b>OIB:</b> {{data[0].klijent_oib}}</p>
+            <p><b>Spol:</b> {% if data[0].klijent_spol=='ž' %} Žensko {% else %} Muško {% endif %}</p>
+            <p><b>Adresa:</b> {{data[0].klijent_adresa}}</p>
+            <p><b>Grad:</b> {{data[0].klijent_grad}}</p>
+            <p><b>Broj telefona:</b> {{data[0].klijent_broj_telefona}}</p>
+            <br>
+
+            <p class="fs-3">Informacije o ugrađenim dijelovima</p>
+            <p><b>Naziv dijela:</b> {{dijelovi[0].dio_naziv}}</p>
+            <p><b>Proizvođač:</b> {{dijelovi[0].proizvodac}}</p>
+            <p><b>Serijski broj:</b> {{dijelovi[0].serijski_broj}}</p>
+            <p><b>Opis:</b> {{dijelovi[0].opis}}</p>
+            <p><b>Kategorija:</b> {{dijelovi[0].kategorija}}</p>
+            
+            <p><b>Nabavna cijena:</b> {{dijelovi[0].nabavna_cijena}}</p>
+            <p><b>Prodajna cijena:</b> {{dijelovi[0].prodajna_cijena}}</p>
+            <p><b>Količina korištena za servis:</b> {{dijelovi[0].kolicina}}</p>
+            <br>
+            <p class="fs-3">Status servisa: </p>
+            <p><b>Komentar servisa:</b> {{data[0].komentar}}</p>
+            <p><b>Naziv usluge:</b> {{data[0].usluga_servis_naziv}}</p>
+            <p><b>Cijena usluge:</b> {{data[0].usluga_servis_cijena}} kn </p>
+            
+
+
+        </div>
+        <div class="col">
+            <p class="fs-3">Zaposlenik koji je odradio servis</p>
+            <p><b>Ime:</b> {{data[0].zaposlenik_ime}}</p>
+            <p><b>Prezime:</b> {{data[0].zaposlenik_prezime}}</p>
+            <p><b>Spol:</b> {{data[0].zaposlenik_spol}}</p>
+            <p><b>OIB:</b> {{data[0].zaposlenik_oib}}</p>
+            <p><b>Datum rođenja:</b> {{data[0].zaposlenik_datum_rodenja.strftime('%d.%m.%Y.')}}</p>
+            <p><b>Adresa</b> {{data[0].zaposlenik_adresa}}</p>
+            <p><b>Grad:</b> {{data[0].zaposlenik_grad}}</p>
+            <p><b>Radno mjesto:</b> {{data[0].zaposlenik_radno_mjesto}}</p>
+            
+ <!--narudzbenica.id,broj_sasije,oib, 
+marka_automobila, model, boja,dostupnost, snaga_motora, 
+kilometraza, tip_motora, ime, prezime, broj_telefona, adresa,grad,spol,
+broj_narudzbe, datum_zaprimanja, datum_povratka-->
+            <p class="fs-3">Informacije o autu</p>
+            <p><b>Broj šasije:</b> {{data[0].broj_sasije}}</p>
+            <p><b>Marka automobila: </b> {{data[0].marka_automobila}}</p>
+            <p><b>Model:</b> {{data[0].model}}</p>
+            <p><b>Boja:</b> {{data[0].boja}}</p>
+            
+            <p><b>Tip motora </b> {{data[0].tip_motora}}</p>
+            <p><b>Snaga motora: </b> {{data[0].snaga_motora}}</p>
+            <p><b>Kilometraža: </b> {{data[0].kilometraza}}</p>
+            <p><b>Godina proizvodnje:</b> {{data[0].godina_proizvodnje.strftime('%Y.')}}</p>
+            
+            
+        </div>
+    </div>
+
+  
+    <a onclick="areYouSure()" class="btn btn-danger" id="button" onclick="areYouSure()"> Obriši  </a>
+    
+   
+   
+    
+
+
+    {% endblock %}
+    <script>
+        function areYouSure(){
+            if (prompt("Izbrisati ćete servisni list! Za nastaviti upišite DA") == 'DA') {
+                window.location.href = "/servis/brisanje-servis/{{data[0].servis_id}}";
+            }   
+        }
+    </script>
+
+
+</div>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends "servis-base.html" %}
+{% block head %}
+<title>Usluge | PSC</title>
+{% endblock %}
+
+{% block body %}
+
+<div class="text-center bg-image" id="h-global">
+    <div class="mask" style="background-color: rgba(255, 255, 255, 0.7);">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div>
+                <h1>Usluge</h1>
+                <p class="fs-4">Pomoću forme pretražite usluge</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" id="c-global">
+
+    <div class="search">
+        <form method="post">
+            <div class="d-flex">
+                <input name="naziv" value="{{request.form['naziv']}}" type="text" class="form-control"
+                    placeholder="Upisati naziv usluge (npr. Izmjena ulja)">
+                <input type="submit" class="btn btn-outline-success" value="Pretraži">
+            </div>
+        </form>
+    </div>
+
+    {% block content %}
+
+    {% if data %}
+
+    <!-- table -->
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Naziv</th>
+                <th scope="col">Cijena</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for d in data[::-1] %}
+            <tr>
+                <td>{{d.naziv}}</td>
+                <td>{{d.cijena}} kn</td>
+                <td>
+                    <a href="/servis/dodavanje-narudzbenice-komentara?narudzbenica_id={{request.args.get('narudzbenica_id')}}&zaposlenik_id={{request.args.get('zaposlenik_id')}}& usluga_id({{d.id}})" class= "btn btn-outline-success"> Dodaj na servis </a>
+                    
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <!-- end of table -->
+
+    {% else %}
+    <p class="fs-4 text-center not-found">Nije pronađena niti jedna usluga.</p>
+    {% endif %}
+
+    {% endblock %}
+
+    <script>
+        function areYouSure() {
+            if (prompt("Izbrisat ćete uslugu! Za nastavak upišite: DA") == 'DA') {
+                window.location.href = event.target.dataset.href;
+                console.log(event.target.dataset.href)
+            }
+        }
+    </script>
+
+</div>
+{% endblock %}

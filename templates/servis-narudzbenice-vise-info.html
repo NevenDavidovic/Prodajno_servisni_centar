@@ -28,7 +28,7 @@
 
     <div class="row" id="end">
         <div class="col">
-            <p class="fs-3">informacije o klijentu</p>
+            <p class="fs-3">Informacije o klijentu:</p>
             <p><b>Ime:</b> {{data.ime}}</p>
             <p><b>Prezime:</b> {{data.prezime}}</p>
             <p><b>OIB:</b> {{data.oib}}</p>
@@ -57,9 +57,10 @@ broj_narudzbe, datum_zaprimanja, datum_povratka-->
             
         </div>
     </div>
-
-  
-    <a onclick="areYouSure()" class="btn btn-danger" id="button" onclick="areYouSure()"> Storno  </a>
+    <br>
+    
+    <a onclick="areYouSure()" class="btn btn-danger" id="button" onclick="areYouSure()"> Storno narudžbenice br: {{data.broj_narudzbe}} </a>
+    <a href="/servis/servis-dodaj-narudzbenicu?narudzbenica_id={{data.id}}" class="btn btn-outline-success" id="button" > Dodaj narudžbenicu br: {{data.broj_narudzbe}} za servis </a>
     
    
    

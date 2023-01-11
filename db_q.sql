@@ -158,11 +158,47 @@ SELECT *
 -- Prva tri zaposlenika koja imaju najviše servisa
 
 CREATE VIEW dijelovi AS
-SELECT stavka_dio.id,naziv,proizvodac,serijski_broj,opis, kategorija, nabavna_cijena,prodajna_cijena,dostupna_kolicina FROM dio,stavka_dio WHERE dio.id=stavka_dio.id_dio;
+SELECT stavka_dio.id,naziv,proizvodac,serijski_broj,opis, kategorija, nabavna_cijena,prodajna_cijena,dostupna_kolicina 
+FROM dio,stavka_dio 
+WHERE dio.id=stavka_dio.id_dio;
 
 CREATE VIEW narudzbenicej AS
-SELECT narudzbenica.id,broj_sasije,oib, marka_automobila, model, boja,dostupnost,godina_proizvodnje, snaga_motora, kilometraza, tip_motora, ime, prezime, broj_telefona, adresa,grad,spol,broj_narudzbe, datum_zaprimanja, datum_povratka  FROM auto, klijent, narudzbenica WHERE auto.id=narudzbenica.id_auto AND klijent.id=narudzbenica.id_klijent AND servis_prodaja='S';
+SELECT narudzbenica.id,broj_sasije,oib, marka_automobila, model, boja,dostupnost,godina_proizvodnje, snaga_motora, kilometraza, tip_motora, 
+ime, prezime, broj_telefona, adresa,grad,spol,broj_narudzbe, datum_zaprimanja, datum_povratka  
+FROM auto, klijent, narudzbenica 
+WHERE auto.id=narudzbenica.id_auto 
+AND klijent.id=narudzbenica.id_klijent 
+AND servis_prodaja='S';
 
+CREATE VIEW podaci_o_servisu AS
+SELECT s.id as servis_id,n.id as narudzbenica_id,z.id as zaposlenik_id, us.id as usluga_servis_id, k.id as klijent_id,
+komentar,datum_zaprimanja, datum_povratka, z.oib as zaposlenik_oib, z.ime as zaposlenik_ime, z.prezime as zaposlenik_prezime,
+z.datum_rodenja as zaposlenik_datum_rodenja, z.adresa as zaposlenik_adresa, z.grad as zaposlenik_grad, z.spol as zaposlenik_spol,
+z.broj_telefona as zaposlenik_broj_telefona, z.datum_zaposlenja as zaposlenik_datum_zaposlenja,z.e_mail as zaposlenik_e_mail,
+z.placa as zaposlenik_placa, z.radno_mjesto as zaposlenik_radno_mjesto, us.naziv as usluga_servis_naziv, us.cijena as usluga_servis_cijena,
+k.oib as klijent_oib,k.ime as klijent_ime, k.prezime as klijent_prezime,k.broj_telefona as klijent_broj_telefona, k.adresa as klijent_adresa,
+k.grad as klijent_grad, k.spol as klijent_spol, broj_sasije, marka_automobila,model, boja,godina_proizvodnje,dostupnost,snaga_motora, kilometraza,
+tip_motora,broj_narudzbe
+FROM
+servis as s,
+narudzbenica as n,
+zaposlenik as z,
+usluga_servis as us,
+klijent as k,
+auto as a
+ WHERE n.id=s.id_narudzbenica
+ AND z.id=s.id_zaposlenik
+ AND us.id=s.id_usluga_servis
+ AND k.id=n.id_klijent
+ AND a.id= n.id_auto;
+
+CREATE VIEW dijelovi_po_servisu AS
+SELECT dio.id as dio_id,dio_na_servisu.id_servis as dio_na_servisu_servis_id, stavka_dio.id as stavka_id,
+naziv,dio_na_servisu.id as dio_na_servisu_id, dio.naziv as dio_naziv ,proizvodac, 
+serijski_broj,opis,kategorija, nabavna_cijena,prodajna_cijena,dostupna_kolicina,kolicina
+FROM dio_na_servisu,dio,stavka_dio 
+WHERE stavka_dio.id_dio=dio.id 
+AND dio.id=dio_na_servisu.id_dio;
 
 SELECT CONCAT(z.ime ,' ', z.prezime) AS Ime_i_prezime,COUNT(z.id) as broj_servisa
 FROM servis AS s, usluga_servis AS u, zaposlenik AS z

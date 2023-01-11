@@ -1,0 +1,74 @@
+{% extends "servis-base.html" %}
+{% block head %}
+<title>Narudžbenica | PSC</title>
+{% endblock %}
+
+{% block body %}
+
+<div class="text-center bg-image" id="h-global">
+    <div class="mask" style="background-color: rgba(255, 255, 255, 0.7);">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div>
+                <h1>Narudžbenica</h1>
+                <p class="fs-4">Informacije o narudžbenici broj {{data.broj_narudzbe}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" id="c-global">
+
+
+    {% block content %}
+
+    <div class="row" id="end"> 
+        <div class="col">
+            <p class="fs-3">Informacije o Zaposleniku</p>
+            <p><b>Ime:</b> {{data.zaposlenik.ime}}</p>
+            <p><b>Prezime:</b> {{data.zaposlenik.prezime}}</p>
+            <p><b>OIB:</b> {{data.zaposlenik.oib}}</p>
+            <p><b>Broj telefona:</b> {{data.zaposlenik.broj_telefona}}</p>
+            <p><b>Adresa:</b> {{data.zaposlenik.adresa}}</p>
+            
+
+            <p class="fs-3">Komentar o Servisu</p>
+            <form method="POST" id="detalji-prodaje">
+                <div class="row" id="input-global">
+                    <div class="col">
+                        <label for="komentar" class="form-label">Datum zaprimanja</label>
+                        <input name="komentar" type="text" class="form-control" required id="input-datum">
+                    </div>
+                </div>
+                
+
+        </div>
+        <div class="col">
+            
+
+            <p class="fs-3">Informacije o Narudžbenici</p>
+            <p><b>Broj narudzbe</b> {{data.auto.broj_sasije}}</p>
+            <p><b>Datum zaprimanja</b> {{data.auto.marka_automobila}}</p>
+            <p><b>Datum povratka</b> {{data.auto.model}}</p>
+            
+        
+            <p class="fs-3">Informacije o Usluzi </p>
+            <p><b>Broj narudzbe</b> {{data.usluga_servis.naziv}}</p>
+            <p><b>Datum zaprimanja</b> {{data.usluga_servis.cijena}} kn</p>
+            
+            
+
+            </form>
+        </div>
+    </div>
+
+    <button form="detalji-prodaje" class="btn btn-success" id="button" type="submit">Dodaj komentar servisa</button>
+    <a href="javascript:history.back()" class="btn btn-outline-success" id="button"> Nazad </a>
+
+
+    {% endblock %}
+    <script>
+        const input = document.getElementById("input-datum").valueAsDate = new Date();
+    </script>
+
+</div>
+{% endblock %}
