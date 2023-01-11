@@ -535,7 +535,7 @@ def deleteServisnilist(id):
         delete_item(table, id)
     except Exception as err:
         return make_response(render_template("fail.html", error=err), 400)
-    return make_response(render_template("success.html", data={"msg": "Uspješno izbrisan servisni list!", "route": "/servis/servis-popis"}), 200)
+    return make_response(render_template("success.html", data={"msg": "Uspješno izbrisan servisni list!", "route": "/servis/ispis-servisa"}), 200)
 
 #dodavanje servisa
 
@@ -587,41 +587,50 @@ def createServis():
             # kreiranje dictionary sa svim atributima potrebnim za tablicu racun_prodaje
             # neki podaci su dobiveni iz argumenata rute, neki iz forme sa stranice, broj racuna preko funkcije
 
-            brojRacuna = get_last_record_identificator(
-                'racun_prodaje', 'broj_racuna') + 1
+            komentar=request.form['komentar']
             data = {
-                "id_auto": request.args.get('car_id'),
+                "id_narudzbenica": request.args.get('narudzbenica_id'),
                 "id_zaposlenik": request.args.get('zaposlenik_id'),
-                "id_klijent": request.args.get('klijent_id'),
-                "broj_racuna": brojRacuna
+                "id_usluga_servis": request.args.get('usluga_id'),
+                "komentar": komentar
             }
             # dodavanje podataka iz forme u dictionary data
             for key, value in request.form.items():
                 data[key] = value
 
         
-            table = 'racun_prodaje'
+            table = 'servis'
             # dodavanje računa u tablicu račun_prodaje
             response = add_item(table, data)
             # označavanje prodanog auta kao nedostupnog
-            dataToEdit = {
-                "id": request.args.get('car_id'),
-                "dostupnost": "NE"
-            }
-            response = edit_table('auto', dataToEdit)
+            zadnji_Servis_id=get_last_record_identificator('servis','id')
+            
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("success.html", data={"msg": "Račun uspješno kreiran!", "route": "/prodaja/ispis-svih-racuna"}), 200)
+        return make_response(render_template("servis-dodan-success.html", data={"msg": "Servis uspješno dodan!", "route": "/servis/ispis-servisa"}, servis_id=zadnji_Servis_id), 200)
 
     else:
         try:
             narudzbenica_ide = request.args.get('narudzbenica_id')
             zaposlenik_ide = request.args.get('zaposlenik_id')
+            usluga=request.args.get('usluga_id')
             #usluga_id = request.args.get('usluga_id')
             narudzbenica_id=get_item('narudzbenica',narudzbenica_ide)
             zaposlenik_id= get_item('zaposlenik', zaposlenik_ide)
-            
+            usluga_id=get_item('usluga_servis',usluga)
             #print(narudzbenica_id)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("servis-servis-dodaj.html", narudzbenica= narudzbenica_id, zaposlenik= zaposlenik_id ), 200)
+        return make_response(render_template("servis-servis-dodaj.html", narudzbenica= narudzbenica_id, zaposlenik= zaposlenik_id, usluga=usluga_id ), 200)
+    
+@servis.route("/servis/servis-dodaj-dio/<id>", methods=['GET','POST'] )
+def dodajDio_naServis():
+    
+    svi_dijelovi=get_all_items('dijelovi')
+    
+    return render_template()
+    
+    
+    
+    
+    

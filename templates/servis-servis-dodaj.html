@@ -24,11 +24,11 @@
     <div class="row" id="end"> 
         <div class="col">
             <p class="fs-3">Informacije o Zaposleniku</p>
-            <p><b>Ime: {{zaposlenik.ime}}</b> </p>
-            <p><b>Prezime:{{zaposlenik.prezime}}</b> </p>
-            <p><b>OIB:</b>{{zaposlenik.oib}} </p>
-            <p><b>Broj telefona:</b> </p>
-            <p><b>Adresa:</b> </p>
+            <p><b>Ime: </b>{{zaposlenik.ime}} </p>
+            <p><b>Prezime: </b>{{zaposlenik.prezime}} </p>
+            <p><b>OIB: </b>{{zaposlenik.oib}} </p>
+            <p><b>Broj telefona: </b>{{zaposlenik.broj_telefona}} </p>
+            <p><b>Adresa: </b>{{zaposlenik.adresa}} </p>
             
 
             <p class="fs-3">Komentar o Servisu</p>
@@ -46,14 +46,14 @@
             
 
             <p class="fs-3">Informacije o Narudžbenici</p>
-            <p><b>Broj narudzbe</b> </p>
-            <p><b>Datum zaprimanja</b> </p>
-            <p><b>Datum povratka</b></p>
+            <p><b>Broj narudžbe: </b>{{narudzbenica.broj_narudzbe}}  </p>
+            <p><b>Datum zaprimanja: </b>{{narudzbenica.datum_zaprimanja.strftime('%d.%m.%Y.')}} </p>
+            <p><b>Datum povratka: </b>{{narudzbenica.datum_povratka.strftime('%d.%m.%Y.')}}</p>
             
         
             <p class="fs-3">Informacije o Usluzi </p>
-            <p><b>Broj narudzbe</b> </p>
-            <p><b>Datum zaprimanja</b>  kn</p>
+            <p><b>Naziv: </b>{{usluga.naziv}} </p>
+            <p><b>Datum zaprimanja: </b>{{usluga.cijena}} kn</p>
             
             
 
