@@ -578,7 +578,7 @@ def addZaposlenik_toServis():
         return make_response(render_template("servis-servis-dodavanje-usluga.html", data=response), 200)
   
 @servis.route("/servis/dodavanje-narudzbenice-komentara", methods=['POST', 'GET'])
-def createServis():
+def createServis(id):
     if request.method == "POST":
         try:
 
@@ -613,7 +613,8 @@ def createServis():
 
     else:
         #try:
-            
+       
+         
 
         #except Exception as err:
             #return make_response(render_template("fail.html", error=err), 400)
