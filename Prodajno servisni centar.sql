@@ -17,8 +17,8 @@ CREATE TABLE zaposlenik(
 	e_mail VARCHAR (30) NOT NULL UNIQUE,
 	placa DECIMAL (8,2) NOT NULL,
 	radno_mjesto VARCHAR (20) NOT NULL,
-	PRIMARY KEY (id),
-	CHECK (spol='Ž' OR spol='M')
+	CONSTRAINT zaposlenik_pk PRIMARY KEY (id),
+	CONSTRAINT zaposlenik_spol_ck CHECK (spol='Ž' OR spol='M')
 );
 
 
@@ -37,9 +37,9 @@ CREATE TABLE auto(
     kilometraza INTEGER NOT NULL,
 	tip_motora VARCHAR (20) NOT NULL,
 	servis_prodaja CHAR(1) NOT NULL,
-	PRIMARY KEY (id),
-	CHECK (dostupnost='DA' OR dostupnost='NE'),
-	CHECK (servis_prodaja='S' OR servis_prodaja='P')
+	CONSTRAINT	auto_pk PRIMARY KEY (id),
+	CONSTRAINT auto_dostupnost_ck CHECK (dostupnost='DA' OR dostupnost='NE'),
+	CONSTRAINT auto_servis_prodaja_ck CHECK (servis_prodaja='S' OR servis_prodaja='P')
 );
 
 
@@ -50,7 +50,7 @@ CREATE TABLE oprema(
    	marka VARCHAR (40) NOT NULL,
     model VARCHAR (40) NOT NULL,
 	cijena DECIMAL (8,2) NOT NULL,
-	PRIMARY KEY (id)
+	CONSTRAINT oprema_pk PRIMARY KEY (id)
 );
 
 
@@ -59,10 +59,10 @@ CREATE TABLE oprema_vozila(
 	id INTEGER AUTO_INCREMENT,
 	id_auto INTEGER,
 	id_oprema INTEGER,
-	PRIMARY KEY (id),
-	FOREIGN KEY (id_auto) REFERENCES auto (id) on delete set null,
-	FOREIGN KEY (id_oprema) REFERENCES oprema (id) on delete set null,
-    UNIQUE KEY (id_auto, id_oprema)
+	CONSTRAINT oprema_vozila_pk PRIMARY KEY (id),
+	CONSTRAINT oprema_vozila_auto_fk FOREIGN KEY (id_auto) REFERENCES auto (id) on delete set null,
+	CONSTRAINT oprema_vozila_oprema_fk FOREIGN KEY (id_oprema) REFERENCES oprema (id) on delete set null,
+    CONSTRAINT oprema_auto_qk UNIQUE KEY (id_auto, id_oprema)
 );
 
 
@@ -76,8 +76,8 @@ CREATE TABLE klijent(
 	adresa VARCHAR (40) NOT NULL,
 	grad VARCHAR (20) NOT NULL,
 	spol CHAR (1) NOT NULL,
-	PRIMARY KEY (id),
-	CHECK (spol='Ž' OR spol='M')
+	CONSTRAINT klijent_pk PRIMARY KEY (id),
+	CONSTRAINT klijent_spol_ck CHECK (spol='Ž' OR spol='M')
 );
 
 
@@ -90,11 +90,11 @@ CREATE TABLE racun_prodaje(
 	broj_racuna INTEGER UNIQUE,
 	datum DATE NOT NULL,
 	cijena DECIMAL (8,2),
-	PRIMARY KEY (id),
-	FOREIGN KEY (id_zaposlenik) REFERENCES zaposlenik (id) on delete set null,
-	FOREIGN KEY (id_auto) REFERENCES auto (id) on delete set null,
-	FOREIGN KEY (id_klijent) REFERENCES klijent (id) on delete set null,
-    CONSTRAINT negativna_cijena CHECK (cijena >= 0)
+	CONSTRAINT racun_prodaje_pk PRIMARY KEY (id),
+	CONSTRAINT racun_prodaje_zaposlenik_fk FOREIGN KEY (id_zaposlenik) REFERENCES zaposlenik (id) on delete set null,
+	CONSTRAINT racun_prodaje_auto_fk FOREIGN KEY (id_auto) REFERENCES auto (id) on delete set null,
+	CONSTRAINT racun_prodaje_klijent_fk FOREIGN KEY (id_klijent) REFERENCES klijent (id) on delete set null,
+    CONSTRAINT racun_prodaje_cijena_ck CHECK (cijena >= 0)
 );
 
 
@@ -107,9 +107,9 @@ CREATE TABLE narudzbenica(
 	broj_narudzbe INTEGER UNIQUE,
 	datum_zaprimanja DATE NOT NULL,
 	datum_povratka DATETIME NOT NULL,
-	PRIMARY KEY (id),
-	FOREIGN KEY (id_klijent) REFERENCES klijent (id) on delete set null,
-	FOREIGN KEY (id_auto) REFERENCES auto (id) on delete set null
+	CONSTRAINT narudzbenica_pk PRIMARY KEY (id),
+	CONSTRAINT narudzbenica_klijent_fk FOREIGN KEY (id_klijent) REFERENCES klijent (id) on delete set null,
+	CONSTRAINT narudzbenica_auto_fk FOREIGN KEY (id_auto) REFERENCES auto (id) on delete set null
 );
 
 
@@ -118,7 +118,7 @@ CREATE TABLE usluga_servis(
 	id INTEGER AUTO_INCREMENT,
 	naziv VARCHAR (50) NOT NULL,
 	cijena DECIMAL (8,2) NOT NULL,
-	PRIMARY KEY (id)
+	CONSTRAINT usluga_servis_pk PRIMARY KEY (id)
 );
 
 
@@ -129,11 +129,11 @@ CREATE TABLE servis(
 	id_zaposlenik INTEGER,
 	id_narudzbenica INTEGER,
 	komentar VARCHAR(100) DEFAULT "Servis uredno izvrsen",
-	PRIMARY KEY (id),
-	FOREIGN KEY (id_usluga_servis) REFERENCES usluga_servis (id) on delete set null,
-	FOREIGN KEY (id_zaposlenik) REFERENCES zaposlenik (id) on delete set null,
-	FOREIGN KEY (id_narudzbenica) REFERENCES narudzbenica (id) on delete set null,
-	UNIQUE KEY (id_usluga_servis, id_narudzbenica)
+	CONSTRAINT servis_pk PRIMARY KEY (id),
+	CONSTRAINT servis_usluga_servis_fk FOREIGN KEY (id_usluga_servis) REFERENCES usluga_servis (id) on delete set null,
+	CONSTRAINT servis_zaposlenik_fk FOREIGN KEY (id_zaposlenik) REFERENCES zaposlenik (id) on delete set null,
+	CONSTRAINT servis_narudzbenica_fk FOREIGN KEY (id_narudzbenica) REFERENCES narudzbenica (id) on delete set null,
+	CONSTRAINT servis_narudzbenica_uk UNIQUE KEY (id_usluga_servis, id_narudzbenica)
 );
 
 
@@ -142,8 +142,8 @@ CREATE TABLE dio(
 	id INTEGER AUTO_INCREMENT,
 	naziv VARCHAR (50) NOT NULL,
 	proizvodac VARCHAR (30) NOT NULL,
-	UNIQUE (naziv, proizvodac),
-	PRIMARY KEY (id)
+	CONSTRAINT naziv_proizvodac_uk UNIQUE (naziv, proizvodac),
+	CONSTRAINT dio_pk PRIMARY KEY (id)
 );
 
 
@@ -153,9 +153,10 @@ CREATE TABLE dio_na_servisu(
 	id_servis INTEGER,
 	id_dio INTEGER,
 	kolicina INTEGER NOT NULL,
-	PRIMARY KEY (id),
-	FOREIGN KEY (id_servis) REFERENCES servis (id) on delete set null,
-	FOREIGN KEY (id_dio) REFERENCES dio (id) on delete set null
+	CONSTRAINT dio_na_servisu_pk PRIMARY KEY (id),
+	CONSTRAINT dio_na_servisu_servis_fk FOREIGN KEY (id_servis) REFERENCES servis (id) on delete set null,
+	CONSTRAINT dio_na_servisu_dio_fk FOREIGN KEY (id_dio) REFERENCES dio (id) on delete set null,
+	CONSTRAINT servis_dio_uk UNIQUE KEY (id_servis, id_dio)
 );
 
 
@@ -169,6 +170,6 @@ CREATE TABLE stavka_dio(
 	nabavna_cijena DECIMAL (8,2) NOT NULL,
 	prodajna_cijena DECIMAL (8,2) NOT NULL,
     dostupna_kolicina INTEGER NOT NULL,
-	PRIMARY KEY (id),
-	FOREIGN KEY (id_dio) REFERENCES dio (id) on delete set null
+	CONSTRAINT stavka_dio_pk PRIMARY KEY (id),
+	CONSTRAINT stavka_dio_dio_fk FOREIGN KEY (id_dio) REFERENCES dio (id) on delete set null
 );
