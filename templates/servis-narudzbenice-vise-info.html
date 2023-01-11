@@ -61,7 +61,8 @@ broj_narudzbe, datum_zaprimanja, datum_povratka-->
     
     <a onclick="areYouSure()" class="btn btn-danger" id="button" onclick="areYouSure()"> Storno narudžbenice br: {{data.broj_narudzbe}} </a>
     <a href="/servis/servis-dodaj-narudzbenicu?narudzbenica_id={{data.id}}" class="btn btn-outline-success" id="button" > Dodaj narudžbenicu br: {{data.broj_narudzbe}} za servis </a>
-    
+    <a href="javascript:history.back()" class="btn btn-outline-success" id="button"> Nazad </a>
+                    
    
    
     
@@ -74,6 +75,8 @@ broj_narudzbe, datum_zaprimanja, datum_povratka-->
                 window.location.href = "/servis/brisanje-narudzbenica/{{data.id}}";
             }   
         }
+
+        const input = document.getElementById("input-datum").valueAsDate = new Date();
     </script>
 
 
