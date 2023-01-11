@@ -202,16 +202,16 @@ AND dio.id=dio_na_servisu.id_dio;
 
 SELECT CONCAT(z.ime ,' ', z.prezime) AS Ime_i_prezime,COUNT(z.id) as broj_servisa
 FROM servis AS s, usluga_servis AS u, zaposlenik AS z
-WHERE z.id=id_zaposlenik AND u.id=id_usluga_servis
+WHERE z.id=s.id_zaposlenik AND u.id=s.id_usluga_servis
 GROUP BY z.id
 ORDER BY broj_servisa
 DESC LIMIT 3;
 
 -- Zaposlenici(prva 3) sa najvišom kumulativnom cijenom svih obavljenih servisa servisa.
 
-SELECT CONCAT(z.ime ,' ', z.prezime)as Ime_i_prezime, u.naziv,SUM(u.cijena) AS ukupno_po_servisu
+SELECT CONCAT(z.ime ,' ', z.prezime)as Ime_i_prezime ,SUM(u.cijena) AS ukupno_po_servisu
 FROM servis AS s, usluga_servis AS u, zaposlenik AS z
-WHERE z.id=id_zaposlenik AND u.id=id_usluga_servis
+WHERE z.id=s.id_zaposlenik AND u.id=s.id_usluga_servis
 GROUP BY z.id
 ORDER BY ukupno_po_servisu DESC
 LIMIT 3;
