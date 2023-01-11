@@ -142,7 +142,6 @@ CREATE TABLE dio(
 	id INTEGER AUTO_INCREMENT,
 	naziv VARCHAR (50) NOT NULL,
 	proizvodac VARCHAR (30) NOT NULL,
-	CONSTRAINT naziv_proizvodac_uk UNIQUE (naziv, proizvodac),
 	CONSTRAINT dio_pk PRIMARY KEY (id)
 );
 
