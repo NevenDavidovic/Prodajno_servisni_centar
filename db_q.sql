@@ -194,12 +194,11 @@ auto as a
  AND a.id= n.id_auto;
 
 CREATE VIEW dijelovi_po_servisu AS
-SELECT dio.id as dio_id,dio_na_servisu.id_servis as dio_na_servisu_servis_id, stavka_dio.id as stavka_id,
-naziv,dio_na_servisu.id as dio_na_servisu_id, dio.naziv as dio_naziv ,proizvodac, 
-serijski_broj,opis,kategorija, nabavna_cijena,prodajna_cijena,dostupna_kolicina,kolicina
-FROM dio_na_servisu,dio,stavka_dio 
-WHERE stavka_dio.id_dio=dio.id 
-AND dio.id=dio_na_servisu.id_dio;
+SELECT id_servis,naziv,proizvodac,serijski_broj, opis, kategorija, nabavna_cijena,prodajna_cijena,kolicina FROM dio_na_servisu dns
+INNER JOIN servis s ON dns.id_servis = s.id
+INNER JOIN dio d ON dns.id_dio = d.id
+INNER JOIN stavka_dio sd ON dns.id_dio = sd.id_dio
+WHERE dns.id_servis IN (SELECT id FROM servis);
 
 SELECT CONCAT(z.ime ,' ', z.prezime) AS Ime_i_prezime,COUNT(z.id) as broj_servisa
 FROM servis AS s, usluga_servis AS u, zaposlenik AS z
