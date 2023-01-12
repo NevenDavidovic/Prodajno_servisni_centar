@@ -1,4 +1,5 @@
 import mysql.connector
+from globalVars import valuta
 
 ############################################################
 # funkcija kojom pronalazimo npr zadnji id ili zadnji broj narudžbe (najveći broj je zadnji)
@@ -389,6 +390,12 @@ def konverzijaSnageMotora() -> None:
 
 
 def konverzijaKuneEuri() -> None:
+    global valuta
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
         db.cursor(dictionary=True).execute("CALL kune_u_eure();")
         db.commit()
+    valuta = 'EUR'
+
+
+def getValuta() -> str:
+    return valuta
