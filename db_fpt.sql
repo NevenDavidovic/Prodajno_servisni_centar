@@ -368,8 +368,10 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE azuriraj_cijene_dijelova(postotak DECIMAL(8, 2))
 BEGIN
-UPDATE stavka_dio
-SET nabavna_cijena = nabavna_cijena + nabavna_cijena * (postotak/100);
+IF postotak >= -100 THEN
+    UPDATE stavka_dio
+    SET nabavna_cijena = nabavna_cijena + nabavna_cijena * (postotak/100), prodajna_cijena = prodajna_cijena + prodajna_cijena * (postotak/100);
+END IF;
 END //
 DELIMITER ;
 
@@ -378,11 +380,36 @@ DELIMITER ;
 -- Procedura za ažuriranje dostupne količine pojedinog dijela prema serijskom broju
 -- prihvaca i negativne kolicine npr. -15 ili 15
 DELIMITER //
+
+-- DROP PROCEDURE azuriraj_dostupnu_kolicinu_dijela;
 CREATE PROCEDURE azuriraj_dostupnu_kolicinu_dijela(p_serijski_broj VARCHAR(20), p_kolicina INTEGER)
 BEGIN
-UPDATE stavka_dio
-SET dostupna_kolicina = dostupna_kolicina + p_kolicina
+DECLARE v_dostupna_kolicina INTEGER;
+-- određivanje trenutno dotupne kolicine dijela koji odgovara parametru serijskog broja
+SELECT dostupna_kolicina INTO v_dostupna_kolicina
+FROM stavka_dio
 WHERE serijski_broj = p_serijski_broj;
+
+-- ako serijski broj postoji u tablici
+IF p_serijski_broj IN(SELECT serijski_broj FROM stavka_dio) THEN
+	-- ako se unosi pozitivna kolicina, dodaj postojecoj kolicini
+	IF p_kolicina >= 0 THEN
+		UPDATE stavka_dio
+		SET dostupna_kolicina = dostupna_kolicina + p_kolicina
+		WHERE  serijski_broj = p_serijski_broj;
+	-- ako je kolicina negativna, provjeri moze li se oduzeti, a da rezultat ostane pozitivan ili nula
+	ELSEIF v_dostupna_kolicina + p_kolicina >= 0 THEN
+		UPDATE stavka_dio
+		SET dostupna_kolicina = dostupna_kolicina + p_kolicina
+		WHERE  serijski_broj = p_serijski_broj;
+	ELSE
+		SIGNAL SQLSTATE '40003'
+		SET MESSAGE_TEXT = 'Nedovoljna dostupna količina!';
+	END IF;
+ELSE 
+	SIGNAL SQLSTATE '40002'
+	SET MESSAGE_TEXT = 'Nepostojeći serijski broj';
+END IF;
 END //
 DELIMITER ;
 

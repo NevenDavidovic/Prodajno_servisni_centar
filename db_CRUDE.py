@@ -310,18 +310,50 @@ def get_parts_by_id(id: int) -> dict:
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
         # Create a cursor
         cursor = db.cursor(dictionary=True)
-    # Define the query string, using the ID argument in the WHERE clause
-    query = f'SELECT  * FROM dio_na_servisu dns '\
-    'INNER JOIN servis s ON dns.id_servis = s.id '\
-    'INNER JOIN dio d ON dns.id_dio = d.id '\
-    'INNER JOIN stavka_dio sd ON dns.id_dio = sd.id_dio '\
-    'WHERE dns.id_servis = {id};'
-    try:
-        # Execute the query
-        cursor.execute(query)
-        # Fetch all records
-        result = cursor.fetchall()
-    except Exception as e:
-        raise Exception(e)
-    return result
+        # Define the query string, using the ID argument in the WHERE clause
+        query = f'SELECT  * FROM dio_na_servisu dns '\
+        'INNER JOIN servis s ON dns.id_servis = s.id '\
+        'INNER JOIN dio d ON dns.id_dio = d.id '\
+        'INNER JOIN stavka_dio sd ON dns.id_dio = sd.id_dio '\
+        'WHERE dns.id_servis = {id};'
+        try:
+            # Execute the query
+            cursor.execute(query)
+            # Fetch all records
+            result = cursor.fetchall()
+        except Exception as e:
+            raise Exception(e)
+        return result
+
+def updatePartsPrice(percantage: float):
+    # Create connection to the database
+    with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
+        # Create a cursor
+        cursor = db.cursor(dictionary=True)
+        # Define the query string, using the ID argument in the WHERE clause
+        query = f'''CALL azuriraj_cijene_dijelova({percantage});'''
+        try:
+            # Execute the query
+            cursor.execute(query)
+            db.commit()
+        except Exception as e:
+            raise Exception(e)
+
+
+def updatePartsQuantity(serial, quantity):
+    # Create connection to the database
+    with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
+        # Create a cursor
+        cursor = db.cursor(dictionary=True)
+        # Define the query string
+        
+        query = f'''CALL azuriraj_dostupnu_kolicinu_dijela({serial},{int(quantity)});'''
+        print(query)
+        try:
+            # Execute the query
+            cursor.execute(query)
+            db.commit()
+        except Exception as e:
+            raise Exception(e)
+        
 

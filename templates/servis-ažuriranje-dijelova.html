@@ -1,0 +1,60 @@
+{% extends "servis-base.html" %}
+{% block head %}
+<title>Dijelovi azuriranje | PSC</title>
+{% endblock %}
+
+{% block body %}
+
+<div class="text-center bg-image" id="h-global">
+    <div class="mask" style="background-color: rgba(255, 255, 255, 0.7);">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div>
+                <h1>Dijelovi</h1>
+                <p class="fs-4">Ažurirajte dijelove</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" id="c-global">
+    <div class="row flex-column align-items-center">
+        <div class="col-6">
+            <p><b>Ažuriranje nabavnih i prodajnih cijena svih dijelova za određeni postotak</b></p>
+            <div class="d-flex">
+                <input name="cijena" id="cijena" type="number" step=".01" class="form-control"
+                    placeholder="upisati postotak" required>
+                    <button onclick="updatePrices()" id="update-prices-btn" class="btn btn-outline-success">Ažuriraj</button>
+            </div>
+        </div>
+        
+        <div class="col-6 pt-5">
+            <p><b>Ažuriranje količine određenog dijela prema serijskom broju</b></p>
+            <div class="d-flex">
+                <input name="serijski_broj" id="serijski_broj" type="text" class="form-control me-2"
+                    placeholder="upisati serijski broj" required>
+                <input name="kolicina" id="kolicina" type="text" class="form-control"
+                    placeholder="upisati količinu" required>
+                <button onclick="updateKolicina()" id="update-prices-btn" class="btn btn-outline-success">Ažuriraj</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updatePrices(){
+            price = document.getElementById('cijena').value;
+            if (price){
+                if(prompt(`Korigirati ćete sve cijene za ${price}% Za potvrdu upisite DA`) == 'DA'){
+                    window.location.href = `/servis/azuriranje-cijena?postotak="${price}"`
+                }
+            }
+        }
+        function updateKolicina() {
+            quantity = document.getElementById('kolicina').value;
+            serial = document.getElementById('serijski_broj').value;
+            if (true){
+                window.location.href = `/servis/azuriranje-kolicine?serijski_broj='${serial}'&kolicina=${quantity}` 
+            }
+        }
+    </script>
+</div>
+{% endblock %}
