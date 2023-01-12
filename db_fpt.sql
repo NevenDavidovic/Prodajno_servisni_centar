@@ -69,11 +69,14 @@ DELIMITER ;
 -- DROP PROCEDURE PROMET_DANA;
 
 DELIMITER //
-CREATE PROCEDURE PROMET_DANA(IN p_datum DATE,OUT br_prodanih_stavki INTEGER, OUT promet_dana DECIMAL(12,2))
+CREATE PROCEDURE PROMET_DANA(OUT br_prodanih_stavki INTEGER, OUT promet_dana DECIMAL(12,2))
 BEGIN
-	
+
+	DECLARE p_datum DATE;
     DECLARE servis_p, prodaja_p DECIMAL(12,2);
     DECLARE servis_br, prodaja_br INTEGER;
+	
+    SET p_datum=CURDATE();
 
 	CALL PRODAJA_PROMET_DANA(p_datum,@brprodstav, @promet);
 	SELECT @promet,@brprodstav INTO prodaja_p, prodaja_br FROM DUAL;
