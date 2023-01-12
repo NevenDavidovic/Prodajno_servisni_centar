@@ -158,7 +158,7 @@ SELECT *
 -- Prva tri zaposlenika koja imaju najviše servisa
 
 CREATE VIEW dijelovi AS
-SELECT stavka_dio.id,naziv,proizvodac,serijski_broj,opis, kategorija, nabavna_cijena,prodajna_cijena,dostupna_kolicina 
+SELECT dio.id as id_dio, stavka_dio.id,naziv,proizvodac,serijski_broj,opis, kategorija, nabavna_cijena,prodajna_cijena,dostupna_kolicina 
 FROM dio,stavka_dio 
 WHERE dio.id=stavka_dio.id_dio;
 
