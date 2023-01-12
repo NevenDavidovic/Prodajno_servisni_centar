@@ -302,4 +302,26 @@ def edit_table(table, data):
             except Exception as err:
                 raise Exception(err)
 
+##########################################################################
+import mysql.connector
+
+def get_parts_by_id(id: int) -> dict:
+    # Create connection to the database
+    with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
+        # Create a cursor
+        cursor = db.cursor(dictionary=True)
+    # Define the query string, using the ID argument in the WHERE clause
+    query = f'SELECT  * FROM dio_na_servisu dns '\
+    'INNER JOIN servis s ON dns.id_servis = s.id '\
+    'INNER JOIN dio d ON dns.id_dio = d.id '\
+    'INNER JOIN stavka_dio sd ON dns.id_dio = sd.id_dio '\
+    'WHERE dns.id_servis = {id};'
+    try:
+        # Execute the query
+        cursor.execute(query)
+        # Fetch all records
+        result = cursor.fetchall()
+    except Exception as e:
+        raise Exception(e)
+    return result
 

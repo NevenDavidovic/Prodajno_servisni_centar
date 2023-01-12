@@ -2,7 +2,7 @@ from flask import Flask, Blueprint, render_template, request, make_response, jso
 from statsFunctions import uslugePoTipuMotora, najviseUtrosenihDjelova, zaspoleniciSaNajviseServisa, zaposleniciPoNajvisojCijeni, racuniPoKupcu, topSkupiDijelovi
 from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_item, find_item_like, get_last_record_identificator, get_all_cars_for_servis
 import mysql.connector
-from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_all_cars_for_sale, get_item, find_item_like, get_last_record_identificator
+from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_all_cars_for_sale, get_item, find_item_like, get_last_record_identificator, get_parts_by_id
 
 
 servis = Blueprint("servis", __name__)
@@ -517,8 +517,8 @@ def info_servisServisi(id):
     attribut='servis_id'
     response= find_item_like(table,attribut,id)
     tabla='dijelovi_po_servisu'
-    attribute='dio_na_servisu_servis_id'
-    dijelovi=find_item_like(tabla,attribute, id)
+    attribute='id_servis'
+    dijelovi=find_item_like(tabla,attribute,id)
     
     #print(dijelovi)
     broj_dijelova=len(dijelovi)
