@@ -3,6 +3,7 @@ import mysql.connector
 ############################################################
 # funkcija kojom pronalazimo npr zadnji id ili zadnji broj narudžbe (najveći broj je zadnji)
 
+
 def get_last_record_identificator(table: str, column: str) -> int:
     # Definiranje baze i kursora
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
@@ -22,6 +23,8 @@ def get_last_record_identificator(table: str, column: str) -> int:
 ############################################################
 
 # funkcija za dodavanje novog unosa u tablicu
+
+
 def add_item(table: str, data: dict) -> int:  # vraća id unesenog itema
     # Definiranje baze i kursora
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
@@ -43,7 +46,7 @@ def add_item(table: str, data: dict) -> int:  # vraća id unesenog itema
         values = values[:-1] + ');'
 
         qstring = qstring + columns + ' VALUES ' + values
-        
+
         try:
             mycursor.execute(qstring)
         except Exception as err:
@@ -54,6 +57,8 @@ def add_item(table: str, data: dict) -> int:  # vraća id unesenog itema
 ############################################################
 
 # funkcija za brisanje podatka iz tablice
+
+
 def delete_item(table: str, item_id: int) -> int:
     # Definiranje baze i kursora
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
@@ -87,6 +92,8 @@ def get_all_items(table) -> dict:
 ############################################################
 
 # funkcija koja vraća sve aute za prodaju
+
+
 def get_all_cars_for_sale(table) -> dict:
     # Definiranje baze i kursora
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
@@ -103,6 +110,8 @@ def get_all_cars_for_sale(table) -> dict:
         return myresult
 ############################################################
 # funkcija koja vraća sve aute za prodaju
+
+
 def get_all_cars_for_servis(table) -> dict:
     # Definiranje baze i kursora
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
@@ -120,6 +129,8 @@ def get_all_cars_for_servis(table) -> dict:
 ############################################################
 
 # funkcija koja vraća sve prodavače
+
+
 def get_all_salesmen(table) -> dict:
     # Definiranje baze i kursora
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
@@ -137,6 +148,8 @@ def get_all_salesmen(table) -> dict:
 ############################################################
 
 # funkcija koja provjerava status klijenta
+
+
 def get_client_status(p_id) -> dict:
     # Definiranje baze i kursora
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
@@ -149,7 +162,7 @@ def get_client_status(p_id) -> dict:
 
         # upit koji preborjava koliko se puta pojavljuje klijent na računima
         mycursor = db.cursor(dictionary=True)
-        qstring1 = f'''SELECT count(id) as broj 
+        qstring1 = f'''SELECT count(id) as broj
         FROM racun_prodaje
         where id_klijent = {p_id};'''
 
@@ -177,6 +190,8 @@ def get_client_status(p_id) -> dict:
 ############################################################
 
 # funkcija koja vraća sve račune
+
+
 def get_all_receipts() -> dict:
     # Definiranje baze i kursora
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
@@ -194,6 +209,8 @@ def get_all_receipts() -> dict:
 ############################################################
 
 # funkcija koja vraća sve račune nakon određenog datuma
+
+
 def get_all_receipts_after_date(my_date) -> dict:
     # Definiranje baze i kursora
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
@@ -212,6 +229,8 @@ def get_all_receipts_after_date(my_date) -> dict:
 ############################################################
 
 # dohvaca item iz tablice po id-ju
+
+
 def get_item(table, id) -> dict:
     # Definiranje baze i kursora
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
@@ -230,6 +249,8 @@ def get_item(table, id) -> dict:
 ############################################################
 
 # funkcija dohvaća račun prema id-ju
+
+
 def get_receipt(id) -> dict:
     # Definiranje baze i kursora
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
@@ -248,6 +269,8 @@ def get_receipt(id) -> dict:
 ############################################################
 
 # funkcija koja pronalazi određenu stavku iz tablice prema vrijednosti atributa
+
+
 def find_item(table, attribut: str, value) -> dict:
     # Definiranje baze i kursora
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
@@ -302,8 +325,9 @@ def edit_table(table, data):
             except Exception as err:
                 raise Exception(err)
 
+
 ##########################################################################
-import mysql.connector
+
 
 def get_parts_by_id(id: int) -> dict:
     # Create connection to the database
@@ -312,10 +336,10 @@ def get_parts_by_id(id: int) -> dict:
         cursor = db.cursor(dictionary=True)
         # Define the query string, using the ID argument in the WHERE clause
         query = f'SELECT  * FROM dio_na_servisu dns '\
-        'INNER JOIN servis s ON dns.id_servis = s.id '\
-        'INNER JOIN dio d ON dns.id_dio = d.id '\
-        'INNER JOIN stavka_dio sd ON dns.id_dio = sd.id_dio '\
-        'WHERE dns.id_servis = {id};'
+            'INNER JOIN servis s ON dns.id_servis = s.id '\
+            'INNER JOIN dio d ON dns.id_dio = d.id '\
+            'INNER JOIN stavka_dio sd ON dns.id_dio = sd.id_dio '\
+            'WHERE dns.id_servis = {id};'
         try:
             # Execute the query
             cursor.execute(query)
@@ -324,6 +348,7 @@ def get_parts_by_id(id: int) -> dict:
         except Exception as e:
             raise Exception(e)
         return result
+
 
 def updatePartsPrice(percantage: float):
     # Create connection to the database
@@ -346,7 +371,7 @@ def updatePartsQuantity(serial, quantity):
         # Create a cursor
         cursor = db.cursor(dictionary=True)
         # Define the query string
-        
+
         query = f'''CALL azuriraj_dostupnu_kolicinu_dijela({serial},{int(quantity)});'''
         print(query)
         try:
@@ -355,5 +380,9 @@ def updatePartsQuantity(serial, quantity):
             db.commit()
         except Exception as e:
             raise Exception(e)
-        
 
+
+def konverzijaSnageMotora() -> None:
+    with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
+        db.cursor(dictionary=True).execute("CALL konverzija_snage_motora();")
+        db.commit()

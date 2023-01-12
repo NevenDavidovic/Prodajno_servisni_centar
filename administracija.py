@@ -1,6 +1,6 @@
 from flask import Flask, Blueprint, render_template, request, make_response, jsonify
 from statsFunctions import uslugePoTipuMotora, najviseUtrosenihDjelova, zaspoleniciSaNajviseServisa, zaposleniciPoNajvisojCijeni, racuniPoKupcu, topSkupiDijelovi, topProdavaci, topMarkeAutomobila, mjesečniPrihodiProdaja, mjesečniPrihodiServis, prodanihAutaPoMjesecima, servisiranihAutaPoMjesecima
-from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_item, find_item_like
+from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_item, find_item_like, konverzijaSnageMotora
 
 
 administracija = Blueprint("administracija", __name__)
@@ -624,3 +624,14 @@ def addEmployerAsClient(id):
     except Exception as err:
         return make_response(render_template("fail.html", error=err), 400)
     return make_response(render_template("success.html", data={"msg": "Zaposlenik uspješno dodan kao klijent!", "route": "/administracija/ispis-svih-klijenata"}), 200)
+
+
+# ruta za konverziju snage motora (procedura)
+
+@administracija.route("/administracija/konverzija-snage-motora/", methods=['POST'])
+def enginePowerConversion():
+    try:
+        konverzijaSnageMotora()
+    except Exception as err:
+        return make_response(render_template("fail.html", error=err), 400)
+    return make_response(render_template("success.html", data={"msg": "Snaga motora uspješno pretvorena iz KW u BHP!", "route": "/administracija/ispis-svih-automobila"}), 200)
