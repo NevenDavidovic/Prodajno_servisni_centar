@@ -108,19 +108,16 @@
 
     <script>
         // rjesava problem kolicine contenta i pozicije footera
-        var content = document.querySelector('.content');
-        var footer = document.querySelector('.footer');
-        var navbar = document.querySelector('#nav');
+        let content = document.querySelector('.content');
+        let footer = document.querySelector('.footer');
+        let navbar = document.querySelector('#nav');
 
-
-        if (content.offsetHeight + footer.offsetHeight + navbar.offsetHeight < window.innerHeight) {
+        if (content.clientHeight + footer.clientHeight + navbar.clientHeight < window.innerHeight) {
             footer.style.position = 'fixed';
             footer.style.bottom = '0';
             footer.style.width = '100%';
-
-
-
-        } else {
+        }
+        else {
             footer.style.position = 'relative';
             footer.style.width = '100%';
         }
