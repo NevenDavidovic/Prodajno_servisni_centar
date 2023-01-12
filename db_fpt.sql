@@ -498,31 +498,33 @@ DELIMITER ;
 
 # promjena cijena iz kuna u eure (nad tablicama oprema, racun_prodaje, usluga_servis, stavka_dio)
 
-DROP PROCEDURE IF EXISTS get_tables_with_column;
+DROP PROCEDURE IF EXISTS kune_u_eure;
+
 DELIMITER //
 
-CREATE PROCEDURE get_tables_with_column()
+CREATE PROCEDURE kune_u_eure()
 BEGIN
 	DECLARE done INT DEFAULT FALSE;
 	DECLARE naziv VARCHAR(255);
+    DECLARE kolona VARCHAR(255);
 	DECLARE kursor CURSOR FOR
-	SELECT DISTINCT c.TABLE_NAME
+	SELECT DISTINCT c.TABLE_NAME, c.COLUMN_NAME
 		FROM INFORMATION_SCHEMA.COLUMNS c
-        JOIN INFORMATION_SCHEMA.TABLES t
-        ON c.TABLE_NAME = t.TABLE_NAME
-        WHERE c.COLUMN_NAME LIKE 'cijena'
-        AND t.TABLE_TYPE = 'BASE TABLE';
+		JOIN INFORMATION_SCHEMA.TABLES t
+		ON c.TABLE_NAME = t.TABLE_NAME
+		WHERE c.COLUMN_NAME LIKE '%cijena%'
+		AND t.TABLE_TYPE = 'BASE TABLE';
 	
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
 
 	OPEN kursor;
     
     petlja: LOOP
-    FETCH kursor INTO naziv;
+    FETCH kursor INTO naziv, kolona;
     IF done THEN LEAVE petlja;
     END IF;
     
-	SET @sql = CONCAT('UPDATE ', naziv, ' SET cijena = cijena / 7.534');
+	SET @sql = CONCAT('UPDATE ', naziv, ' SET ', kolona, ' = ', kolona ,' / 7.534');
     PREPARE stmt FROM @sql;
     EXECUTE stmt;
     DEALLOCATE PREPARE stmt;
@@ -535,15 +537,19 @@ END//
 
 DELIMITER ;
 
--- CALL get_tables_with_column();
+-- CALL kune_u_eure();
 
-SELECT * FROM oprema;
+-- SELECT * FROM oprema;
+-- SELECT * FROM racun_prodaje;
+-- SELECT * FROM usluga_servis;
+-- SELECT * FROM stavka_dio;
 
 
 /*
 SELECT table_name FROM information_schema.columns
 	WHERE column_name = 'cijena';
 */
+
 
 DROP TRIGGER IF EXISTS datum_rodenja_zaposlenika;
 # datum rodenja nesmje biti manji od danas - 18 godina

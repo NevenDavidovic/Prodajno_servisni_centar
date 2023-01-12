@@ -1,6 +1,6 @@
 from flask import Flask, Blueprint, render_template, request, make_response, jsonify
 from statsFunctions import uslugePoTipuMotora, najviseUtrosenihDjelova, zaspoleniciSaNajviseServisa, zaposleniciPoNajvisojCijeni, racuniPoKupcu, topSkupiDijelovi, topProdavaci, topMarkeAutomobila, mjesečniPrihodiProdaja, mjesečniPrihodiServis, prodanihAutaPoMjesecima, servisiranihAutaPoMjesecima
-from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_item, find_item_like, konverzijaSnageMotora
+from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_item, find_item_like, konverzijaSnageMotora, konverzijaKuneEuri
 
 
 administracija = Blueprint("administracija", __name__)
@@ -635,3 +635,14 @@ def enginePowerConversion():
     except Exception as err:
         return make_response(render_template("fail.html", error=err), 400)
     return make_response(render_template("success.html", data={"msg": "Snaga motora uspješno pretvorena iz KW u BHP!", "route": "/administracija/ispis-svih-automobila"}), 200)
+
+
+# ruta za konverziju kuna u eure (procedura)
+
+@administracija.route("/administracija/konverzija-kuna-u-eure/", methods=['POST'])
+def moneyConversion():
+    try:
+        konverzijaKuneEuri()
+    except Exception as err:
+        return make_response(render_template("fail.html", error=err), 400)
+    return make_response(render_template("success.html", data={"msg": "Uspješno ste promjenili cijenu iz kuna u eure! Sretno!", "route": "/"}), 200)

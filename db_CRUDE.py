@@ -386,3 +386,9 @@ def konverzijaSnageMotora() -> None:
     with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
         db.cursor(dictionary=True).execute("CALL konverzija_snage_motora();")
         db.commit()
+
+
+def konverzijaKuneEuri() -> None:
+    with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
+        db.cursor(dictionary=True).execute("CALL kune_u_eure();")
+        db.commit()
