@@ -371,6 +371,9 @@ BEGIN
 IF postotak >= -100 THEN
     UPDATE stavka_dio
     SET nabavna_cijena = nabavna_cijena + nabavna_cijena * (postotak/100), prodajna_cijena = prodajna_cijena + prodajna_cijena * (postotak/100);
+ELSE
+	SIGNAL SQLSTATE '40004'
+	SET MESSAGE_TEXT = 'Cijena ne može biti umanjena za više od 100%!';
 END IF;
 END //
 DELIMITER ;
@@ -780,30 +783,6 @@ DELIMITER ;
 
 -- CALL dobit_godine(@ukupan_dobit_godine);
 -- SELECT @ukupan_dobit_godine;
-------------------------------------------------------------
--- procedura koja za uneseno ime i prezime zaposlenika ako je mu je radno mjesto prodavac, izda njegovu ukupnu zaradu prodaje, ako zaposleniku nije radno mjesto prodavaca izda poruku
-DROP PROCEDURE zarada_pojedinog_prodavaca ;
-DELIMITER //
-CREATE PROCEDURE zarada_pojedinog_prodavaca (IN ime_prodavaca VARCHAR(50), IN prezime_prodavaca VARCHAR(50))
-BEGIN
-    SELECT COUNT(*) INTO @brojac FROM zaposlenik WHERE ime = ime_prodavaca AND prezime = prezime_prodavaca AND radno_mjesto = 'prodavac';
-    IF @brojac > 0 THEN 
-        SELECT SUM(cijena) as ukupna_zarada_prodavaca FROM racun_prodaje 
-        JOIN zaposlenik ON racun_prodaje.id_zaposlenik = zaposlenik.id
-        WHERE zaposlenik.ime = ime_prodavaca AND zaposlenik.prezime = prezime_prodavaca ;
-        IF ukupna_zarada_prodavaca IS NULL THEN
-            SELECT 'Prodavac nema zarade' AS poruka;
-        ELSE 
-            SELECT ukupna_zarada_prodavaca;
-        END IF;
-    ELSE 
-        SELECT 'Ovaj zaposlenik ne radi kao prodavac' AS poruka;
-    END IF;
-END //
-DELIMITER ;
-
-CALL zarada_pojedinog_prodavaca('Iva','Barić');
-
 
 --------------------------------------------------------------------------------------
 
