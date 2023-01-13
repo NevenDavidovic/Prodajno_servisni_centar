@@ -568,6 +568,9 @@ BEGIN
     END LOOP;
     
     CLOSE kursor;
+    
+	UPDATE zaposlenik
+    SET placa = placa / 7.534;
 
 END//
 
