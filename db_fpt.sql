@@ -25,18 +25,24 @@ DELIMITER ;
 
 
 DELIMITER //
-CREATE PROCEDURE SERVIS_PROMET_DANA(IN p_datum DATE,OUT br_prodanih_stavki_s INTEGER, OUT promet_dana_s DECIMAL(6,2))
+CREATE PROCEDURE SERVIS_PROMET_DANA(IN p_datum DATE, OUT br_prodanih_stavki_s INTEGER, OUT promet_dana_s DECIMAL(8,2))
 BEGIN
-	
-    SELECT SUM((IFNULL(cijena_dijelova, 0)+IFNULL(cijena_servisa, 0))) INTO promet_dana_s
+	DECLARE temp DECIMAL(8,2);
+    DECLARE temp1 INTEGER;
+
+    SELECT SUM((IFNULL(cijena_dijelova, 0)+IFNULL(cijena_servisa, 0))) INTO temp
 	FROM cijena__dijelova cd, cijena__servisa cs
 	WHERE cd.id_narudzbenica=cs.id_narudzbenica AND datum_povratka=p_datum
 	GROUP BY datum_povratka;
     
-    SELECT COUNT(id_narudzbenica) INTO br_prodanih_stavki_s
+    SELECT IFNULL(temp,0) INTO promet_dana_s FROM DUAL;
+    
+    SELECT COUNT(id_narudzbenica) INTO temp1
 	FROM cijena__servisa
 	WHERE datum_povratka=p_datum
 	GROUP BY datum_povratka;
+    
+    SELECT IFNULL(temp1,0) INTO br_prodanih_stavki_s FROM DUAL;
     
 END //
 DELIMITER ;
@@ -51,11 +57,16 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE PRODAJA_PROMET_DANA(IN p_datum_p DATE,OUT br_prodanih_stavki_p INTEGER, OUT promet_dana_p DECIMAL(12,2))
 BEGIN
-
-	SELECT SUM(cijena), COUNT(id) INTO promet_dana_p, br_prodanih_stavki_p
+	DECLARE temp3 INTEGER;
+    DECLARE temp4 DECIMAL(12,2);
+    
+	SELECT SUM(cijena), COUNT(id) INTO temp4, temp3
 	FROM racun_prodaje
 	WHERE datum=p_datum_p
 	GROUP BY datum;
+    
+    SELECT IFNULL(temp3,0) INTO promet_dana_p FROM DUAL;
+    SELECT IFNULL(temp4,0) INTO br_prodanih_stavki_p FROM DUAL;
     
   
 END //
@@ -92,18 +103,21 @@ DELIMITER ;
 
 -- CALL PROMET_DANA("2022-11-11",@br_prodanih_stavki, @promet_dana);
 
---  PROCEDURA: ako je količina djelova manja od 5 – popis djelova koje treba naručit
---  DROP PROCEDURE  dijelovi_za_narudzbu;
-
+--  PROCEDURA: najprodavaniji auti po kategoriji(tipu_motora) i ppo pocetnom datumu i krajnjem datumu--  DROP PROCEDURE  dijelovi_za_narudzbu;
 
 DELIMITER //
-CREATE PROCEDURE dijelovi_za_narudzbu()
+CREATE PROCEDURE najprodavanji_auti_izaberi_datum (IN kategorija VARCHAR(50), IN start DATE, IN end DATE)
 BEGIN
-	SELECT d.naziv, d.proizvodac
-	FROM stavka_dio sd, dio d
-	WHERE  sd.id_dio=d.id AND dostupna_kolicina<5;
-END //
+    
+    SELECT a.*,rp.datum, rp.cijena
+	FROM racun_prodaje rp, auto a
+	WHERE a.id=rp.id_auto AND datum>start AND datum<end AND tip_motora=kategorija
+	ORDER BY rp.cijena DESC
+	LIMIT 5;
+    
+END//
 DELIMITER ;
+
 
 -- CALL dijelovi_za_narudzbu();
 -- SELECT @promet_dana,@br_prodanih_stavki FROM DUAL;

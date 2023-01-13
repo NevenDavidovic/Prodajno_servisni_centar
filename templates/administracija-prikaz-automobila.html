@@ -46,7 +46,7 @@
             <p class="fs-3">Tehničke informacije</p>
             <p><b>Boja:</b> {{data.auto.boja}}</p>
             <p><b>Tip motora:</b> {{data.auto.tip_motora}}</p>
-            <p><b>Snaga motora:</b> {{data.auto.snaga_motora}} KW</p>
+            <p><b>Snaga motora:</b> {{data.auto.snaga_motora|int}} {{snaga}}</p>
             <p><b>Kilometraža:</b> {{data.auto.kilometraza}} km</p>
 
             {% if data.oprema %}
