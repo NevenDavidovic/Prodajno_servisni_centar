@@ -829,6 +829,62 @@ DELIMITER ;
 -- CALL dobit_godine(@ukupan_dobit_godine);
 -- SELECT @ukupan_dobit_godine;
 
+-----------------------------------------------------------------------
+-- procedura za ukupnu zaradu prodaje odredene marke automobila
+
+DELIMITER //
+CREATE PROCEDURE ukupna_zarada_prodaje_marke_auta(IN markaauta VARCHAR(50))
+BEGIN
+DECLARE total_profit DECIMAL(8,2);
+SET total_profit = (SELECT SUM(r.cijena)
+FROM auto a
+JOIN racun_prodaje r ON a.id = r.id_auto
+WHERE a.marka_automobila = markaauta);
+
+SELECT total_profit as 'Ukupna zarada ove marke auta ' ;
+END //
+DELIMITER ;
+
+-- CALL ukupna_zarada_prodaje_marke_auta('BMW');
+
+------------------------------------------------------------------------
+-- procedura koja za uneseno ime i prezime zaposlenika ako je mu je radno mjesto prodavac, izda njegovu ukupnu zaradu prodaje, ako zaposleniku nije radno mjesto prodavaca izda poruku
+
+DROP PROCEDURE zarada_pojedinog_prodavaca ;
+DELIMITER //
+CREATE PROCEDURE zarada_pojedinog_prodavaca (IN ime_prodavaca VARCHAR(50), IN prezime_prodavaca VARCHAR(50))
+BEGIN
+    SELECT COUNT(*) INTO @brojac FROM zaposlenik WHERE ime = ime_prodavaca AND prezime = prezime_prodavaca AND radno_mjesto = 'prodavac';
+    IF @brojac > 0 THEN 
+        SELECT SUM(cijena) as ukupna_zarada_prodavaca FROM racun_prodaje 
+        JOIN zaposlenik ON racun_prodaje.id_zaposlenik = zaposlenik.id
+        WHERE zaposlenik.ime = ime_prodavaca AND zaposlenik.prezime = prezime_prodavaca ;
+        IF ukupna_zarada_prodavaca IS NULL THEN
+            SELECT 'Prodavac nema zarade' AS poruka;
+        ELSE 
+            SELECT ukupna_zarada_prodavaca;
+        END IF;
+    ELSE 
+        SELECT 'Ovaj zaposlenik ne radi kao prodavac' AS poruka;
+    END IF;
+END //
+DELIMITER ;
+
+-- CALL zarada_pojedinog_prodavaca('Iva','Barić');
+
+-----------------------------------------------------------------------
+-- procedura koja za dva unesena parametra(dva datuma) vraca broj prodaja i ukupnu zaradu u tom periodu
+
+DELIMITER //
+CREATE PROCEDURE broj_prodaja_u_odredenom_periodu(IN start_date DATE, IN end_date DATE)
+BEGIN
+	SELECT COUNT(*) AS broj_prodaja, SUM(cijena) AS ukupna_cijena FROM racun_prodaje
+	WHERE datum BETWEEN start_date AND end_date;
+END //
+DELIMITER ;
+
+-- CALL broj_prodaja_u_odredenom_periodu('2022-06-06', '2022-12-31');
+
 --------------------------------------------------------------------------------------
 
 -- funkcija koja za unesenu marku i model auta vraca je li taj auto dostupan
