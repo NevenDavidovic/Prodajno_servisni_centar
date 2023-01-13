@@ -835,13 +835,13 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE ukupna_zarada_prodaje_marke_auta(IN markaauta VARCHAR(50))
 BEGIN
-DECLARE total_profit DECIMAL(8,2);
-SET total_profit = (SELECT SUM(r.cijena)
+DECLARE ukupan_profit DECIMAL(8,2);
+SET ukupan_profit = (SELECT SUM(r.cijena)
 FROM auto a
 JOIN racun_prodaje r ON a.id = r.id_auto
 WHERE a.marka_automobila = markaauta);
 
-SELECT total_profit as 'Ukupna zarada ove marke auta ' ;
+SELECT ukupan_profit as 'Ukupna zarada ove marke auta ' ;
 END //
 DELIMITER ;
 
