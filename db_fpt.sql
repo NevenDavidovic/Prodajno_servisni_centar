@@ -1,4 +1,58 @@
 -- SARA FUNKCIJE, PROCEDURE I OKIDACI
+-- prihodi po mjesecima od prodaje automobila u 2022. godini
+
+CREATE VIEW prihod_po_mjesecima AS
+SELECT SUM(cijena) AS prihodi , EXTRACT(MONTH FROM datum) AS mjesec
+FROM racun_prodaje
+WHERE EXTRACT(YEAR FROM datum)="2022"
+GROUP BY CAST(DATE_SUB(datum, INTERVAL DAYOFMONTH(datum)-1 DAY) AS DATE);
+-- ukupan prihod servisa i dijelova po mjesecima 2022
+CREATE VIEW cijena__servisa AS
+SELECT id_narudzbenica, SUM(cijena) AS cijena_servisa, datum_povratka, s.id
+FROM narudzbenica n, servis s,usluga_servis u
+WHERE n.id=s.id_narudzbenica AND u.id=s.id_usluga_servis
+GROUP BY id_narudzbenica;
+
+
+
+CREATE VIEW cijena__dijelova AS
+SELECT id_narudzbenica, SUM(kolicina*prodajna_cijena) AS cijena_dijelova, id_servis
+FROM dio_na_servisu i
+INNER JOIN stavka_dio sd ON i.id_dio=sd.id_dio
+RIGHT JOIN servis s ON s.id=i.id_servis
+GROUP BY id_narudzbenica;
+
+CREATE VIEW dio_servis_po_mj AS
+SELECT SUM((IFNULL(cijena_dijelova, 0)+cijena_servisa)) AS ukupna_cijena_servisa, EXTRACT(MONTH FROM datum_povratka) AS mjesec
+FROM cijena__dijelova cd, cijena__servisa cs
+WHERE cd.id_narudzbenica=cs.id_narudzbenica AND EXTRACT(YEAR FROM datum_povratka)="2022"
+GROUP BY CAST(DATE_SUB(datum_povratka, INTERVAL DAYOFMONTH(datum_povratka)-1 DAY) AS DATE)
+ORDER BY mjesec ASC;
+
+-- ukupni prihodi u godini 2022
+
+CREATE VIEW svi_prihodi_u_godini AS
+SELECT SUM((IFNULL(prihodi, 0)+ukupna_cijena_servisa)) AS prihodi
+FROM prihod_po_mjesecima pm
+RIGHT JOIN dio_servis_po_mj ds ON pm.mjesec=ds.mjesec;
+
+-- ukupan rashod od placa zaposlenika
+CREATE VIEW rashod_placa AS
+SELECT SUM(placa*12) AS ukupni_trosak_placa
+FROM zaposlenik;
+
+-- ukupan rashod od kupnje dijelova
+
+CREATE VIEW rashod_dijelova AS
+SELECT SUM((nabavna_cijena*dostupna_kolicina)) AS ukupan_trosak_dijelova
+FROM stavka_dio;
+
+-- ukupan rashod u godini 2022
+
+CREATE VIEW ukupni_rashodi AS
+SELECT (ukupan_trosak_dijelova+ukupni_trosak_placa) AS rashodi
+FROM rashod_dijelova rd, rashod_placa rp;
+
 
 -- funkcija za određivanje dobiti ili gubitka
 
