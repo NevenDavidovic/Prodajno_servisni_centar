@@ -147,6 +147,29 @@ END//
 DELIMITER ;
 -- INSERT INTO narudzbenica VALUES (666, 25, 218, 1, "2023-01-08 00:00:00", "2023-01-10 00:00:00");
 
+-- trigger koji ne dozvoljava korištenje dijelova na servisu ako ima manje dijelova
+
+-- DROP TRIGGER bi_dio_na_servisu;
+DELIMITER //
+CREATE TRIGGER bi_dio_na_servisu123
+BEFORE INSERT ON dio_na_servisu
+FOR EACH ROW
+BEGIN
+	DECLARE kol INTEGER;
+    
+	SELECT sd.dostupna_kolicina INTO kol
+    FROM stavka_dio sd, dio_na_servisu dns
+    WHERE sd.id_dio=new.id_dio
+    LIMIT 1;
+    
+	IF kol<new.kolicina THEN
+	SIGNAL SQLSTATE '40000'
+	SET MESSAGE_TEXT = 'Nema dovoljno dosupnih dijelova na stanju';
+	END IF;
+    
+END//
+DELIMITER ;
+
 
 -- SARA GOTOVA
 
