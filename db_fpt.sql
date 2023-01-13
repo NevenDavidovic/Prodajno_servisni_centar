@@ -25,10 +25,12 @@ DELIMITER ;
 
 
 DELIMITER //
-CREATE PROCEDURE SERVIS_PROMET_DANA(IN p_datum DATE, OUT br_prodanih_stavki_s INTEGER, OUT promet_dana_s DECIMAL(8,2))
+CREATE PROCEDURE SERVIS_PROMET_DANA(OUT br_prodanih_stavki_s INTEGER, OUT promet_dana_s DECIMAL(8,2))
 BEGIN
 	DECLARE temp DECIMAL(8,2);
     DECLARE temp1 INTEGER;
+    DECLARE p_datum DATE;
+    SET p_datum= CURDATE();
 
     SELECT SUM((IFNULL(cijena_dijelova, 0)+IFNULL(cijena_servisa, 0))) INTO temp
 	FROM cijena__dijelova cd, cijena__servisa cs
@@ -47,7 +49,7 @@ BEGIN
 END //
 DELIMITER ;
 
--- CALL SERVIS_PROMET_DANA("2022-05-30",@br_prodanih_stavki_s, @promet_dana_s);
+-- CALL SERVIS_PROMET_DANA(@br_prodanih_stavki_s, @promet_dana_s);
 -- SELECT @promet_dana_s,@br_prodanih_stavki_s FROM DUAL;
 
 -- PROCEDURA ZA IZRAČUNAVANJE PROMETA DANA ZA PRODAJU
@@ -55,14 +57,16 @@ DELIMITER ;
 
 
 DELIMITER //
-CREATE PROCEDURE PRODAJA_PROMET_DANA(IN p_datum_p DATE,OUT br_prodanih_stavki_p INTEGER, OUT promet_dana_p DECIMAL(12,2))
+CREATE PROCEDURE PRODAJA_PROMET_DANA(OUT br_prodanih_stavki_p INTEGER, OUT promet_dana_p DECIMAL(12,2))
 BEGIN
 	DECLARE temp3 INTEGER;
     DECLARE temp4 DECIMAL(12,2);
+    DECLARE p_datum DATE;
+    SET p_datum= CURDATE();
     
 	SELECT SUM(cijena), COUNT(id) INTO temp4, temp3
 	FROM racun_prodaje
-	WHERE datum=p_datum_p
+	WHERE datum=p_datum
 	GROUP BY datum;
     
     SELECT IFNULL(temp3,0) INTO promet_dana_p FROM DUAL;
@@ -72,7 +76,7 @@ BEGIN
 END //
 DELIMITER ;
 
--- CALL PRODAJA_PROMET_DANA("2022-05-30",@br_prodanih_stavki_p, @promet_dana_p);
+-- CALL PRODAJA_PROMET_DANA(@br_prodanih_stavki_p, @promet_dana_p);
 -- SELECT @promet_dana_p,@br_prodanih_stavki_p FROM DUAL;
 
 -- PROCEDURA ZA IZRAČUNAVANJE PROMETA DANA (ADMINISTRACIJA)
@@ -89,10 +93,10 @@ BEGIN
 	
     SET p_datum=CURDATE();
 
-	CALL PRODAJA_PROMET_DANA(p_datum,@brprodstav, @promet);
+	CALL PRODAJA_PROMET_DANA(@brprodstav, @promet);
 	SELECT @promet,@brprodstav INTO prodaja_p, prodaja_br FROM DUAL;
     
-    CALL SERVIS_PROMET_DANA(p_datum,@br_prod, @promets);
+    CALL SERVIS_PROMET_DANA(@br_prod, @promets);
 	SELECT @promets,@br_prod INTO servis_p, servis_br FROM DUAL;
     
     SET br_prodanih_stavki= (IFNULL(prodaja_br, 0))+(IFNULL(servis_br, 0));
@@ -101,7 +105,7 @@ BEGIN
 END //
 DELIMITER ;
 
--- CALL PROMET_DANA("2022-11-11",@br_prodanih_stavki, @promet_dana);
+-- CALL PROMET_DANA(@br_prodanih_stavki, @promet_dana);
 
 --  PROCEDURA: najprodavaniji auti po kategoriji(tipu_motora) i ppo pocetnom datumu i krajnjem datumu--  DROP PROCEDURE  dijelovi_za_narudzbu;
 
