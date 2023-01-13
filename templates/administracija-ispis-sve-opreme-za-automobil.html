@@ -67,7 +67,7 @@
                 <td>{{d.naziv}}</td>
                 <td>{{d.marka}}</td>
                 <td>{{d.model}}</td>
-                <td>{{d.cijena}} kn</td>
+                <td>{{d.cijena}} {{valuta}}</td>
                 <td>
                     <a href="/administracija/dodavanje-opreme-automobilu?auto_id={{request.args.get('auto_id')}}&oprema_id={{d.id}}"
                         class="btn btn-outline-success">Dodaj</a>

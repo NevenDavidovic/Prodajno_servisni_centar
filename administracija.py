@@ -169,7 +169,7 @@ def getEmployer(id):
 
     except Exception as err:
         return make_response(render_template("fail.html", error=err), 400)
-    return make_response(render_template("administracija-prikaz-zaposlenika.html", data=response), 200)
+    return make_response(render_template("administracija-prikaz-zaposlenika.html", data=response, valuta=getValuta()), 200)
 
 # ruta za brisanje određenog zaposlenika
 
@@ -221,14 +221,14 @@ def getServices():
             response = find_item_like(table, attribut, value)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("administracija-ispis-svih-usluga.html", data=response), 200)
+        return make_response(render_template("administracija-ispis-svih-usluga.html", data=response, valuta=getValuta()), 200)
     else:
         try:
             table = 'usluga_servis'
             response = get_all_items(table)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("administracija-ispis-svih-usluga.html", data=response), 200)
+        return make_response(render_template("administracija-ispis-svih-usluga.html", data=response, valuta=getValuta()), 200)
 
 
 # ruta za dodavanje nove usluge
@@ -421,7 +421,7 @@ def getEquipment():
             response = find_item_like(table, attribut, value)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("administracija-ispis-sve-opreme.html", data=response), 200)
+        return make_response(render_template("administracija-ispis-sve-opreme.html", data=response, valuta=getValuta()), 200)
     else:
         try:
             table = 'oprema'
@@ -590,7 +590,7 @@ def getCarEquipment():
             autoData = get_item('auto', request.args.get('auto_id'))
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("administracija-ispis-sve-opreme-za-automobil.html", data={"auto": autoData, "oprema": response}), 200)
+        return make_response(render_template("administracija-ispis-sve-opreme-za-automobil.html", data={"auto": autoData, "oprema": response}, valuta=getValuta()), 200)
     else:
         try:
             table = 'oprema'
@@ -598,7 +598,7 @@ def getCarEquipment():
             autoData = get_item('auto', request.args.get('auto_id'))
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("administracija-ispis-sve-opreme-za-automobil.html", data={"auto": autoData, "oprema": response}), 200)
+        return make_response(render_template("administracija-ispis-sve-opreme-za-automobil.html", data={"auto": autoData, "oprema": response}, valuta=getValuta()), 200)
 
 # ruta za dodavanje zaposlenika kao klijenta
 
