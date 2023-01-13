@@ -1,5 +1,6 @@
 import mysql.connector
 from globalVars import valuta, snaga
+import time
 
 ############################################################
 # funkcija kojom pronalazimo npr zadnji id ili zadnji broj narudžbe (najveći broj je zadnji)
@@ -405,3 +406,18 @@ def konverzijaKuneEuri() -> None:
 
 def getValuta() -> str:
     return valuta
+
+
+def prometDana() -> dict:
+    # def get_item(table, id) -> dict:
+    with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
+        # da vraća rezultate tj. rows kao dictionaryje
+        datum = time.strftime("%Y-%m-%d")
+
+        mycursor = db.cursor(dictionary=True)
+        # qstring1 = f'CALL PROMET_DANA({datum},@br_prodanih_stavki, @promet_dana);'
+        qstring2 = f'SELECT @br_prodanih_stavki, @promet_dana FROM DUAL;'
+        # mycursor.execute(qstring1)
+        mycursor.execute(qstring2)
+        myresult = mycursor.fetchone()
+        return myresult
