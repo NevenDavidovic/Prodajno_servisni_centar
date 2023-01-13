@@ -674,7 +674,7 @@ DELIMITER ;
 -- SELECT dodatna_oprema_automobila(57);
 
 -- MARIJA end
-
+/*
 -- ----------------------------------------------NOEL--------------------------------------------------------
 -- procedura za prihod godine servisa
 -- DROP PROCEDURE prihod_godine_servisa
@@ -847,7 +847,7 @@ DELIMITER ;
 
 -- CALL ukupna_zarada_prodaje_marke_auta('BMW');
 
-------------------------------------------------------------------------
+-- ----------------------------------------------------------------------
 -- procedura koja za uneseno ime i prezime zaposlenika ako je mu je radno mjesto prodavac, izda njegovu ukupnu zaradu prodaje, ako zaposleniku nije radno mjesto prodavaca izda poruku
 
 DROP PROCEDURE zarada_pojedinog_prodavaca ;
@@ -872,7 +872,7 @@ DELIMITER ;
 
 -- CALL zarada_pojedinog_prodavaca('Iva','Barić');
 
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 -- procedura koja za dva unesena parametra(dva datuma) vraca broj prodaja i ukupnu zaradu u tom periodu
 
 DELIMITER //
@@ -947,7 +947,7 @@ END //
 DELIMITER ;
 
 -- --------------------------------------------KRAJ--------------------------------------------------
-
+*/
 -- -------------------------------------------NEVEN--------------------------------------------------
 
 -- NEVEN START
