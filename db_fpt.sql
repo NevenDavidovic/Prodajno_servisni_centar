@@ -100,7 +100,8 @@ BEGIN
 END //
 DELIMITER ;
 
--- CALL PROMET_DANA("2022-05-30",@br_prodanih_stavki, @promet_dana);
+CALL PROMET_DANA("2022-05-30",@br_prodanih_stavki, @promet_dana);
+SELECT @br_prodanih_stavki, @promet_dana FROM DUAL;
 
 --  PROCEDURA: najprodavaniji auti po kategoriji(tipu_motora) i ppo pocetnom datumu i krajnjem datumu--  DROP PROCEDURE  dijelovi_za_narudzbu;
 
