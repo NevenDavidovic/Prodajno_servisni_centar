@@ -661,7 +661,11 @@ def dodajDio_naServis(id):
             for key, value in request.form.items():
                 data[key] = int(value)
             
-            print(data)
+            # pronađi podatke od dijelu kako bi došli do serijskog broja
+            dioData = find_item('stavka_dio','id_dio',data["id_dio"])
+            #pokušaj ažurirati količinu
+            updatePartsQuantity(dioData[0]['serijski_broj'],data.get('kolicina')*-1)
+            # ako je uspješno, dodaj u tablicu
             add_item(table, data)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
