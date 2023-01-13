@@ -103,18 +103,21 @@ DELIMITER ;
 
 -- CALL PROMET_DANA("2022-11-11",@br_prodanih_stavki, @promet_dana);
 
---  PROCEDURA: ako je količina djelova manja od 5 – popis djelova koje treba naručit
---  DROP PROCEDURE  dijelovi_za_narudzbu;
-
+--  PROCEDURA: najprodavaniji auti po kategoriji(tipu_motora) i ppo pocetnom datumu i krajnjem datumu--  DROP PROCEDURE  dijelovi_za_narudzbu;
 
 DELIMITER //
-CREATE PROCEDURE dijelovi_za_narudzbu()
+CREATE PROCEDURE najprodavanji_auti_izaberi_datum (IN kategorija VARCHAR(50), IN start DATE, IN end DATE)
 BEGIN
-	SELECT d.naziv, d.proizvodac
-	FROM stavka_dio sd, dio d
-	WHERE  sd.id_dio=d.id AND dostupna_kolicina<5;
-END //
+    
+    SELECT a.*,rp.datum, rp.cijena
+	FROM racun_prodaje rp, auto a
+	WHERE a.id=rp.id_auto AND datum>start AND datum<end AND tip_motora=kategorija
+	ORDER BY rp.cijena DESC
+	LIMIT 5;
+    
+END//
 DELIMITER ;
+
 
 -- CALL dijelovi_za_narudzbu();
 -- SELECT @promet_dana,@br_prodanih_stavki FROM DUAL;
