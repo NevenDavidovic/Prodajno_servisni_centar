@@ -45,14 +45,15 @@
             {% for d in data[::-1] %}
             <tr>
                 <td>{{d.naziv}}</td>
-                <td>{{d.cijena}} kn</td>
+                <td>{{d.cijena}} {{valuta}}</td>
                 <td>
-                    <a href="/servis/dodavanje-narudzbenice-komentara?narudzbenica_id={{request.args.get('narudzbenica_id')}}&zaposlenik_id={{request.args.get('zaposlenik_id')}}&usluga_id={{d.id}}" class= "btn btn-outline-success"> Dodaj na servis </a>
-                    
-                    
+                    <a href="/servis/dodavanje-narudzbenice-komentara?narudzbenica_id={{request.args.get('narudzbenica_id')}}&zaposlenik_id={{request.args.get('zaposlenik_id')}}&usluga_id={{d.id}}"
+                        class="btn btn-outline-success"> Dodaj na servis </a>
 
-    
-                    
+
+
+
+
                 </td>
             </tr>
             {% endfor %}
@@ -65,7 +66,7 @@
     {% endif %}
 
     {% endblock %}
-    
+
     <script>
         function areYouSure() {
             if (prompt("Izbrisat ćete uslugu! Za nastavak upišite: DA") == 'DA') {

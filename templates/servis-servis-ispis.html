@@ -16,17 +16,18 @@
     </div>
 </div>
 
-<div class="container" id="c-global" >
+<div class="container" id="c-global">
 
     <label for="identificator" class="form-label">Pretraži prema:</label>
-    <div class="search" >
+    <div class="search">
         <form method="post" class="d-flex">
-            <select class="form-select" name="identificator" id="identificator" aria-label="Pretraži po" required value="{{request.form['identificator']}}">
+            <select class="form-select" name="identificator" id="identificator" aria-label="Pretraži po" required
+                value="{{request.form['identificator']}}">
                 <option selected value="broj_sasije">Broj šasije</option>
                 <option value="usluga_servis_naziv">Naziv usluge</option>
                 <option value="zaposlenik_prezime">Prezime zaposlenika</option>
                 <option value="klijent_oib">OIB Klijenta</option>
-                         </select>
+            </select>
             <div class="d-flex search-box" width="50px">
                 <input name="query" value="{{request.form['query']}}" type="text" class="form-control"
                     placeholder="Upisati traženi pojam" required>
@@ -53,7 +54,7 @@
                 <th scope="col">Cijena</th>
                 <th scope="col">Ime i prezime zaposlenika</th>
                 <th scope="col">Komentar servisa</th>
-                
+
             </tr>
         </thead>
         <tbody>
@@ -66,15 +67,15 @@
                 <td>{{d.datum_zaprimanja.strftime('%d.%m.%Y.')}} </td>
                 <td>{{d.datum_povratka.strftime('%d.%m.%Y.')}} </td>
                 <td>{{d.usluga_servis_naziv}} </td>
-                <td>{{d.usluga_servis_cijena}} </td>
-                <td>{{d.zaposlenik_ime}} {{d.zaposlenik_prezime}}  </td>
+                <td>{{d.usluga_servis_cijena}} {{valuta}}</td>
+                <td>{{d.zaposlenik_ime}} {{d.zaposlenik_prezime}} </td>
                 <td>{{d.komentar}} </td>
 
-                              
-                
+
+
                 <td>
                     <a href="/servis/servis-popis/{{d.servis_id}}" class="btn btn-outline-success"> Više informacija</a>
-                    
+
                 </td>
             </tr>
             {% endfor %}
