@@ -1,6 +1,6 @@
 from flask import Flask, Blueprint, render_template, request, make_response, jsonify
 from statsFunctions import uslugePoTipuMotora, najviseUtrosenihDjelova, zaspoleniciSaNajviseServisa, zaposleniciPoNajvisojCijeni, racuniPoKupcu, topSkupiDijelovi
-from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_item, get_all_cars_for_sale, get_all_salesmen, get_last_record_identificator, find_item_like, get_all_receipts, get_all_receipts_after_date, get_receipt,get_client_status
+from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_item, get_all_cars_for_sale, get_all_salesmen, get_last_record_identificator, find_item_like, get_all_receipts, get_all_receipts_after_date, get_receipt, get_client_status, getValuta, getSnaga
 
 
 prodaja = Blueprint("prodaja", __name__)
@@ -26,28 +26,29 @@ def addClient():
         return make_response(render_template("prodaja-dodavanje-novog-klijenta.html"), 200)
 
 # dodavanje zaposlenika kao klijenta
+
+
 @prodaja.route("/prodaja/dodavanje-zaposlenika-kao-klijenta/<int:id>", methods=['GET'])
 def addZaposlenikAsClient(id):
-        try:
-            # dohvacanje podataka o zaposleniku
-            zaposlenikData = get_item('zaposlenik',id)
-            table = 'klijent'
-            # uzimanje relevantnih podataka za klijenta od zaposlenika
-            data = {
-	            "oib": zaposlenikData.get('oib'),
-	            "ime": zaposlenikData.get('ime'),
-	            "prezime": zaposlenikData.get('prezime'),
-	            "broj_telefona": zaposlenikData.get('broj_telefona'),
-	            "adresa": zaposlenikData.get('adresa'),
-	            "grad": zaposlenikData.get('grad'),
-	            "spol": zaposlenikData.get('spol')
-            }
-            # dodavanje klijenta
-            add_item(table, data)
-        except Exception as err:
-            return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("success.html", data={"msg": "Zaposlenik uspješno dodan kao klijent!", "route": "/prodaja/ispis-svih-klijenata"}), 200)
-    
+    try:
+        # dohvacanje podataka o zaposleniku
+        zaposlenikData = get_item('zaposlenik', id)
+        table = 'klijent'
+        # uzimanje relevantnih podataka za klijenta od zaposlenika
+        data = {
+            "oib": zaposlenikData.get('oib'),
+            "ime": zaposlenikData.get('ime'),
+            "prezime": zaposlenikData.get('prezime'),
+            "broj_telefona": zaposlenikData.get('broj_telefona'),
+            "adresa": zaposlenikData.get('adresa'),
+            "grad": zaposlenikData.get('grad'),
+            "spol": zaposlenikData.get('spol')
+        }
+        # dodavanje klijenta
+        add_item(table, data)
+    except Exception as err:
+        return make_response(render_template("fail.html", error=err), 400)
+    return make_response(render_template("success.html", data={"msg": "Zaposlenik uspješno dodan kao klijent!", "route": "/prodaja/ispis-svih-klijenata"}), 200)
 
 
 # ISPIS SVIH KLIJENATA
@@ -64,7 +65,7 @@ def getClients():
             value = queryData['query']
 
             response = find_item_like(table, attribut, value)
-            
+
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
         return make_response(render_template("prodaja-ispis-svih-klijenata.html", data=response), 200)
@@ -122,14 +123,14 @@ def getCars():
 
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("prodaja-ispis-svih-automobila.html", data=response), 200)
+        return make_response(render_template("prodaja-ispis-svih-automobila.html", data=response, snaga=getSnaga()), 200)
     else:
         try:
             table = 'auto'
             response = get_all_cars_for_sale(table)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("prodaja-ispis-svih-automobila.html", data=response), 200)
+        return make_response(render_template("prodaja-ispis-svih-automobila.html", data=response, snaga=getSnaga()), 200)
 
 # PRIKAZ POJEDINOG AUTOMOBILA
 
@@ -139,7 +140,7 @@ def getCar(id):
     try:
         table = 'auto'
         response = get_item(table, id)
-        
+
         oprema = find_item('oprema_vozila', 'id_auto', id)
         # print(oprema)
 
@@ -155,7 +156,7 @@ def getCar(id):
 
     except Exception as err:
         return make_response(render_template("fail.html", error=err), 400)
-    return make_response(render_template("prodaja-prikaz-auta.html", data=response, oprema=opremaData), 200)
+    return make_response(render_template("prodaja-prikaz-auta.html", data=response, oprema=opremaData, snaga=getSnaga()), 200)
 
 # PRIKAZ SVIH PRODAVAČA
 
@@ -202,7 +203,6 @@ def createBill():
             for key, value in request.form.items():
                 data[key] = value
 
-        
             table = 'racun_prodaje'
             # dodavanje računa u tablicu račun_prodaje
             response = add_item(table, data)
@@ -219,9 +219,11 @@ def createBill():
     else:
         try:
             autoData = get_item('auto', request.args.get('car_id'))
-            zaposlenikData = get_item('zaposlenik', request.args.get('zaposlenik_id'))
+            zaposlenikData = get_item(
+                'zaposlenik', request.args.get('zaposlenik_id'))
             klijentData = get_item('klijent', request.args.get('klijent_id'))
-            brojRacuna = get_last_record_identificator('racun_prodaje', 'broj_racuna')+1
+            brojRacuna = get_last_record_identificator(
+                'racun_prodaje', 'broj_racuna')+1
 
             # provjera ima li klijent kakve popuste
             statusKlijenta = get_client_status(klijentData.get('id'))
@@ -229,16 +231,17 @@ def createBill():
             # dodavanje podatka o plaći za klijenta AKO je on ujedno i zaposlenik
             if statusKlijenta.get('klijent_zaposlenik'):
                 klijentOib = str(klijentData.get('oib'))
-                klijentZaposlenikData = find_item('zaposlenik','oib',klijentOib)
-                
+                klijentZaposlenikData = find_item(
+                    'zaposlenik', 'oib', klijentOib)
+
                 # ako postoji rezultat ( ne prazna lista ) dodaj podatak o placi zaposlenika-klijenta
                 if klijentZaposlenikData:
-                    klijentData['placa'] = klijentZaposlenikData[0].get('placa')
-            
-            
+                    klijentData['placa'] = klijentZaposlenikData[0].get(
+                        'placa')
+
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("prodaja-kreiranje-racuna.html", data={"auto": autoData, "zaposlenik": zaposlenikData, "klijent": klijentData, "broj_racuna": brojRacuna, "status_klijenta":statusKlijenta}), 200)
+        return make_response(render_template("prodaja-kreiranje-racuna.html", data={"auto": autoData, "zaposlenik": zaposlenikData, "klijent": klijentData, "broj_racuna": brojRacuna, "status_klijenta": statusKlijenta}, snaga=getSnaga()), 200)
 
 
 # ISPIS SVIH RAČUNA
@@ -260,7 +263,7 @@ def getBills():
             print(response)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("prodaja-ispis-svih-racuna.html", data=response), 200)
+        return make_response(render_template("prodaja-ispis-svih-racuna.html", data=response, valuta=getValuta()), 200)
 
     else:
         try:
@@ -268,7 +271,7 @@ def getBills():
 
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("prodaja-ispis-svih-racuna.html", data=response), 200)
+        return make_response(render_template("prodaja-ispis-svih-racuna.html", data=response, valuta=getValuta()), 200)
 
 # PRIKAZ DETALJA O RAČUNU
 
@@ -280,7 +283,7 @@ def getReceipt(id):
 
     except Exception as err:
         return make_response(render_template("fail.html", error=err), 400)
-    return make_response(render_template("prodaja-detalji-racuna.html", data=response), 200)
+    return make_response(render_template("prodaja-detalji-racuna.html", data=response, valuta=getValuta(), snaga=getSnaga()), 200)
 
 # STORNIRANJE RAČUNA
 
@@ -306,4 +309,3 @@ def removeReceipt(id):
     return make_response(render_template("success.html", data={"msg": "Račun uspješno storniran!", "route": "/prodaja/ispis-svih-racuna"}), 200)
 
 # @prodaja.route
-
