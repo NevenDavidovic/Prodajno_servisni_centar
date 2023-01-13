@@ -29,22 +29,22 @@ CREATE PROCEDURE SERVIS_PROMET_DANA(IN p_datum DATE, OUT br_prodanih_stavki_s IN
 BEGIN
 	DECLARE temp DECIMAL(8,2);
     DECLARE temp1 INTEGER;
-    
+
 
     SELECT SUM((IFNULL(cijena_dijelova, 0)+IFNULL(cijena_servisa, 0))) INTO temp
 	FROM cijena__dijelova cd, cijena__servisa cs
 	WHERE cd.id_narudzbenica=cs.id_narudzbenica AND datum_povratka=p_datum
 	GROUP BY datum_povratka;
-    
+
     SELECT IFNULL(temp,0) INTO promet_dana_s FROM DUAL;
-    
+
     SELECT COUNT(id_narudzbenica) INTO temp1
 	FROM cijena__servisa
 	WHERE datum_povratka=p_datum
 	GROUP BY datum_povratka;
-    
+
     SELECT IFNULL(temp1,0) INTO br_prodanih_stavki_s FROM DUAL;
-    
+
 END //
 DELIMITER ;
 
@@ -60,16 +60,16 @@ CREATE PROCEDURE PRODAJA_PROMET_DANA(IN p_datum_p DATE, OUT br_prodanih_stavki_p
 BEGIN
 	DECLARE temp3 INTEGER;
     DECLARE temp4 DECIMAL(12,2);
-    
+
 	SELECT SUM(cijena), COUNT(id) INTO temp4, temp3
 	FROM racun_prodaje
 	WHERE datum=p_datum_p
 	GROUP BY datum;
-    
+
     SELECT IFNULL(temp4,0) INTO promet_dana_p FROM DUAL;
     SELECT IFNULL(temp3,0) INTO br_prodanih_stavki_p FROM DUAL;
-    
-  
+
+
 END //
 DELIMITER ;
 
@@ -86,14 +86,14 @@ BEGIN
 
     DECLARE servis_p, prodaja_p DECIMAL(12,2);
     DECLARE servis_br, prodaja_br INTEGER;
-	
+
 
 	CALL PRODAJA_PROMET_DANA(p_date, @brprodstav, @promet);
 	SELECT @promet,@brprodstav INTO prodaja_p, prodaja_br FROM DUAL;
-    
+
     CALL SERVIS_PROMET_DANA(p_date, @br_prod, @promets);
 	SELECT @promets,@br_prod INTO servis_p, servis_br FROM DUAL;
-    
+
     SET br_prodanih_stavki= (IFNULL(prodaja_br, 0))+(IFNULL(servis_br, 0));
     SET promet_dana=(IFNULL(prodaja_p, 0))+(IFNULL(servis_p, 0));
 
@@ -107,13 +107,13 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE najprodavanji_auti_izaberi_datum (IN kategorija VARCHAR(50), IN start DATE, IN end DATE)
 BEGIN
-    
+
     SELECT a.*,rp.datum, rp.cijena
 	FROM racun_prodaje rp, auto a
 	WHERE a.id=rp.id_auto AND datum>start AND datum<end AND tip_motora=kategorija
 	ORDER BY rp.cijena DESC
 	LIMIT 5;
-    
+
 END//
 DELIMITER ;
 
@@ -155,17 +155,17 @@ BEFORE INSERT ON dio_na_servisu
 FOR EACH ROW
 BEGIN
 	DECLARE kol INTEGER;
-    
+
 	SELECT sd.dostupna_kolicina INTO kol
     FROM stavka_dio sd, dio_na_servisu dns
     WHERE sd.id_dio=new.id_dio
     LIMIT 1;
-    
+
 	IF kol<new.kolicina THEN
 	SIGNAL SQLSTATE '40000'
 	SET MESSAGE_TEXT = 'Nema dovoljno dosupnih dijelova na stanju';
 	END IF;
-    
+
 END//
 DELIMITER ;
 
@@ -174,7 +174,7 @@ DELIMITER ;
 
 
 
--- DARJAN FPO
+-- DARJAN FPO i transakcija
 
 -- Napiši funkciju koja će u računu_prodaje vratiti vrijednost "DA" ako je vozilo prodano u posljednjih 6 mjeseci,
 -- u suprotnom će pisati "NE"
@@ -290,6 +290,52 @@ end//
 DELIMITER ;
 
  -- drop trigger bi_dio_kolicina;
+
+ /*
+-- Napravi proceduru i transakciju koja će za unesene parametre (p_id, zaposlenik_id, auto_id, klijent_id, p_broj_racuna, p_datum, p_cijena) napraviti novi unos u racun_prodaje,
+-- tako što će provjeravati da li je auto dostupan u tablici auto, te će na temelju toga auto biti prodan (dobiti ćemo poruku "Auto je prodan") ili neće biti prodan (dobiti ćemo poruku "Greška! Auto s tim id-jem nije dostupan").
+-- Ako uvjet nije zadovoljen napravi savepoint na koji će se vratiti (rollback), u suprotnom komitaj (commit) unos.
+
+set autocommit = off;
+
+DELIMITER //
+CREATE PROCEDURE prodaj_auto (IN p_id INT, IN zaposlenik_id INT, IN auto_id INT, IN klijent_id INT, IN p_broj_racuna INT, IN p_datum DATE, IN p_cijena DECIMAL(8,2))
+BEGIN
+    SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
+    START TRANSACTION;
+
+    -- kreiranje savepointa
+    SAVEPOINT provjera;
+
+    -- ubacivanje podataka za prodaju auta
+    INSERT INTO racun_prodaje (id, id_zaposlenik, id_auto, id_klijent, broj_racuna, datum, cijena)
+    VALUES (p_id, zaposlenik_id, auto_id, klijent_id, p_broj_racuna, p_datum, p_cijena);
+
+    -- provjera da li je auto dostupan preko unešenog id-a
+    UPDATE auto SET dostupnost = 'NE' WHERE id = auto_id;
+
+    -- provjera da li je update prošao
+    IF ROW_COUNT() = 0 THEN
+        -- ako nije vrati se na savepoint
+        ROLLBACK TO provjera;
+        SELECT 'Greška! Auto s tim id-jem nije dostupan';
+    ELSE
+        -- komitanje transakcije ako je update zadovoljen
+        COMMIT;
+        SELECT 'Auto je prodan!';
+    END IF;
+END//
+DELIMITER ;
+
+-- poziv funkcije sa unešenim vrijednostima
+call prodaj_auto (31, 1, 2, 1, 31, now(), 150000);
+
+-- provjera da je auto stvarno prodan i da mu je dostupnost prebačena na "NE"
+select * from auto;
+
+-- provjera da je prodani auto na računu prodaje
+select* from racun_prodaje;
+*/
 
  -- DARJAN KRAJ
 
@@ -448,7 +494,7 @@ IF p_serijski_broj IN(SELECT serijski_broj FROM stavka_dio) THEN
 		SIGNAL SQLSTATE '40003'
 		SET MESSAGE_TEXT = 'Nedovoljna dostupna količina!';
 	END IF;
-ELSE 
+ELSE
 	SIGNAL SQLSTATE '40002'
 	SET MESSAGE_TEXT = 'Nepostojeći serijski broj';
 END IF;
@@ -489,7 +535,7 @@ BEGIN
         ELSE
             -- ako je profit veći od 10% nabavne cijene
             IF v_profitna_razlika > v_nabavna_cijena * 0.1 THEN
-            -- smanji prodajnu cijenu tog dijela za 5% 
+            -- smanji prodajnu cijenu tog dijela za 5%
                 UPDATE stavka_dio
                 SET prodajna_cijena = v_prodajna_cijena - v_prodajna_cijena * 0.05
                 WHERE id_dio = v_id_dio;
@@ -498,7 +544,7 @@ BEGIN
         END IF;
     IF done THEN LEAVE petlja;
     END IF;
-    
+
 	END LOOP;
     CLOSE kursor;
 END //
@@ -550,25 +596,25 @@ BEGIN
 		ON c.TABLE_NAME = t.TABLE_NAME
 		WHERE c.COLUMN_NAME LIKE '%cijena%'
 		AND t.TABLE_TYPE = 'BASE TABLE';
-	
+
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
 
 	OPEN kursor;
-    
+
     petlja: LOOP
     FETCH kursor INTO naziv, kolona;
     IF done THEN LEAVE petlja;
     END IF;
-    
+
 	SET @sql = CONCAT('UPDATE ', naziv, ' SET ', kolona, ' = ', kolona ,' / 7.534');
     PREPARE stmt FROM @sql;
     EXECUTE stmt;
     DEALLOCATE PREPARE stmt;
-    
+
     END LOOP;
-    
+
     CLOSE kursor;
-    
+
 	UPDATE zaposlenik
     SET placa = placa / 7.534;
 
@@ -631,7 +677,7 @@ END//
 DELIMITER ;
 
 -- DELETE FROM zaposlenik WHERE id = 19;
--- INSERT INTO zaposlenik VALUES(19, "5412610278033", "Matija", "Vuković", "2000-01-15 00:00:00", "Jardasi 23", "Zagreb", "m", 
+-- INSERT INTO zaposlenik VALUES(19, "5412610278033", "Matija", "Vuković", "2000-01-15 00:00:00", "Jardasi 23", "Zagreb", "m",
 -- "496588144", "2023-07-13 00:00:00", "m.vuković1@yahoo.com", 6073.036628185772, "autoelektricar");
 
 -- SELECT * FROM zaposlenik;
@@ -664,7 +710,7 @@ BEGIN
 
 IF id IN (SELECT id_auto FROM oprema_vozila)
 	THEN RETURN 'Automobil sadrži dodatnu opremu!';
-ELSE RETURN 'Automobil ne sadrži dodatnu opremu!'; 
+ELSE RETURN 'Automobil ne sadrži dodatnu opremu!';
 END IF;
 
 END//
@@ -685,17 +731,17 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE prihod_godine_servisa(IN godina INT ,OUT koristeni_dijelovi INTEGER, OUT prihod_servisa DECIMAL(12,2))
 BEGIN
-	
+
     SELECT SUM((IFNULL(cijena_dijelova, 0)+IFNULL(cijena_servisa, 0))) INTO prihod_servisa
 	FROM cijena__dijelova cd, cijena__servisa cs
 	WHERE cd.id_narudzbenica=cs.id_narudzbenica AND YEAR(datum_povratka)=godina
 	GROUP BY YEAR(datum_povratka);
-    
+
     SELECT COUNT(id_narudzbenica) INTO koristeni_dijelovi
 	FROM cijena__servisa
 	WHERE YEAR(datum_povratka)=godina
 	GROUP BY YEAR(datum_povratka);
-    
+
 END //
 DELIMITER ;
 
@@ -712,8 +758,8 @@ BEGIN
 	SELECT SUM(cijena), COUNT(id) INTO prihod_prodaje, kolicina_prodaje
 	FROM racun_prodaje
 	WHERE YEAR(datum)=godina;
-    
-  
+
+
 END //
 DELIMITER ;
 
@@ -727,16 +773,16 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE prihod_godine(IN godina INT,OUT uk_kolicina INTEGER, OUT uk_prihod_godine DECIMAL(12,2))
 BEGIN
-	
+
     DECLARE servis_prihodi, prodaja_prihodi DECIMAL(12,2);
     DECLARE servis_kolicina, prodaja_kolicina INTEGER;
 
 	CALL prihod_godine_prodaja(godina,@brprodstav, @promet);
 	SELECT @promet,@brprodstav INTO prodaja_prihodi, prodaja_kolicina FROM DUAL;
-    
+
     CALL prihod_godine_servisa(godina,@br_prod, @promets);
 	SELECT @promets,@br_prod INTO servis_prihodi, servis_kolicina FROM DUAL;
-    
+
     SET uk_kolicina= (IFNULL(prodaja_kolicina, 0))+(IFNULL(servis_kolicina, 0));
     SET uk_prihod_godine=(IFNULL(prodaja_prihodi, 0))+(IFNULL(servis_prihodi, 0));
 
@@ -754,10 +800,10 @@ DELIMITER //
 CREATE PROCEDURE rashod_godine_placa( OUT ukupni_trosak_placa DECIMAL(12,2))
 BEGIN
 
-SELECT SUM(placa*12) INTO ukupni_trosak_placa 
+SELECT SUM(placa*12) INTO ukupni_trosak_placa
 FROM zaposlenik;
 
-  
+
 END //
 DELIMITER ;
 
@@ -775,7 +821,7 @@ BEGIN
 SELECT SUM((nabavna_cijena*dostupna_kolicina)) INTO ukupni_trosak_dijelova
 FROM stavka_dio;
 
-  
+
 END //
 DELIMITER ;
 
@@ -783,7 +829,7 @@ DELIMITER ;
 -- SELECT @ukupni_trosak_dijelova;
 
 -----------------------------------------------------------------------------------
--- procedura za ukupni rashod godine 
+-- procedura za ukupni rashod godine
 -- DROP PROCEDURE rashod_godine
 
 DELIMITER //
@@ -858,16 +904,16 @@ DELIMITER //
 CREATE PROCEDURE zarada_pojedinog_prodavaca (IN ime_prodavaca VARCHAR(50), IN prezime_prodavaca VARCHAR(50))
 BEGIN
     SELECT COUNT(*) INTO @brojac FROM zaposlenik WHERE ime = ime_prodavaca AND prezime = prezime_prodavaca AND radno_mjesto = 'prodavac';
-    IF @brojac > 0 THEN 
-        SELECT SUM(cijena) as ukupna_zarada_prodavaca FROM racun_prodaje 
+    IF @brojac > 0 THEN
+        SELECT SUM(cijena) as ukupna_zarada_prodavaca FROM racun_prodaje
         JOIN zaposlenik ON racun_prodaje.id_zaposlenik = zaposlenik.id
         WHERE zaposlenik.ime = ime_prodavaca AND zaposlenik.prezime = prezime_prodavaca ;
         IF ukupna_zarada_prodavaca IS NULL THEN
             SELECT 'Prodavac nema zarade' AS poruka;
-        ELSE 
+        ELSE
             SELECT ukupna_zarada_prodavaca;
         END IF;
-    ELSE 
+    ELSE
         SELECT 'Ovaj zaposlenik ne radi kao prodavac' AS poruka;
     END IF;
 END //
@@ -910,7 +956,7 @@ END //
 DELIMITER ;
 
 SELECT dostupan_auto('BMW','X5');
- 
+
 -----------------------------------------------------------------------------------------------
 
 -- funkcije koja za uneseno ime i prezime klijenta vraca da li ima povijest kupnje vozila
@@ -974,9 +1020,9 @@ DELIMITER ;
 -- test data INSERT INTO auto VALUES (2, "Y7NV3NIFJYYUGY00V", "VOLKSWAGEN", "TRANSPORTER", "siva", STR_TO_DATE("2025-01-01", "%Y-%m-%d"), "DA", "88", "127342", "benzinski","P");
 
 -- PROCEDURA 1.
--- Procedura počinje izvršavanjem naredbe UPDATE na tablici "auto". Ova naredba postavlja stupac "dostupnost" na 'DA' 
+-- Procedura počinje izvršavanjem naredbe UPDATE na tablici "auto". Ova naredba postavlja stupac "dostupnost" na 'DA'
 -- za redak s "id"-om koji odgovara "p_auto_id", pod uvjetom da je "p_datum_povratka_date" manji ili jednak trenutnom datumu (CURDATE()).
--- Procedura zatim izvršava naredbu SELECT koja dohvaća stupce "id", "model", "dostupnost" i "datum_povratka" iz tablica "auto" i "narudzbenica", spojenih na stupac "id" iz tablica "auto" i stupac "id_auto" iz tablica "narudzbenica". 
+-- Procedura zatim izvršava naredbu SELECT koja dohvaća stupce "id", "model", "dostupnost" i "datum_povratka" iz tablica "auto" i "narudzbenica", spojenih na stupac "id" iz tablica "auto" i stupac "id_auto" iz tablica "narudzbenica".
 -- Naredba SELECT vraća redove gdje je stupac "datum_povratka" manji ili jednak trenutnom datumu.
 DELIMITER //
 
@@ -998,11 +1044,11 @@ DELIMITER ;
 -- CALL update_dostupnost_auta(1, '2023-01-01 00:00:00');
 
 
--- PROCEDURA 2. 
--- procedura za update svih auta kojima je datum na narudzbenici manji ili jednak trenutnom te promjena dostupnosti u DA. 
+-- PROCEDURA 2.
+-- procedura za update svih auta kojima je datum na narudzbenici manji ili jednak trenutnom te promjena dostupnosti u DA.
 -- Izbacuje rezultat svaki put kad promijeni vrijednost
 -- u sebi sadrzi prethodnu proceduru
---  Vraća samo jedan rezultat 
+--  Vraća samo jedan rezultat
 
 DELIMITER //
 
@@ -1049,7 +1095,7 @@ DELIMITER ;
 -- SELECT *,cijena_usluge(cijena) as Jeftino_Skupo FROM usluga_servis;
 
 
--- PROCEDURA U sklopu procedure nalazi se 
+-- PROCEDURA U sklopu procedure nalazi se
 -- naredba za ažuriranje koja ažurira stupac "komentar" u tablici "servis" na temelju vrijednosti stupca "datum_povratka" u tablici "narudžbenica".
 
 DELIMITER //
@@ -1073,4 +1119,3 @@ DELIMITER ;
 
 
 -- ----------------------------------------------------------- NEVEN END------------------------------------------------------------------
-
