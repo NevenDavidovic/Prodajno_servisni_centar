@@ -640,9 +640,10 @@ CALL podesi_prodajne_cijene();
 
 -- MARIJA start
 
+
+# PROCEDURA: Konverzija KW u BHP (nad tablicom auto)
 DROP PROCEDURE IF EXISTS konverzija_snage_motora;
 
-# konverzija KW u BHP (procedura nad tablicom auto)
 DELIMITER //
 
 CREATE PROCEDURE konverzija_snage_motora()
@@ -658,8 +659,8 @@ DELIMITER ;
 -- CALL konverzija_snage_motora();
 -- SELECT * FROM auto;
 
-# promjena cijena iz kuna u eure (nad tablicama oprema, racun_prodaje, usluga_servis, stavka_dio)
 
+# PROCEDURA: Promjena cijena iz kuna u eure (nad tablicama oprema, racun_prodaje, usluga_servis, stavka_dio i zaposlenik - placa)
 DROP PROCEDURE IF EXISTS kune_u_eure;
 
 DELIMITER //
@@ -703,21 +704,15 @@ END//
 DELIMITER ;
 
 -- CALL kune_u_eure();
-
 -- SELECT * FROM oprema;
 -- SELECT * FROM racun_prodaje;
 -- SELECT * FROM usluga_servis;
 -- SELECT * FROM stavka_dio;
 
 
-/*
-SELECT table_name FROM information_schema.columns
-	WHERE column_name = 'cijena';
-*/
-
-
+# OKIDAČ: Datum rođenja zaposlenika nesmje biti manji od danas - 18 godina
 DROP TRIGGER IF EXISTS datum_rodenja_zaposlenika;
-# datum rodenja nesmje biti manji od danas - 18 godina
+
 DELIMITER //
 CREATE TRIGGER datum_rodenja_zaposlenika
 BEFORE INSERT ON zaposlenik
@@ -737,11 +732,12 @@ DELIMITER ;
 
 -- INSERT INTO zaposlenik VALUES(19, "5412610278033", "Matija", "Vuković", "2000-01-15 00:00:00", "Jardasi 23", "Zagreb", "m",
 -- "496588144", "2010-07-13 00:00:00", "m.vuković1@yahoo.com", 6073.036628185772, "autoelektricar");
-
 -- SELECT * FROM zaposlenik;
 
+
+# OKIDAČ: Datum zaposlenja zaposlenika nesmje biti manji od trenutnog
 DROP TRIGGER IF EXISTS datum_zaposlenja_zaposlenika;
-# datum zaposlenja nesmje biti manji od trenutnog
+
 DELIMITER //
 CREATE TRIGGER datum_zaposlenja_zaposlenika
 BEFORE INSERT ON zaposlenik
@@ -759,11 +755,12 @@ DELIMITER ;
 -- DELETE FROM zaposlenik WHERE id = 19;
 -- INSERT INTO zaposlenik VALUES(19, "5412610278033", "Matija", "Vuković", "2000-01-15 00:00:00", "Jardasi 23", "Zagreb", "m",
 -- "496588144", "2023-07-13 00:00:00", "m.vuković1@yahoo.com", 6073.036628185772, "autoelektricar");
-
 -- SELECT * FROM zaposlenik;
 
+
+# OKIDAČ: Godina proizvodnje automobila nesmje biti veća od trenutne
 DROP TRIGGER IF EXISTS  godina_proizvodnje_automobila;
-# godina proizvodnje automobila nesmje biti veća od trenutne
+
 DELIMITER //
 CREATE TRIGGER godina_proizvodnje_automobila
 BEFORE INSERT ON auto
@@ -779,10 +776,14 @@ END//
 DELIMITER ;
 
 -- DELETE FROM auto WHERE id=1299;
--- INSERT INTO auto VALUES (1299, "L76FPA95UU1WGKKVKM", "BMW", "760LI", "crvena", STR_TO_DATE("2024-01-01", "%Y-%m-%d"), "NE", "111", "159384", "benzinski","P");
+-- INSERT INTO auto VALUES (1299, "L76FPA95UU1WGKKVKM", "BMW", "760LI", "crvena", 
+-- STR_TO_DATE("2024-01-01", "%Y-%m-%d"), "NE", "111", "159384", "benzinski","P");
 -- SELECT * FROM auto;
 
-# funkcija koja prema id-ju provjerava da li automobil sadrži dodatnu opremu
+
+# FUNKCIJA: Prema id-ju automobila provjerava da li automobil sadrži dodatnu opremu
+DROP FUNCTION IF EXISTS dodatna_oprema_automobila;
+
 DELIMITER //
 CREATE FUNCTION dodatna_oprema_automobila(id INTEGER) RETURNS VARCHAR(255)
 DETERMINISTIC
@@ -802,8 +803,8 @@ DELIMITER ;
 -- SELECT dodatna_oprema_automobila(1);
 -- SELECT dodatna_oprema_automobila(57);
 
--- transakcija koja dodaje navigaciju na sve elektricne automobile
 
+# TRANSAKCIJA: Dodaje navigaciju na sve električne automobile
 DROP PROCEDURE IF EXISTS dodaj_navigaciju;
 
 -- SELECT id FROM auto WHERE tip_motora="električni";
@@ -844,11 +845,12 @@ END //
 DELIMITER ;
 
 -- CALL dodaj_navigaciju();
-
 -- DELETE FROM oprema_vozila WHERE id_oprema=9;
 -- SELECT * FROM oprema_vozila WHERE id_oprema=9;
 
+
 -- MARIJA end
+
 /*
 -- ----------------------------------------------NOEL--------------------------------------------------------
 -- procedura za prihod godine servisa
