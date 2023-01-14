@@ -21,7 +21,7 @@
 
     {% block content %}
 
-    <div class="row" id="end"> 
+    <div class="row" id="end">
         <div class="col">
             <p class="fs-3">Informacije o Zaposleniku</p>
             <p><b>Ime: </b>{{zaposlenik.ime}} </p>
@@ -29,7 +29,7 @@
             <p><b>OIB: </b>{{zaposlenik.oib}} </p>
             <p><b>Broj telefona: </b>{{zaposlenik.broj_telefona}} </p>
             <p><b>Adresa: </b>{{zaposlenik.adresa}} </p>
-            
+
 
             <p class="fs-3">Komentar o Servisu</p>
             <form method="POST" id="detalji-prodaje">
@@ -39,23 +39,23 @@
                         <input name="komentar" type="text" class="form-control" required id="input-datum">
                     </div>
                 </div>
-                
+
 
         </div>
         <div class="col">
-            
+
 
             <p class="fs-3">Informacije o Narudžbenici</p>
-            <p><b>Broj narudžbe: </b>{{narudzbenica.broj_narudzbe}}  </p>
+            <p><b>Broj narudžbe: </b>{{narudzbenica.broj_narudzbe}} </p>
             <p><b>Datum zaprimanja: </b>{{narudzbenica.datum_zaprimanja.strftime('%d.%m.%Y.')}} </p>
             <p><b>Datum povratka: </b>{{narudzbenica.datum_povratka.strftime('%d.%m.%Y.')}}</p>
-            
-        
+
+
             <p class="fs-3">Informacije o Usluzi </p>
             <p><b>Naziv: </b>{{usluga.naziv}} </p>
-            <p><b>Datum zaprimanja: </b>{{usluga.cijena}} kn</p>
-            
-            
+            <p><b>Datum zaprimanja: </b>{{usluga.cijena}} {{valuta}}</p>
+
+
 
             </form>
         </div>

@@ -1,0 +1,40 @@
+{% extends "administracija-base.html" %}
+{% block head %}
+<title>Promet dana | PSC</title>
+{% endblock %}
+
+{% block body %}
+
+<div class="text-center bg-image" id="h-global">
+    <div class="mask" style="background-color: rgba(255, 255, 255, 0.7);">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div>
+                <h1>Promet dana</h1>
+                <p class="fs-4">Stisni gumb za pregled prometa dana</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" id="c-global">
+
+
+    {% block content %}
+
+    <div class="row" id="end">
+
+        <p class="fs-3">Stisni za promet koji želiš</p>
+
+        <div class="col-8">
+            <div class="row" id="input-global">
+                <div class="col">
+                    <a href="/administracija/ukupni-promet-dana/" class="btn btn-outline-success" id="button">Ukupan
+                        promet</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}
+</div>
+{% endblock %}

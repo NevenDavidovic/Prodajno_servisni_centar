@@ -46,14 +46,11 @@
         <div class="d-flex justify-content-center align-items-center h-100">
             <div class="container">
                 <div class="icon-wrapper">
-                    <img class="success-icon" src="{{ url_for('static',filename='images/ok_icon.png') }}"
-                        alt="success-icon">
-
                     {% block content %}
-                    <h1 id="headline">{{data.msg}}</h1>
+                    <h1 id="headline">Broj prodanih stavki: {{data.data['@br_prodanih_stavki']}}</h1>
+                    <h1 id="headline">Promet dana: {{data.data['@promet_dana']}} KN</h1>
                     {% endblock %}
                     <a href="{{data.route}}" class="btn btn-outline-success">Završi</a>
-                    <a href="/servis/servis-dodaj-dio/{{servis_id}}" class="btn btn-outline-success">Dodaj dio</a>
                 </div>
             </div>
         </div>

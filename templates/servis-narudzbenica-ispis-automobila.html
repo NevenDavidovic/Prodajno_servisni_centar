@@ -21,7 +21,8 @@
     <label for="identificator" class="form-label">Pretraži prema:</label>
     <div class="search">
         <form method="post" class="d-flex">
-            <select style="width: 210px" class="form-select" name="identificator" id="identificator" aria-label="Pretraži po" required value="{{request.form['identificator']}}">
+            <select style="width: 210px" class="form-select" name="identificator" id="identificator"
+                aria-label="Pretraži po" required value="{{request.form['identificator']}}">
                 <option selected value="broj_sasije">Broj šasije</option>
                 <option value="model">Model</option>
                 <option value="marka_automobila">Marka</option>
@@ -29,11 +30,11 @@
             </select>
 
             <div class="d-flex search-box">
-                <input style="width: 950px" name="query" value="{{request.form['query']}}" type="text" class="form-control"
-                    placeholder="Upisati traženi pojam" required>
+                <input style="width: 950px" name="query" value="{{request.form['query']}}" type="text"
+                    class="form-control" placeholder="Upisati traženi pojam" required>
                 <input type="submit" class="btn btn-outline-success" value="Pretraži">
             </div>
-            
+
         </form>
     </div>
 
@@ -59,7 +60,7 @@
             <tr>
                 <td>{{d.marka_automobila}}</td>
                 <td>{{d.model}}</td>
-                <td>{{d.snaga_motora}} KW</td>
+                <td>{{d.snaga_motora|int}} {{snaga}}</td>
                 <td>{{d.godina_proizvodnje.strftime('%Y.')}}</td>
                 {% if d.servis_prodaja=='S' %}
                 <td>servis</td>
@@ -77,7 +78,7 @@
             </tr>
             {% endfor %}
         </tbody>
-    </table>  
+    </table>
     <!-- end of table -->
 
 

@@ -21,14 +21,15 @@
     <label for="identificator" class="form-label">Pretraži prema:</label>
     <div class="search">
         <form method="post" class="d-flex">
-            <select class="form-select" name="identificator" id="identificator" aria-label="Pretraži po" required value="{{request.form['identificator']}}">
+            <select class="form-select" name="identificator" id="identificator" aria-label="Pretraži po" required
+                value="{{request.form['identificator']}}">
                 <option selected value="rp_broj_racuna">Broj računa</option>
                 <option value="rp_datum">Nakon datuma</option>
                 <option value="z_prezime">Zaposlenik Prezime</option>
                 <option value="k_prezime">Klijent Prezime</option>
                 <option value="a_model">Model auta</option>
                 <option value="a_marka_automobila">Marka</option>
-                
+
             </select>
             <div class="d-flex search-box">
                 <input id="query" name="query" value="{{request.form['query']}}" type="number" class="form-control"
@@ -65,9 +66,10 @@
                 <td>{{d.k_ime}} {{d.k_prezime}}</td>
                 <td>{{d.a_marka_automobila}}</td>
                 <td>{{d.a_model}}</td>
-                <td>{{d.rp_cijena}}</td>
-                <td><a href="/prodaja/detalji-racuna/{{d.rp_id}}" class="btn btn-outline-success"> Više informacija </a></td>
-                
+                <td>{{d.rp_cijena}} {{valuta}}</td>
+                <td><a href="/prodaja/detalji-racuna/{{d.rp_id}}" class="btn btn-outline-success"> Više informacija </a>
+                </td>
+
             </tr>
             {% endfor %}
         </tbody>
@@ -78,7 +80,7 @@
     <p class="fs-4 text-center not-found">Nije pronađen niti jedan račun.</p>
     {% endif %}
 
-    
+
 
     {% endblock %}
 
@@ -86,13 +88,13 @@
 <script>
     const el = document.querySelector('select')
     const search = document.querySelector('#query')
-    el.addEventListener('click',(e)=>{
+    el.addEventListener('click', (e) => {
         if (el.value == 'rp_datum') {
-            search.setAttribute('type',"date")
-        }else if (el.value == 'rp_broj_racuna') {
-            search.setAttribute('type',"number")
-        }else {
-            search.setAttribute('type',"text")
+            search.setAttribute('type', "date")
+        } else if (el.value == 'rp_broj_racuna') {
+            search.setAttribute('type', "number")
+        } else {
+            search.setAttribute('type', "text")
         }
     })
 </script>

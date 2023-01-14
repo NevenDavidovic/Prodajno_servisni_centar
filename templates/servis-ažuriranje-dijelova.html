@@ -32,7 +32,7 @@
             <div class="d-flex">
                 <input name="serijski_broj" id="serijski_broj" type="text" class="form-control me-2"
                     placeholder="upisati serijski broj" required>
-                <input name="kolicina" id="kolicina" type="text" class="form-control"
+                <input name="kolicina" id="kolicina" type="number" class="form-control"
                     placeholder="upisati količinu" required>
                 <button onclick="updateKolicina()" id="update-prices-btn" class="btn btn-outline-success">Ažuriraj</button>
             </div>
@@ -51,7 +51,7 @@
         function updateKolicina() {
             quantity = document.getElementById('kolicina').value;
             serial = document.getElementById('serijski_broj').value;
-            if (true){
+            if (quantity && serial){
                 window.location.href = `/servis/azuriranje-kolicine?serijski_broj='${serial}'&kolicina=${quantity}` 
             }
         }

@@ -1,6 +1,6 @@
 from flask import Flask, Blueprint, render_template, request, make_response, jsonify
 from statsFunctions import uslugePoTipuMotora, najviseUtrosenihDjelova, zaspoleniciSaNajviseServisa, zaposleniciPoNajvisojCijeni, racuniPoKupcu, topSkupiDijelovi, topProdavaci, topMarkeAutomobila, mjesečniPrihodiProdaja, mjesečniPrihodiServis, prodanihAutaPoMjesecima, servisiranihAutaPoMjesecima
-from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_item, find_item_like, konverzijaSnageMotora, konverzijaKuneEuri, getValuta
+from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_item, find_item_like, konverzijaSnageMotora, konverzijaKuneEuri, getValuta, getSnaga, prometDana
 
 
 administracija = Blueprint("administracija", __name__)
@@ -169,7 +169,7 @@ def getEmployer(id):
 
     except Exception as err:
         return make_response(render_template("fail.html", error=err), 400)
-    return make_response(render_template("administracija-prikaz-zaposlenika.html", data=response), 200)
+    return make_response(render_template("administracija-prikaz-zaposlenika.html", data=response, valuta=getValuta()), 200)
 
 # ruta za brisanje određenog zaposlenika
 
@@ -221,14 +221,14 @@ def getServices():
             response = find_item_like(table, attribut, value)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("administracija-ispis-svih-usluga.html", data=response), 200)
+        return make_response(render_template("administracija-ispis-svih-usluga.html", data=response, valuta=getValuta()), 200)
     else:
         try:
             table = 'usluga_servis'
             response = get_all_items(table)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("administracija-ispis-svih-usluga.html", data=response), 200)
+        return make_response(render_template("administracija-ispis-svih-usluga.html", data=response, valuta=getValuta()), 200)
 
 
 # ruta za dodavanje nove usluge
@@ -341,7 +341,7 @@ def getCar(id):
 
     except Exception as err:
         return make_response(render_template("fail.html", error=err), 400)
-    return make_response(render_template("administracija-prikaz-automobila.html", data={"auto": response, "oprema": opremaData}), 200)
+    return make_response(render_template("administracija-prikaz-automobila.html", data={"auto": response, "oprema": opremaData}, snaga=getSnaga()), 200)
 
 # ruta za brisanje određenog automobila
 
@@ -421,7 +421,7 @@ def getEquipment():
             response = find_item_like(table, attribut, value)
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("administracija-ispis-sve-opreme.html", data=response), 200)
+        return make_response(render_template("administracija-ispis-sve-opreme.html", data=response, valuta=getValuta()), 200)
     else:
         try:
             table = 'oprema'
@@ -569,7 +569,7 @@ def addCarEquipment():
 
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("administracija-dodavanje-opreme-automobilu.html", data={"auto": autoData, "oprema": opremaData, "p_oprema": pOpremaData}), 200)
+        return make_response(render_template("administracija-dodavanje-opreme-automobilu.html", data={"auto": autoData, "oprema": opremaData, "p_oprema": pOpremaData}, snaga=getSnaga()), 200)
 
 # ruta za ispis sve opreme (u svrhu dodavanja na automobil)
 
@@ -590,7 +590,7 @@ def getCarEquipment():
             autoData = get_item('auto', request.args.get('auto_id'))
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("administracija-ispis-sve-opreme-za-automobil.html", data={"auto": autoData, "oprema": response}), 200)
+        return make_response(render_template("administracija-ispis-sve-opreme-za-automobil.html", data={"auto": autoData, "oprema": response}, valuta=getValuta()), 200)
     else:
         try:
             table = 'oprema'
@@ -598,7 +598,7 @@ def getCarEquipment():
             autoData = get_item('auto', request.args.get('auto_id'))
         except Exception as err:
             return make_response(render_template("fail.html", error=err), 400)
-        return make_response(render_template("administracija-ispis-sve-opreme-za-automobil.html", data={"auto": autoData, "oprema": response}), 200)
+        return make_response(render_template("administracija-ispis-sve-opreme-za-automobil.html", data={"auto": autoData, "oprema": response}, valuta=getValuta()), 200)
 
 # ruta za dodavanje zaposlenika kao klijenta
 
@@ -646,3 +646,19 @@ def moneyConversion():
     except Exception as err:
         return make_response(render_template("fail.html", error=err), 400)
     return make_response(render_template("success.html", data={"msg": "Uspješno ste promjenili cijenu iz kuna u eure! Sretno!", "route": "/"}), 200)
+
+# rute za kalkulaciju i pregled prometa dana
+
+
+@administracija.route("/administracija/promet-dana/", methods=['GET'])
+def getPromet():
+    return make_response(render_template("administracija-promet-dana.html"), 200)
+
+
+@administracija.route("/administracija/ukupni-promet-dana/", methods=['GET'])
+def getPrometDana():
+    try:
+        data = prometDana()
+    except Exception as err:
+        return make_response(render_template("fail.html", error=err), 400)
+    return make_response(render_template("administracija-promet-izracun.html", data={'data': data[0], "route": "/administracija/promet-dana"}), 200)

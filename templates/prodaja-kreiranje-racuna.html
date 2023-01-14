@@ -26,7 +26,7 @@
             <p class="fs-3">Informacije o Klijentu</p>
             <p><b>Ime:</b> {{data.klijent.ime}}</p>
             <p><b>Prezime:</b> {{data.klijent.prezime}}</p>
-            <p><b>OIB:</b>  {{data.klijent.oib}}</p>
+            <p><b>OIB:</b> {{data.klijent.oib}}</p>
             <p><b>Broj telefona:</b> {{data.klijent.broj_telefona}}</p>
             <p><b>Adresa:</b> {{data.klijent.adresa}}</p>
             <p><b>Grad:</b> {{data.klijent.grad}}</p>
@@ -36,10 +36,10 @@
             <p class="fs-3">Zaposlenik</p>
             <p><b>Ime:</b> {{data.zaposlenik.ime}}</p>
             <p><b>Prezime:</b> {{data.zaposlenik.prezime}}</p>
-            <p><b>OIB:</b>  {{data.zaposlenik.oib}}</p>
+            <p><b>OIB:</b> {{data.zaposlenik.oib}}</p>
         </div>
         <div class="col">
-            
+
 
             <p class="fs-3">Informacije o automobilu</p>
             <p><b>Broj Šasije:</b> {{data.auto.broj_sasije}}</p>
@@ -47,7 +47,7 @@
             <p><b>Model:</b> {{data.auto.model}}</p>
             <p><b>Godina proizvodnje:</b> {{data.auto.godina_proizvodnje.strftime('%Y.')}}</p>
             <p><b>Boja:</b> {{data.auto.boja}}</p>
-            <p><b>Snaga motora:</b> {{data.auto.snaga_motora}} KW</p>
+            <p><b>Snaga motora:</b> {{data.auto.snaga_motora|int}} {{snaga}}</p>
             <p><b>Kilometraža:</b> {{data.auto.kilometraza}}</p>
             <p><b>Tip motora:</b> {{data.auto.tip_motora}}</p>
 
@@ -63,14 +63,14 @@
                 <div class="row" id="input-global">
                     <div class="col">
                         <label for="cijena" class="form-label">Cijena</label>
-                        <input name="cijena"  type="number" step=".01" class="form-control"required>
+                        <input name="cijena" type="number" step=".01" class="form-control" required>
                     </div>
                 </div>
                 {% if data.status_klijenta.prijasnji_klijent == True %}
-                 <p class="text-success">Prijašnji klijent! Popust na cijenu 10%</p> 
+                <p class="text-success">Prijašnji klijent! Popust na cijenu 10%</p>
                 {% endif %}
                 {% if data.status_klijenta.klijent_zaposlenik == True %}
-                 <p class="text-success">Klijent zaposlenik! Popust na cijenu od {{data.klijent.placa}} kn</p> 
+                <p class="text-success">Klijent zaposlenik! Popust na cijenu od {{data.klijent.placa}} kn</p>
                 {% endif %}
 
             </form>

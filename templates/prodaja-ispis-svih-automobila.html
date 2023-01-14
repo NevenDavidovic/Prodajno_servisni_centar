@@ -21,12 +21,13 @@
     <label for="identificator" class="form-label">Pretraži prema:</label>
     <div class="search">
         <form method="post" class="d-flex">
-            <select class="form-select" name="identificator" id="identificator" aria-label="Pretraži po" required value="{{request.form['identificator']}}">
+            <select class="form-select" name="identificator" id="identificator" aria-label="Pretraži po" required
+                value="{{request.form['identificator']}}">
                 <option selected value="broj_sasije">Broj šasije</option>
                 <option value="model">Model</option>
                 <option value="marka_automobila">Marka</option>
                 <option value="godina_proizvodnje">Godina proizvodnje</option>
-    
+
             </select>
             <div class="d-flex search-box">
                 <input name="query" value="{{request.form['query']}}" type="text" class="form-control"
@@ -58,7 +59,7 @@
             <tr>
                 <td>{{d.marka_automobila}}</td>
                 <td>{{d.model}}</td>
-                <td>{{d.snaga_motora}} KW</td>
+                <td>{{d.snaga_motora|int}} {{snaga}}</td>
                 <td>{{d.godina_proizvodnje.strftime('%Y.')}}</td>
                 {% if d.servis_prodaja=='S' %}
                 <td>servis</td>

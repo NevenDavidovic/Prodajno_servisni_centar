@@ -1,1 +1,2 @@
 valuta = 'KN'
+snaga = 'KW'

@@ -45,7 +45,7 @@
             {% for d in data[::-1] %}
             <tr>
                 <td>{{d.naziv}}</td>
-                <td>{{d.cijena}} kn</td>
+                <td>{{d.cijena}} {{valuta}}</td>
                 <td>
                     <a href="/administracija/uredivanje-usluge/{{d.id}}" class="btn btn-outline-success">Uredi</a>
                     <a class="btn btn-outline-success" onclick="areYouSure()"

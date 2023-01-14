@@ -388,13 +388,7 @@ select * from skup_dio;
 
 -- SARA UPITI
 
--- prihodi po mjesecima od prodaje automobila u 2022. godini
 
-CREATE VIEW prihod_po_mjesecima AS
-SELECT SUM(cijena) AS prihodi , EXTRACT(MONTH FROM datum) AS mjesec
-FROM racun_prodaje
-WHERE EXTRACT(YEAR FROM datum)="2022"
-GROUP BY CAST(DATE_SUB(datum, INTERVAL DAYOFMONTH(datum)-1 DAY) AS DATE);
 
 -- mjesec sa najmanje prihoda i iznos prihoda od prodaje automobila
 SELECT *
@@ -410,53 +404,8 @@ WHERE prihodi IN ( SELECT MAX(prihodi) FROM prihod_po_mjesecima);
 SELECT AVG(prihodi)
 FROM prihod_po_mjesecima;
 
--- ukupan prihod servisa i dijelova po mjesecima 2022
-CREATE VIEW cijena__servisa AS
-SELECT id_narudzbenica, SUM(cijena) AS cijena_servisa, datum_povratka, s.id
-FROM narudzbenica n, servis s,usluga_servis u
-WHERE n.id=s.id_narudzbenica AND u.id=s.id_usluga_servis
-GROUP BY id_narudzbenica;
-
-
-
-CREATE VIEW cijena__dijelova AS
-SELECT id_narudzbenica, SUM(kolicina*prodajna_cijena) AS cijena_dijelova, id_servis
-FROM dio_na_servisu i
-INNER JOIN stavka_dio sd ON i.id_dio=sd.id_dio
-RIGHT JOIN servis s ON s.id=i.id_servis
-GROUP BY id_narudzbenica;
-
-CREATE VIEW dio_servis_po_mj AS
-SELECT SUM((IFNULL(cijena_dijelova, 0)+cijena_servisa)) AS ukupna_cijena_servisa, EXTRACT(MONTH FROM datum_povratka) AS mjesec
-FROM cijena__dijelova cd, cijena__servisa cs
-WHERE cd.id_narudzbenica=cs.id_narudzbenica AND EXTRACT(YEAR FROM datum_povratka)="2022"
-GROUP BY CAST(DATE_SUB(datum_povratka, INTERVAL DAYOFMONTH(datum_povratka)-1 DAY) AS DATE)
-ORDER BY mjesec ASC;
 
 SELECT * FROM dio_servis_po_mj;
--- ukupni prihodi u godini 2022
-
-CREATE VIEW svi_prihodi_u_godini AS
-SELECT SUM((IFNULL(prihodi, 0)+ukupna_cijena_servisa)) AS prihodi
-FROM prihod_po_mjesecima pm
-RIGHT JOIN dio_servis_po_mj ds ON pm.mjesec=ds.mjesec;
-
--- ukupan rashod od placa zaposlenika
-CREATE VIEW rashod_placa AS
-SELECT SUM(placa*12) AS ukupni_trosak_placa
-FROM zaposlenik;
-
--- ukupan rashod od kupnje dijelova
-
-CREATE VIEW rashod_dijelova AS
-SELECT SUM((nabavna_cijena*dostupna_kolicina)) AS ukupan_trosak_dijelova
-FROM stavka_dio;
-
--- ukupan rashod u godini 2022
-
-CREATE VIEW ukupni_rashodi AS
-SELECT (ukupan_trosak_dijelova+ukupni_trosak_placa) AS rashodi
-FROM rashod_dijelova rd, rashod_placa rp;
 
 -- prihodi-rashodi
 
@@ -477,19 +426,17 @@ FROM ukupni_rashodi ur,svi_prihodi_u_godini pr;
 -- prikaži sve klijente koji su u prodajno servisnom centru kupili automobil "MITSUBISHI OUTLANDER"
 
 /*
-
 SELECT klijent.ime, klijent.prezime
 FROM klijent
 INNER JOIN racun_prodaje ON klijent.id = racun_prodaje.id_klijent
 INNER JOIN auto ON racun_prodaje.id_auto = auto.id
 WHERE marka_automobila = "MITSUBISHI" AND model = "OUTLANDER";
-
 */
 
+-----------------------------------------------------------------------------
 -- prikazi sve automobile marke 'BMW'  sa godinom proizvodnje starijom od 2015.
 
 /*
-
 CREATE VIEW stariji_modeli_automobila AS
 SELECT *
 FROM auto
@@ -497,72 +444,67 @@ WHERE YEAR (godina_proizvodnje) < 2018
 ORDER BY godina_proizvodnje ASC;
 SELECT marka_automobila, model, godina_proizvodnje
 FROM stariji_modeli_automobila
-HAVING marka_automobila ='BMW';
-
+WHERE marka_automobila ='BMW';
 */
 
--- prikaz broja zaposlenika ali samo onih koji rade kao mehanicari i prikaz imena, prezimena i broja godina najmladeg i najstarijeg mehanicara
-
+-----------------------------------------------------------------------
+-- prikazi preko pogleda koja usluga servisa se najvise radila zadnjih 6 mjeseci
 /*
+CREATE VIEW najcesce_radjena_usluga AS
+SELECT usluga_servis.naziv, COUNT(servis.id) as broj_izvrsenih_usluga
+FROM servis
+INNER JOIN usluga_servis ON servis.id_usluga_servis = usluga_servis.id
+INNER JOIN narudzbenica ON servis.id_narudzbenica = narudzbenica.id
+WHERE narudzbenica.datum_povratka >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
+GROUP BY usluga_servis.naziv
+ORDER BY broj_izvrsenih_usluga DESC
+LIMIT 1;
 
-CREATE VIEW godine_mehanicara AS
-SELECT *, CURDATE() as sadasnji_datum, TIMESTAMPDIFF(YEAR, datum_rodenja, CURDATE())AS age FROM zaposlenik
+-- SELECT *FROM najcesce_radjena_usluga;
+
+-----------------------------------------------------------------------
+-- pogled koji prikazuje marku autombila koja se najvise servisirala
+
+CREATE VIEW marka_sa_najvise_servisa AS
+SELECT marka_automobila, COUNT(*) as ukupno_servisa
+FROM auto
+JOIN narudzbenica ON auto.id = narudzbenica.id_auto
+GROUP BY marka_automobila
+ORDER BY ukupno_servisa DESC
+LIMIT 1;
+
+-- SELECT * FROM marka_sa_najvise_servisa
+-----------------------------------------------------------------------
+-- upit koji prikazuje broj zaposlenika ali samo onih koji rade kao mehanicari i prikaz imena, prezimena i broja godina najmladeg i najstarijeg mehanicara
+
+SELECT COUNT(zaposlenik.id) AS 'Broj mehanicara',
+CONCAT(MIN(FLOOR(DATEDIFF(NOW(), datum_rodenja) / 365)), ',',MIN(ime), ' ', MIN(prezime)) AS 'Najmladji mehanicar - broj godina,ime,prezime',
+CONCAT(MAX(FLOOR(DATEDIFF(NOW(), datum_rodenja) / 365)), ',',MAX(ime), ' ', MAX(prezime)) AS 'Najstariji mehanicar - broj godina,ime,prezime'
+FROM zaposlenik
 WHERE radno_mjesto = 'mehanicar'
-ORDER BY datum_rodenja ;
-
--- ime prezime i broj godina najstarijeg mehaničara
-SELECT ime, prezime, MAX(age)
-FROM godine_mehanicara;
-
--- broj mehaničara
-SELECT COUNT(*) as broj_mehanicara
-FROM godine_mehanicara;
-
--- ime prezime i broj godina najmlađeg mehaničara
-SELECT ime, prezime, MIN(age) FROM godine_mehanicara;
-
 */
-
-
--- NOEL upiti preko pogleda za statistiku
-
+-----------------------------------------------------------------------
 -- Prikaži preko pogleda samo one zaposlenike (prodavače) koji su prodali barem jedan auto (ime, prezime, radno mjesto, ukupno_prodanih_vozila) i poredaj ih prema broju prodanih vozila silazno
 
-create view  prodavaci_sa_najvise_prodanih_automobila as
-select CONCAT(z.ime,' ', z.prezime) AS ime, z.radno_mjesto, count(z.id) as ukupno_prodanih_vozila
-from zaposlenik z
-inner join racun_prodaje r on z.id = r.id_zaposlenik
-where radno_mjesto = "prodavac"
-group by z.id
-order by ukupno_prodanih_vozila DESC;
+CREATE VIEW  prodavaci_sa_najvise_prodanih_automobila AS
+SELECT CONCAT(z.ime,' ', z.prezime) AS ime, z.radno_mjesto, count(z.id) AS ukupno_prodanih_vozila
+FROM zaposlenik z
+INNER JOIN racun_prodaje r ON z.id = r.id_zaposlenik
+WHERE radno_mjesto = "prodavac"
+GROUP BY z.id
+ORDER BY ukupno_prodanih_vozila DESC;
 
--- Prikaz preko pogleda
+-- SELECT *FROM prodavaci_sa_najvise_prodanih_automobila;
 
-select *
-from prodavaci_sa_najvise_prodanih_automobila;
-
--- Brisanje pogleda
-
--- drop view prodavaci_sa_najvise_prodanih_automobila;
-
+-------------------------------------------------------------------------
 -- Prikaži preko pogleda statistički podatak koja je marka vozila najprodavanija u PSC-u, podatke poredaj silazno
 
-create view najprodavanija_marka_automobila as
-select marka_automobila, count(a.marka_automobila) as broj_prodanih_vozila
-from auto a
-inner join racun_prodaje r on a.id = r.id_auto
-where servis_prodaja = "P" and dostupnost = "NE"
-group by a.marka_automobila
-order by broj_prodanih_vozila DESC;
+CREATE VIEW najprodavanija_marka_automobila AS
+SELECT marka_automobila, count(a.marka_automobila) AS broj_prodanih_vozila
+FROM auto a
+INNER JOIN racun_prodaje r ON a.id = r.id_auto
+WHERE servis_prodaja = "P" AND dostupnost = "NE"
+GROUP BY a.marka_automobila
+ORDER BY broj_prodanih_vozila DESC;
 
--- Prikaz preko pogleda
-
-select *
-from najprodavanija_marka_automobila;
-
--- Brisanje pogleda
-
--- drop view najprodavanija_marka_automobila;
-
--- NOEL KRAJ
-
+-- SELECT *FROM najprodavanija_marka_automobila;

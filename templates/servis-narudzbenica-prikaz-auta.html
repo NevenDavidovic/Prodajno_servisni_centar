@@ -31,25 +31,27 @@
 
             {% if data.dostupnost=='DA' %}
             <p><b>Dostupnost:</b> <span class="text-success">Dostupno</span></p>
-            {% else %}  
+            {% else %}
             <p><b>Dostupnost:</b> <span class="text-danger">Nedostupno</span> </p>
             {% endif %}
         </div>
-        <div class="col"> 
+        <div class="col">
             <p class="fs-3">Tehničke informacije</p>
             <p><b>Boja:</b> {{data.boja}}</p>
-            <p><b>Snaga motora:</b> {{data.snaga_motora}} KW</p>
+            <p><b>Snaga motora:</b> {{data.snaga_motora|int}} {{snaga}}</p>
             <p><b>Kilometraža:</b> {{data.kilometraza}}</p>
             <p><b>Tip motora:</b> {{data.tip_motora}}</p>
         </div>
     </div>
 
 
-    {% if data.dostupnost=='NE'  and data.servis_prodaja=='P' %} 
-    <a href="/servis/ispis-svih-klijenata?car_id={{data.id}}" class="btn btn-success" id="button"> Dodaj na narudžbenicu </a>
+    {% if data.dostupnost=='NE' and data.servis_prodaja=='P' %}
+    <a href="/servis/ispis-svih-klijenata?car_id={{data.id}}" class="btn btn-success" id="button"> Dodaj na narudžbenicu
+    </a>
     {% elif data.dostupnost=='DA' and data.servis_prodaja=='S' %}
-    <a href="/servis/ispis-svih-klijenata?car_id={{data.id}}" class="btn btn-success" id="button"> Dodaj na narudžbenicu </a>
-    {% else %} 
+    <a href="/servis/ispis-svih-klijenata?car_id={{data.id}}" class="btn btn-success" id="button"> Dodaj na narudžbenicu
+    </a>
+    {% else %}
     <a href="javascript:history.back()" class="btn btn-outline-success" id="button"> Vrati se nazad </a>
     {% endif %}
 
