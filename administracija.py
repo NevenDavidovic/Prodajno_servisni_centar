@@ -1,6 +1,6 @@
 from flask import Flask, Blueprint, render_template, request, make_response, jsonify
 from statsFunctions import uslugePoTipuMotora, najviseUtrosenihDjelova, zaspoleniciSaNajviseServisa, zaposleniciPoNajvisojCijeni, racuniPoKupcu, topSkupiDijelovi, topProdavaci, topMarkeAutomobila, mjesečniPrihodiProdaja, mjesečniPrihodiServis, prodanihAutaPoMjesecima, servisiranihAutaPoMjesecima
-from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_item, find_item_like, konverzijaSnageMotora, konverzijaKuneEuri, getValuta, getSnaga, prometDana
+from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_item, find_item_like, konverzijaSnageMotora, konverzijaKuneEuri, getValuta, getSnaga, prometDana, prometDanaProdaja, prometDanaServis
 
 
 administracija = Blueprint("administracija", __name__)
@@ -659,6 +659,23 @@ def getPromet():
 def getPrometDana():
     try:
         data = prometDana()
+    except Exception as err:
+        return make_response(render_template("fail.html", error=err), 400)
+    return make_response(render_template("administracija-promet-izracun.html", data={'data': data[0], "route": "/administracija/promet-dana"}), 200)
+
+@administracija.route("/administracija/prodaja-promet-dana/", methods=['GET'])
+def getPrometDanaProdaja():
+    try:
+        data = prometDanaProdaja()
+    except Exception as err:
+        return make_response(render_template("fail.html", error=err), 400)
+    return make_response(render_template("administracija-promet-izracun.html", data={'data': data[0], "route": "/administracija/promet-dana"}), 200)
+
+
+@administracija.route("/administracija/servis-promet-dana/", methods=['GET'])
+def getPrometDanaServis():
+    try:
+        data = prometDanaServis()
     except Exception as err:
         return make_response(render_template("fail.html", error=err), 400)
     return make_response(render_template("administracija-promet-izracun.html", data={'data': data[0], "route": "/administracija/promet-dana"}), 200)
