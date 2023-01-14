@@ -103,8 +103,8 @@ BEGIN
 END //
 DELIMITER ;
 
--- CALL SERVIS_PROMET_DANA("2022-05-30", @br_prodanih_stavki_s, @promet_dana_s);
--- SELECT @promet_dana_s,@br_prodanih_stavki_s FROM DUAL;
+-- CALL SERVIS_PROMET_DANA("2022-05-30",@br_prodanih_stavki, @promet_dana);
+-- SELECT @br_prodanih_stavki, @promet_dana FROM DUAL;
 
 -- PROCEDURA ZA IZRAČUNAVANJE PROMETA DANA ZA PRODAJU
 -- DROP PROCEDURE PRODAJA_PROMET_DANA;
@@ -128,8 +128,8 @@ BEGIN
 END //
 DELIMITER ;
 
-CALL PRODAJA_PROMET_DANA("2022-05-30", @br_prodanih_stavki_p, @promet_dana_p);
-SELECT @promet_dana_p,@br_prodanih_stavki_p FROM DUAL;
+-- CALL PRODAJA_PROMET_DANA("2022-05-30",@br_prodanih_stavki, @promet_dana);
+-- SELECT @br_prodanih_stavki, @promet_dana FROM DUAL;
 
 -- PROCEDURA ZA IZRAČUNAVANJE PROMETA DANA (ADMINISTRACIJA)
 
