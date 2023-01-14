@@ -1,6 +1,6 @@
 {% extends "administracija-base.html" %}
 {% block head %}
-<title>Promet dana | PSC</title>
+<title>Promet | PSC</title>
 {% endblock %}
 
 {% block body %}
@@ -9,8 +9,8 @@
     <div class="mask" style="background-color: rgba(255, 255, 255, 0.7);">
         <div class="d-flex justify-content-center align-items-center h-100">
             <div>
-                <h1>Promet dana</h1>
-                <p class="fs-4">Stisni gumb za pregled prometa dana</p>
+                <h1>Promet</h1>
+                <p class="fs-4">Odaberite željeni promet</p>
             </div>
         </div>
     </div>
@@ -23,16 +23,29 @@
 
     <div class="row" id="end">
 
-        <p class="fs-3">Stisni za promet koji želiš</p>
+        <p class="fs-3">Promet dana</p>
 
-        <div class="col-8">
-            <div class="row" id="input-global">
-                <div class="col">
-                    <a href="/administracija/ukupni-promet-dana/" class="btn btn-outline-success" id="button">Ukupan
-                        promet</a>
-                </div>
-            </div>
+
+        <div class="col" id="col_p">
+            <a href="/administracija/ukupni-promet-dana/" class="btn btn-outline-success" id="button_p">Ukupan
+                promet</a>
         </div>
+
+
+
+        <div class="col" id="col_p">
+            <a href="/administracija/prodaja-promet-dana/" class="btn btn-outline-success" id="button_p">Promet
+                prodaja</a>
+        </div>
+
+
+
+        <div class="col" id="col_p">
+            <a href="/administracija/servis-promet-dana/" class="btn btn-outline-success" id="button_p">Promet
+                servis</a>
+        </div>
+
+
     </div>
 
     {% endblock %}

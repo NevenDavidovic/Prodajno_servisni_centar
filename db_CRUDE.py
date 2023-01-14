@@ -419,3 +419,28 @@ def prometDana() -> dict:
         mycursor.execute(qstring1)
         mycursor.execute(qstring2)
         return mycursor.fetchall()
+
+def prometDanaProdaja() -> dict:
+    with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
+        datum = time.strftime("%Y-%m-%d")
+        mycursor = db.cursor(dictionary=True)
+
+        qstring1 = f'CALL PRODAJA_PROMET_DANA("{datum}",@br_prodanih_stavki, @promet_dana);'
+        qstring2 = f'SELECT @br_prodanih_stavki, @promet_dana FROM DUAL;'
+
+        mycursor.execute(qstring1)
+        mycursor.execute(qstring2)
+        return mycursor.fetchall()
+
+
+def prometDanaServis() -> dict:
+    with mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar") as db:
+        datum = time.strftime("%Y-%m-%d")
+        mycursor = db.cursor(dictionary=True)
+
+        qstring1 = f'CALL SERVIS_PROMET_DANA("{datum}",@br_prodanih_stavki, @promet_dana);'
+        qstring2 = f'SELECT @br_prodanih_stavki, @promet_dana FROM DUAL;'
+
+        mycursor.execute(qstring1)
+        mycursor.execute(qstring2)
+        return mycursor.fetchall()
