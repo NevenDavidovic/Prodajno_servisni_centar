@@ -1243,5 +1243,23 @@ DELIMITER ;
 
 -- SELECT * FROM servis, narudzbenica WHERE servis.id_narudzbenica=narudzbenica.id;
 
+-- Trigger koji ne dopušta unos narudžbenice starije od 2 tjedan na servis
+
+DELIMITER //
+CREATE TRIGGER prevent_old_purchase_order
+    BEFORE INSERT ON servis
+    FOR EACH ROW
+BEGIN
+    DECLARE purchase_date DATE;
+    SET purchase_date = (SELECT datum_zaprimanja FROM narudzbenica WHERE id = NEW.id_narudzbenica);
+    IF purchase_date < DATE_SUB(NOW(), INTERVAL 2 WEEK) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Na servis se ne mogu dodati narudžbenice starije od 2 tjedna';
+    END IF;
+END//
+DELIMITER ;
+
+
+
 
 -- ----------------------------------------------------------- NEVEN END------------------------------------------------------------------
