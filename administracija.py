@@ -623,7 +623,7 @@ def addEmployerAsClient(id):
         add_item(table, data)
     except Exception as err:
         return make_response(render_template("fail.html", error=err), 400)
-    return make_response(render_template("success.html", data={"msg": "Zaposlenik uspješno dodan kao klijent!", "route": "/administracija/ispis-svih-klijenata"}), 200)
+    return make_response(render_template("success.html", data={"msg": "Zaposlenik uspješno dodan kao klijent!", "route": "/prodaja/ispis-svih-automobila"}), 200)
 
 
 # ruta za konverziju snage motora (procedura)
