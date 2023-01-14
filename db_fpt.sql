@@ -1158,12 +1158,7 @@ BEGIN
     SET dostupnost = 'DA'
     WHERE id = p_auto_id AND p_datum_povratka_date <= CURDATE();
 
-    SELECT a.id, a.model,a.dostupnost,n.datum_povratka
-    FROM auto as a
-        INNER JOIN narudzbenica as n
-        ON a.id = n.id_auto
-    WHERE n.datum_povratka <= CURDATE();
-END//
+   END//
 
 DELIMITER ;
 
@@ -1182,12 +1177,6 @@ CREATE PROCEDURE update_dostupnost_svih_autax()
 BEGIN
     DECLARE p_auto_id INT;
     DECLARE p_datum_povratka_date DATETIME;
-
-    SELECT a.id, a.model,a.dostupnost,n.datum_povratka
-    FROM auto as a
-        INNER JOIN narudzbenica as n
-        ON a.id = n.id_auto
-    WHERE n.datum_povratka <= CURDATE();
 
     UPDATE auto
     SET dostupnost = 'DA'
