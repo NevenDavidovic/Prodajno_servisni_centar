@@ -268,7 +268,7 @@ CREATE VIEW najprodavaniji_jefitni_auti AS
 SELECT a.marka_automobila,a.model,COUNT(*) AS br_prodanih_auta
 FROM racun_prodaje rp
 INNER JOIN auto a ON rp.id_auto = a.id
-WHERE cijena BETWEEN (SELECT min_cijena() FROM DUAL) AND ((SELECT raspon_cijena() FROM DUAL)/3)
+WHERE cijena BETWEEN (SELECT MIN(cijena) FROM racun_prodaje) AND ((SELECT raspon_cijena() FROM DUAL)/3)
 GROUP BY a.model
 ORDER BY br_prodanih_auta DESC;
 
@@ -292,7 +292,7 @@ CREATE VIEW najprodavaniji_skupi_auti AS
 SELECT a.marka_automobila,a.model,COUNT(*) AS br_prodanih_auta
 FROM racun_prodaje rp
 INNER JOIN auto a ON rp.id_auto = a.id
-WHERE cijena BETWEEN (((SELECT raspon_cijena() FROM DUAL)/3) * 2) AND (SELECT max_cijena() FROM DUAL)
+WHERE cijena BETWEEN (((SELECT raspon_cijena() FROM DUAL)/3) * 2) AND (SELECT MAX(cijena) FROM racun_prodaje)
 GROUP BY a.model
 ORDER BY br_prodanih_auta DESC;
 

@@ -399,27 +399,51 @@ select* from racun_prodaje;
 -- TIN FUNKCIJE, PROCEDURE I OKIDACI
 -- FUNKCIJE ZA ODREĐIVANJE CIJENE PRODANIH AUTOMOBILA
 
--- Funkcija koja vraca namjmanju cijenu u tablici racun_prodaje
+-- Funkcija koja vraća broj automobila prema modelu i starosti (sve aute mlađe od specificirane starosti)
 DELIMITER //
-CREATE FUNCTION min_cijena() RETURNS INTEGER
+CREATE FUNCTION br_auta_po_modelu(p_model VARCHAR(40),p_starost INTEGER) RETURNS INTEGER
 DETERMINISTIC
 BEGIN
+DECLARE number_of_cars INTEGER DEFAULT 0;
 
-RETURN (SELECT MIN(cijena) FROM racun_prodaje);
+SELECT COUNT(*) INTO number_of_cars
+FROM auto 
+WHERE model = p_model AND (YEAR(NOW()) - YEAR(godina_proizvodnje)) < p_starost;
+
+RETURN number_of_cars;
+END//
+DELIMITER ;
+-- SELECT br_auta_po_modelu('Yaris',15);
+
+-- funkcija koja određuje postotak muških i ženskih kupaca za unesenu marku automobila
+DELIMITER //
+CREATE FUNCTION preferans_marke_automobila(p_marka VARCHAR(40)) RETURNS VARCHAR(70)
+DETERMINISTIC
+BEGIN
+DECLARE broj_žena INTEGER DEFAULT 0;
+DECLARE broj_muskaraca INTEGER DEFAULT 0;
+DECLARE ukupno INTEGER;
+
+SELECT COUNT(*) INTO broj_žena
+FROM racun_prodaje rp
+INNER JOIN auto a ON rp.id_auto = a.id
+INNER JOIN klijent k ON rp.id_klijent = k.id
+WHERE marka_automobila = p_marka AND spol = 'Ž';
+
+SELECT COUNT(*) INTO broj_muskaraca
+FROM racun_prodaje rp
+INNER JOIN auto a ON rp.id_auto = a.id
+INNER JOIN klijent k ON rp.id_klijent = k.id
+WHERE marka_automobila = p_marka AND spol = 'M';
+
+SET ukupno = broj_muskaraca + broj_zena;
+RETURN CONCAT('Marka: ',p_marka , '| Muškarci ',ROUND((broj_muskaraca/ukupno)*100,1),'%' , '| Žene ' ,ROUND((broj_zena/ukupno)*100,1),'%');
 
 END//
 DELIMITER ;
-
--- Funkcija koja vraca najvecu cijenu u tablici racun_prodaje
-DELIMITER //
-CREATE FUNCTION max_cijena() RETURNS INTEGER
-DETERMINISTIC
-BEGIN
-
-RETURN (SELECT MAX(cijena) FROM racun_prodaje);
-
-END//
-DELIMITER ;
+-- SELECT preferans_marke_automobila('Ford');
+-- SELECT preferans_marke_automobila('BMW');
+-- SELECT preferans_marke_automobila('chevrolet');
 
 -- Funkcija koja vraca raspon cijena u tablici racun_prodaje
 DELIMITER //
