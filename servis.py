@@ -729,3 +729,4 @@ def promijeniDostupnost(id,servis_prodaja):
     call_update_dostupnost_auta_procedure(id,servis_prodaja)
     
     return redirect(url_for('servis.getAUToo', id=id))
+

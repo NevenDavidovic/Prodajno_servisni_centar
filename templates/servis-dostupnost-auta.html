@@ -51,7 +51,7 @@
                 <th scope="col">Snaga motora</th>
                 <th scope="col">Godina proizvodnje</th>
                 <th scope="col">Servis/prodaja</th>
-                <th scope="col">Dostupnost</th>
+                
                 <th scope="col"></th>
             </tr>
         </thead>
@@ -68,11 +68,7 @@
                 <td>prodaja</td>
                 {% endif %}
 
-                {% if d.dostupnost=='DA' %}
-                <td class="text-success">Dostupno</td>
-                {% else %}
-                <td class="text-danger">Nedostupno</td>
-                {% endif %}
+               
                 <td><a href="/servis/dostupnost-auta/{{d.id}}/{{d.servis_prodaja}}" class="btn btn-outline-success"> Učini dostupnim za servis</a></td>
             </tr>
             {% endfor %}
