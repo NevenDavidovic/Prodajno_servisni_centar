@@ -404,8 +404,6 @@ SELECT AVG(prihodi)
 FROM prihod_po_mjesecima;
 
 
-SELECT * FROM dio_servis_po_mj;
-
 -- prihodi-rashodi
 
 SELECT (prihodi-rashodi) AS racun_dobiti_ili_gubitka
