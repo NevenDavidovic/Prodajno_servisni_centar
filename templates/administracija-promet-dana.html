@@ -20,22 +20,21 @@
 
 
     {% block content %}
-    <form method="post">
 
-        <div class="row" id="end">
+    <div class="row" id="end">
 
-            <p class="fs-3">Stisni za promet koji želiš</p>
+        <p class="fs-3">Stisni za promet koji želiš</p>
 
-            <div class="col-8">
-                <div class="row" id="input-global">
-                    <div class="col">
-                        <label for="naziv" class="form-label">Ukupan promet</label>
-                        <button class="btn btn-outline-success" id="button" type="submit">Pregled prometa</button>
-                        
-                    </div>
+        <div class="col-8">
+            <div class="row" id="input-global">
+                <div class="col">
+                    <a href="/administracija/ukupni-promet-dana/" class="btn btn-outline-success" id="button">Ukupan
+                        promet</a>
                 </div>
+            </div>
+        </div>
+    </div>
 
-    </form>
     {% endblock %}
 </div>
 {% endblock %}

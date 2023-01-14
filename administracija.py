@@ -1,6 +1,6 @@
 from flask import Flask, Blueprint, render_template, request, make_response, jsonify
 from statsFunctions import uslugePoTipuMotora, najviseUtrosenihDjelova, zaspoleniciSaNajviseServisa, zaposleniciPoNajvisojCijeni, racuniPoKupcu, topSkupiDijelovi, topProdavaci, topMarkeAutomobila, mjesečniPrihodiProdaja, mjesečniPrihodiServis, prodanihAutaPoMjesecima, servisiranihAutaPoMjesecima
-from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_item, find_item_like, konverzijaSnageMotora, konverzijaKuneEuri, getValuta, getSnaga
+from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_item, find_item_like, konverzijaSnageMotora, konverzijaKuneEuri, getValuta, getSnaga, prometDana
 
 
 administracija = Blueprint("administracija", __name__)
@@ -646,3 +646,19 @@ def moneyConversion():
     except Exception as err:
         return make_response(render_template("fail.html", error=err), 400)
     return make_response(render_template("success.html", data={"msg": "Uspješno ste promjenili cijenu iz kuna u eure! Sretno!", "route": "/"}), 200)
+
+# rute za kalkulaciju i pregled prometa dana
+
+
+@administracija.route("/administracija/promet-dana/", methods=['GET'])
+def getPromet():
+    return make_response(render_template("administracija-promet-dana.html"), 200)
+
+
+@administracija.route("/administracija/ukupni-promet-dana/", methods=['GET'])
+def getPrometDana():
+    try:
+        data = prometDana()
+    except Exception as err:
+        return make_response(render_template("fail.html", error=err), 400)
+    return make_response(render_template("administracija-promet-izracun.html", data={'data': data[0], "route": "/administracija/promet-dana"}), 200)
