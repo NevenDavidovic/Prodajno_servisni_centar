@@ -1250,6 +1250,40 @@ BEGIN
 END//
 DELIMITER ;
 
+-- Update dostupnost auta u da korištenjem samo kriterija id_auto
+CREATE PROCEDURE update_dostupnost_auta (IN p_auto_id INT)
+BEGIN
+UPDATE auto
+SET dostupnost = 'DA'
+WHERE id = p_auto_id
+END;
+DELIMITER ;
+
+
+
+-- stvara pogled koji prikazuje nedostupne aute za servis kojima je kategorija P i S
+
+CREATE VIEW nedostupniAuti_za_servis AS
+SELECT * FROM auto WHERE dostupnost='NE' AND servis_prodaja='S'
+UNION 
+SELECT * FROM auto WHERE dostupnost='DA' AND servis_prodaja='P';
+
+-- procedura koja uzima dva argumenta i updatea automobile prema tome jesu li kategorija prodaja ili ne
+
+DELIMITER //
+CREATE PROCEDURE update_dostupnost_auta_za_servis (IN p_auto_id INT, IN p_servis_prodaja CHAR(1))
+BEGIN
+    IF p_servis_prodaja = 'P' THEN
+        UPDATE auto
+        SET dostupnost = 'NE'
+        WHERE id = p_auto_id;
+    ELSEIF p_servis_prodaja = 'S' THEN
+        UPDATE auto
+        SET dostupnost = 'DA'
+        WHERE id = p_auto_id;
+    END IF;
+END;
+
 
 
 
