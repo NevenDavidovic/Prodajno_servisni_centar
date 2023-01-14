@@ -6,6 +6,7 @@ SELECT SUM(cijena) AS prihodi , EXTRACT(MONTH FROM datum) AS mjesec
 FROM racun_prodaje
 WHERE EXTRACT(YEAR FROM datum)="2022"
 GROUP BY CAST(DATE_SUB(datum, INTERVAL DAYOFMONTH(datum)-1 DAY) AS DATE);
+
 -- ukupan prihod servisa i dijelova po mjesecima 2022
 CREATE VIEW cijena__servisa AS
 SELECT id_narudzbenica, SUM(cijena) AS cijena_servisa, datum_povratka, s.id
