@@ -1160,12 +1160,7 @@ BEGIN
     SET dostupnost = 'DA'
     WHERE id = p_auto_id AND p_datum_povratka_date <= CURDATE();
 
-    SELECT a.id, a.model,a.dostupnost,n.datum_povratka
-    FROM auto as a
-        INNER JOIN narudzbenica as n
-        ON a.id = n.id_auto
-    WHERE n.datum_povratka <= CURDATE();
-END//
+   END//
 
 DELIMITER ;
 
@@ -1184,12 +1179,6 @@ CREATE PROCEDURE update_dostupnost_svih_autax()
 BEGIN
     DECLARE p_auto_id INT;
     DECLARE p_datum_povratka_date DATETIME;
-
-    SELECT a.id, a.model,a.dostupnost,n.datum_povratka
-    FROM auto as a
-        INNER JOIN narudzbenica as n
-        ON a.id = n.id_auto
-    WHERE n.datum_povratka <= CURDATE();
 
     UPDATE auto
     SET dostupnost = 'DA'
@@ -1244,6 +1233,24 @@ DELIMITER ;
 -- call update_komentar_servisa();
 
 -- SELECT * FROM servis, narudzbenica WHERE servis.id_narudzbenica=narudzbenica.id;
+
+-- Trigger koji ne dopušta unos narudžbenice starije od 2 tjedan na servis
+
+DELIMITER //
+CREATE TRIGGER prevent_old_purchase_order
+    BEFORE INSERT ON servis
+    FOR EACH ROW
+BEGIN
+    DECLARE purchase_date DATE;
+    SET purchase_date = (SELECT datum_zaprimanja FROM narudzbenica WHERE id = NEW.id_narudzbenica);
+    IF purchase_date < DATE_SUB(NOW(), INTERVAL 2 WEEK) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Na servis se ne mogu dodati narudžbenice starije od 2 tjedna';
+    END IF;
+END//
+DELIMITER ;
+
+
 
 
 -- ----------------------------------------------------------- NEVEN END------------------------------------------------------------------
