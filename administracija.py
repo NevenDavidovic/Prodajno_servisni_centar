@@ -663,6 +663,7 @@ def getPrometDana():
         return make_response(render_template("fail.html", error=err), 400)
     return make_response(render_template("administracija-promet-izracun.html", data={'data': data[0], "route": "/administracija/promet-dana"}), 200)
 
+
 @administracija.route("/administracija/prodaja-promet-dana/", methods=['GET'])
 def getPrometDanaProdaja():
     try:
