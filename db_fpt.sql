@@ -225,6 +225,70 @@ BEGIN
 END//
 DELIMITER ;
 
+-- zbog učestalog kašnjenja osoblja koje ne živi u Zagrebu(gdje je locirana naša poslovnica), odlučili smo svimtim zaposlenicima podijeliti otkaze,
+-- zato sada sve zaposlenike koji nemaju prebivalište u Zagrebu brišemo iz baze
+
+
+DROP PROCEDURE IF EXISTS brisi_zaposlenike;
+
+-- SELECT DISTINCT grad FROM zaposlenik WHERE grad NOT IN (SELECT grad FROM zaposlenik WHERE grad="Zagreb");
+
+DELIMITER //
+CREATE PROCEDURE brisi_zaposlenike()
+BEGIN
+
+DECLARE zaposlenik_grad VARCHAR(20);
+DECLARE cur CURSOR FOR SELECT DISTINCT grad FROM zaposlenik WHERE grad NOT IN (SELECT grad FROM zaposlenik WHERE grad="Zagreb");
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+    ROLLBACK;
+    SELECT 'Greška u proceduri';
+    END;
+
+SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
+START TRANSACTION;
+
+OPEN cur;
+brisi_zaposlenike: LOOP
+FETCH cur INTO zaposlenik_grad;
+DELETE FROM zaposlenik WHERE grad=zaposlenik_grad;
+END LOOP brisi_zaposlenike;
+CLOSE cur;
+
+COMMIT;
+END //
+DELIMITER ;
+
+-- CALL brisi_zaposlenike();
+-- za operemu vozila  sa markom TomTom povećaj cijenu za 10% prosječne cijene svih artikala
+
+
+DROP PROCEDURE IF EXISTS za_opremu_TomTom_povecaj_cijenu;
+
+DELIMITER //
+CREATE PROCEDURE za_opremu_TomTom_povecaj_cijenu()
+BEGIN
+    DECLARE rezultat DECIMAL(8, 2);
+
+    SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
+    START TRANSACTION;
+
+    SELECT AVG(cijena) * 0.1  INTO rezultat
+    FROM oprema;
+
+    UPDATE oprema
+    SET cijena = cijena + rezultat
+    WHERE marka = 'TomTom';
+
+    COMMIT;
+
+END //
+DELIMITER ;
+
+-- CALL za_opremu_TomTom_povecaj_cijenu();
+
+
 
 -- SARA GOTOVA
 
