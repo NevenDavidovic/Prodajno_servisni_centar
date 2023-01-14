@@ -128,8 +128,8 @@ BEGIN
 END //
 DELIMITER ;
 
--- CALL PRODAJA_PROMET_DANA("2022-05-30", @br_prodanih_stavki_p, @promet_dana_p);
--- SELECT @promet_dana_p,@br_prodanih_stavki_p FROM DUAL;
+CALL PRODAJA_PROMET_DANA("2022-05-30", @br_prodanih_stavki_p, @promet_dana_p);
+SELECT @promet_dana_p,@br_prodanih_stavki_p FROM DUAL;
 
 -- PROCEDURA ZA IZRAČUNAVANJE PROMETA DANA (ADMINISTRACIJA)
 
