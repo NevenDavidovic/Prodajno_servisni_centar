@@ -778,6 +778,52 @@ DELIMITER ;
 -- SELECT dodatna_oprema_automobila(1);
 -- SELECT dodatna_oprema_automobila(57);
 
+-- transakcija koja dodaje navigaciju na sve elektricne automobile
+
+DROP PROCEDURE IF EXISTS dodaj_navigaciju;
+
+-- SELECT id FROM auto WHERE tip_motora="električni";
+
+DELIMITER //
+CREATE PROCEDURE dodaj_navigaciju()
+BEGIN
+
+DECLARE car_id, oprema_id INTEGER;
+DECLARE cur CURSOR FOR SELECT id FROM auto WHERE tip_motora="električni";
+
+    DECLARE EXIT HANDLER FOR 1062
+    BEGIN
+    ROLLBACK;
+    SELECT CONCAT('Auto sa id-em ',car_id,' već ima navigaciju!');
+    END;
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+    ROLLBACK;
+    SELECT 'Došlo je do greške, procedura je zausavljenja!';
+    END;
+
+SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
+START TRANSACTION;
+
+SET oprema_id = 5000;
+
+OPEN cur;
+insertaj_u_opremu_vozila: LOOP
+FETCH cur INTO car_id;
+INSERT INTO oprema_vozila VALUES (oprema_id, car_id, 9);
+SET oprema_id = oprema_id + 1;
+END LOOP insertaj_u_opremu_vozila;
+CLOSE cur;
+
+COMMIT;
+END //
+DELIMITER ;
+
+-- CALL dodaj_navigaciju();
+
+-- DELETE FROM oprema_vozila WHERE id_oprema=9;
+-- SELECT * FROM oprema_vozila WHERE id_oprema=9;
+
 -- MARIJA end
 /*
 -- ----------------------------------------------NOEL--------------------------------------------------------
