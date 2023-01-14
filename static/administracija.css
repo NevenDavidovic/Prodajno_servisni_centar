@@ -50,7 +50,6 @@ h1,
     }
 }
 
-
 #button {
     margin-top: 2vw;
 }
@@ -68,8 +67,6 @@ h1,
     content: "* ";
     color: red;
 }
-
-
 
 #end {
     padding-bottom: 3vw;
@@ -114,4 +111,14 @@ td {
 
 form {
     width: 100%;
+}
+
+#col_p {
+    display: flex;
+}
+
+#button_p {
+    margin-top: 2vw;
+    margin-left: auto;
+    margin-right: auto;
 }
