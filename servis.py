@@ -1,6 +1,6 @@
-from flask import Flask, Blueprint, render_template, request, make_response, jsonify
+from flask import Flask, Blueprint, redirect, render_template, request, make_response, jsonify, url_for
 from statsFunctions import uslugePoTipuMotora, najviseUtrosenihDjelova, zaspoleniciSaNajviseServisa, zaposleniciPoNajvisojCijeni, racuniPoKupcu, topSkupiDijelovi
-from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_item, find_item_like, get_last_record_identificator, get_all_cars_for_servis, get_all_cars_for_sale, get_last_record_identificator, get_parts_by_id, updatePartsPrice, updatePartsQuantity, getValuta, getSnaga
+from db_CRUDE import add_item, delete_item, get_all_items, find_item, edit_table, get_item, find_item_like, get_last_record_identificator, get_all_cars_for_servis, get_all_cars_for_sale, get_last_record_identificator, get_parts_by_id, updatePartsPrice, updatePartsQuantity, getValuta, getSnaga,call_update_dostupnost_auta_procedure
 import mysql.connector
 
 
@@ -695,6 +695,37 @@ def dodajDio_naServis(id):
             return make_response(render_template("fail.html", error=err), 400)
         return make_response(render_template("servis-dio-na-servisu.html", data=response, servis=responseServis), 200)
 
-        svi_dijelovi = get_all_items('dijelovi')
 
-    return render_template()
+@servis.route("/servis/dostupnost-automobila", methods=['GET','POST'])
+def dostupnostAuta():
+    if request.method == "POST":
+            try:
+                queryData = {}
+                for key, value in request.form.items():
+                    queryData[key] = value
+
+                table = 'nedostupniAuti_za_servis'
+                attribut = queryData['identificator']
+                value = queryData['query']
+
+                if attribut == 'godina_proizvodnje':
+                    value = value + '-01-01'
+
+                response = find_item_like(table, attribut, value)
+
+            except Exception as err:
+                return make_response(render_template("fail.html", error=err), 400)
+            return make_response(render_template("servis-dostupnost-auta.html", data=response), 200)
+    else:
+        try:
+                table = 'nedostupniAuti_za_servis'
+                response = get_all_items(table)
+        except Exception as err:
+                return make_response(render_template("fail.html", error=err), 400)
+        return make_response(render_template("servis-dostupnost-auta.html", data=response ), 200)
+
+@servis.route("/servis/dostupnost-auta/<int:id>/<servis_prodaja>",methods=['GET','POST'])
+def promijeniDostupnost(id,servis_prodaja):
+    call_update_dostupnost_auta_procedure(id,servis_prodaja)
+    
+    return redirect(url_for('servis.getAUToo', id=id))

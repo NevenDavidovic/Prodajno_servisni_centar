@@ -444,3 +444,24 @@ def prometDanaServis() -> dict:
         mycursor.execute(qstring1)
         mycursor.execute(qstring2)
         return mycursor.fetchall()
+
+
+
+def call_update_dostupnost_auta_procedure(auto_id, servis_prodaja):
+    try:
+        # Connect to the MySQL database
+        db = mysql.connector.connect(host="localhost", user="root", passwd="root", database="Prodajno_servisni_centar")
+        cursor = db.cursor()
+        
+        # Call the stored procedure
+        cursor.callproc('update_dostupnost_auta_za_servis', (auto_id,servis_prodaja))
+        
+        # Commit the changes
+        db.commit()
+        
+        print("Stored procedure 'update_dostupnost_auta_za_servis' called successfully.")
+    except mysql.connector.Error as error:
+        print("Error: {}".format(error))
+    finally:
+        cursor.close()
+        db.close()
