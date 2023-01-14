@@ -168,8 +168,7 @@ dostupnost,godina_proizvodnje, snaga_motora, kilometraza, tip_motora,
 ime, prezime, broj_telefona, adresa,grad,spol,broj_narudzbe, datum_zaprimanja, datum_povratka  
 FROM auto, klijent, narudzbenica 
 WHERE auto.id=narudzbenica.id_auto 
-AND klijent.id=narudzbenica.id_klijent 
-AND servis_prodaja='S';
+AND klijent.id=narudzbenica.id_klijent;
 
 CREATE VIEW podaci_o_servisu AS
 SELECT s.id as servis_id,n.id as narudzbenica_id,z.id as zaposlenik_id, us.id as usluga_servis_id, k.id as klijent_id,
