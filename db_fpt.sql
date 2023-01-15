@@ -1117,10 +1117,10 @@ DELIMITER ;
 -- procedura koja za dva unesena parametra(dva datuma) vraca broj prodaja i ukupnu zaradu u tom periodu
 
 DELIMITER //
-CREATE PROCEDURE broj_prodaja_u_odredenom_periodu(IN start_date DATE, IN end_date DATE)
+CREATE PROCEDURE broj_prodaja_u_odredenom_periodu(IN pocetni_datum DATE, IN krajni_datum DATE)
 BEGIN
 	SELECT COUNT(*) AS broj_prodaja, SUM(cijena) AS ukupna_cijena FROM racun_prodaje
-	WHERE datum BETWEEN start_date AND end_date;
+	WHERE datum BETWEEN pocetni_datum AND krajni_datum;
 END //
 DELIMITER ;
 
@@ -1131,8 +1131,8 @@ DELIMITER ;
 -- funkcija koja za unesenu marku i model auta vraca je li taj auto dostupan
 
 DELIMITER //
-CREATE FUNCTION dostupan_auto (model_auta VARCHAR(255), marka_auta VARCHAR(255))
-RETURNS VARCHAR(255)
+CREATE FUNCTION dostupan_auto (model_auta VARCHAR(50), marka_auta VARCHAR(50))
+RETURNS VARCHAR(50)
 DETERMINISTIC
 BEGIN
     DECLARE dostupan VARCHAR (2);
@@ -1178,12 +1178,27 @@ SELECT provjera_klijenta('Mladen', 'Barišić');
 -- okidac koji za zaposlenike koji rade duze od dvije godine povisi placu za 10%
 
 DELIMITER //
-CREATE TRIGGER povisenje_place AFTER INSERT ON zaposlenik
+CREATE TRIGGER povisenje_place AFTER UPDATE ON zaposlenik
 FOR EACH ROW
 BEGIN
-  IF (YEAR(CURDATE()) - YEAR(NEW.datum_zaposlenja)) > 2 THEN
-    UPDATE zaposlenik SET placa = placa * 1.1 WHERE id = NEW.id;
-  END IF;
+    IF (YEAR(CURDATE()) - YEAR(NEW.datum_zaposlenja)) > 2 THEN
+        SET NEW.placa = NEW.placa * 1.1;
+    END IF;
+END //
+DELIMITER ;
+
+-- trigger koji ce autu kad postane tri godine star smanjiti cijenu  10%
+
+DELIMITER //
+CREATE TRIGGER smanji_cijenu_starijih_auta
+AFTER UPDATE ON auto
+FOR EACH ROW
+BEGIN
+DECLARE godina_proizvodnje INT;
+SET godina_proizvodnje = (YEAR(NOW()) - NEW.godina_proizvodnje);
+IF (godina_proizvodnje) > 3 THEN
+SET NEW.cijena = NEW.cijena * 0.9;
+END IF;
 END //
 DELIMITER ;
 
