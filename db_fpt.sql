@@ -1204,11 +1204,11 @@ DELIMITER ;
 
 -- --------------------------------------------KRAJ--------------------------------------------------
 */
--- -------------------------------------------NEVEN--------------------------------------------------
+-- -------------------------------------------NEVEN---------------------------------------------------------------------------------------------------------------
 
--- NEVEN START
+-- NEVEN START----------------------------------------------------------------------------------------------------------------------------------------------------
 
--- TRIGGER - kod dodavanja novog auta da datum proizvodnji ne smije biti veći od jučerašnjeg dana.
+-- TRIGGER - kod dodavanja novog auta da datum proizvodnji ne smije biti veći od jučerašnjeg dana. ---------------------------------------------------------------
 
 DELIMITER //
 
@@ -1226,11 +1226,10 @@ DELIMITER ;
 
 -- test data INSERT INTO auto VALUES (2, "Y7NV3NIFJYYUGY00V", "VOLKSWAGEN", "TRANSPORTER", "siva", STR_TO_DATE("2025-01-01", "%Y-%m-%d"), "DA", "88", "127342", "benzinski","P");
 
--- PROCEDURA 1.
+-- PROCEDURA 1.------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Procedura počinje izvršavanjem naredbe UPDATE na tablici "auto". Ova naredba postavlja stupac "dostupnost" na 'DA'
 -- za redak s "id"-om koji odgovara "p_auto_id", pod uvjetom da je "p_datum_povratka_date" manji ili jednak trenutnom datumu (CURDATE()).
--- Procedura zatim izvršava naredbu SELECT koja dohvaća stupce "id", "model", "dostupnost" i "datum_povratka" iz tablica "auto" i "narudzbenica", spojenih na stupac "id" iz tablica "auto" i stupac "id_auto" iz tablica "narudzbenica".
--- Naredba SELECT vraća redove gdje je stupac "datum_povratka" manji ili jednak trenutnom datumu.
+
 DELIMITER //
 
 CREATE PROCEDURE update_dostupnost_auta (IN p_auto_id INT, IN p_datum_povratka_date DATETIME)
@@ -1246,11 +1245,8 @@ DELIMITER ;
 -- CALL update_dostupnost_auta(1, '2023-01-01 00:00:00');
 
 
--- PROCEDURA 2.
--- procedura za update svih auta kojima je datum na narudzbenici manji ili jednak trenutnom te promjena dostupnosti u DA.
--- Izbacuje rezultat svaki put kad promijeni vrijednost
--- u sebi sadrzi prethodnu proceduru
---  Vraća samo jedan rezultat
+-- PROCEDURA---------------------------------------------------------------------------------------------------------------------------------------------
+-- procedura za update svih auta kojima je datum na narudzbenici manji ili jednak trenutnom te promjena dostupnosti u DA.--------------------------------
 
 DELIMITER //
 
@@ -1272,7 +1268,7 @@ DELIMITER ;
 
 -- call update_dostupnost_svih_autax();
 
--- FUNKCIJa koja nam govori koji proizvod je jeftin a koji skup
+-- FUNKCIJa koja nam govori koji proizvod je jeftin a koji skup ------------------------------------------------------------------------------------------------
 
 DELIMITER //
 CREATE FUNCTION cijena_usluge(cijena DECIMAL(8,2))
@@ -1291,8 +1287,8 @@ DELIMITER ;
 -- SELECT *,cijena_usluge(cijena) as Jeftino_Skupo FROM usluga_servis;
 
 
--- PROCEDURA U sklopu procedure nalazi se
--- naredba za ažuriranje koja ažurira stupac "komentar" u tablici "servis" na temelju vrijednosti stupca "datum_povratka" u tablici "narudžbenica".
+-- PROCEDURA U sklopu procedure nalazi se ------------------------------------------------------------------------------------------------------------------
+-- naredba za ažuriranje koja ažurira stupac "komentar" u tablici "servis" na temelju vrijednosti stupca "datum_povratka" u tablici "narudžbenica"----------
 
 DELIMITER //
 CREATE PROCEDURE update_komentar_servisa()
@@ -1313,7 +1309,7 @@ DELIMITER ;
 
 -- SELECT * FROM servis, narudzbenica WHERE servis.id_narudzbenica=narudzbenica.id;
 
--- Trigger koji ne dopušta unos narudžbenice starije od 2 tjedan na servis
+-- Trigger koji ne dopušta unos narudžbenice starije od 2 tjedan na servis -------------------------------------------------------------------------------------
 
 DELIMITER //
 CREATE TRIGGER prevent_old_purchase_order
@@ -1329,7 +1325,8 @@ BEGIN
 END//
 DELIMITER ;
 
--- Update dostupnost auta u da korištenjem samo kriterija id_auto
+-- Update dostupnost auta u da korištenjem samo kriterija id_auto -----------------------------------------------------------------------------------------------
+
 CREATE PROCEDURE update_dostupnost_auta (IN p_auto_id INT)
 BEGIN
 UPDATE auto
@@ -1339,15 +1336,7 @@ END;
 DELIMITER ;
 
 
-
--- stvara pogled koji prikazuje nedostupne aute za servis kojima je kategorija P i S
-
-CREATE VIEW nedostupniAuti_za_servis AS
-SELECT * FROM auto WHERE dostupnost='NE' AND servis_prodaja='S'
-UNION 
-SELECT * FROM auto WHERE dostupnost='DA' AND servis_prodaja='P';
-
--- procedura koja uzima dva argumenta i updatea automobile prema tome jesu li kategorija prodaja ili ne
+-- procedura koja uzima dva argumenta i updatea automobile prema tome jesu li kategorija prodaja ili ne----------------------------------------------------------
 
 DELIMITER //
 CREATE PROCEDURE update_dostupnost_auta_za_servis (IN p_auto_id INT, IN p_servis_prodaja CHAR(1))
