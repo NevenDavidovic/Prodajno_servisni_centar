@@ -1297,7 +1297,7 @@ BEGIN
     INNER JOIN narudzbenica as n
         ON s.id_narudzbenica = n.id
     SET s.komentar = CASE
-        WHEN n.datum_povratka < CURDATE() THEN 'Automobil spreman za preuzimanje'
+        WHEN n.datum_povratka > CURDATE() THEN 'Automobil spreman za preuzimanje'
         ELSE 'Servis u tijeku'
     END
     WHERE n.datum_povratka <= CURDATE() ;
