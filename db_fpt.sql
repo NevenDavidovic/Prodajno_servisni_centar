@@ -1208,7 +1208,7 @@ DELIMITER ;
 
 -- NEVEN START----------------------------------------------------------------------------------------------------------------------------------------------------
 
--- TRIGGER - kod dodavanja novog auta da datum proizvodnji ne smije biti veći od jučerašnjeg dana. ---------------------------------------------------------------
+-- TRIGGER - kod dodavanja novog auta da datum proizvodnji ne smije biti veći od današnjeg dana dana. ---------------------------------------------------------------
 
 DELIMITER //
 
