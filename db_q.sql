@@ -155,12 +155,15 @@ SELECT *
 -- MARIJA end
 
 -- NEVEN UPITI
--- Prva tri zaposlenika koja imaju najviše servisa
+
+-- Pogled koji ujedinjuje informacije o dijelovima -------------------------------------------------------------------------------------------------
 
 CREATE VIEW dijelovi AS
 SELECT dio.id as id_dio, stavka_dio.id,naziv,proizvodac,serijski_broj,opis, kategorija, nabavna_cijena,prodajna_cijena,dostupna_kolicina 
 FROM dio,stavka_dio 
 WHERE dio.id=stavka_dio.id_dio;
+
+-- Pogled koji ujedinjuje informacije o dijelovima -------------------------------------------------------------------------------------------------
 
 CREATE VIEW narudzbenicej AS
 SELECT narudzbenica.id,broj_sasije,oib, marka_automobila, model, boja,
@@ -169,6 +172,8 @@ ime, prezime, broj_telefona, adresa,grad,spol,broj_narudzbe, datum_zaprimanja, d
 FROM auto, klijent, narudzbenica 
 WHERE auto.id=narudzbenica.id_auto 
 AND klijent.id=narudzbenica.id_klijent;
+
+-- Pogled koji ujedinjuje sve podatke o servisu kroz pet tablica ------------------------------------------------------------------------------------
 
 CREATE VIEW podaci_o_servisu AS
 SELECT s.id as servis_id,n.id as narudzbenica_id,z.id as zaposlenik_id, us.id as usluga_servis_id, k.id as klijent_id,
@@ -192,12 +197,17 @@ auto as a
  AND k.id=n.id_klijent
  AND a.id= n.id_auto;
 
+
+-- Pogled koji nam prikazuje točan broj dijelova na servisu te unutar sebe ima podupit------------------------------------------------------------
+
 CREATE VIEW dijelovi_po_servisu AS
 SELECT id_servis,naziv,proizvodac,serijski_broj, opis, kategorija, nabavna_cijena,prodajna_cijena,kolicina FROM dio_na_servisu dns
 INNER JOIN servis s ON dns.id_servis = s.id
 INNER JOIN dio d ON dns.id_dio = d.id
 INNER JOIN stavka_dio sd ON dns.id_dio = sd.id_dio
 WHERE dns.id_servis IN (SELECT id FROM servis);
+
+-- Prva tri zaposlenika koja imaju najviše servisa -----------------------------------------------------------------------------------------------
 
 SELECT CONCAT(z.ime ,' ', z.prezime) AS Ime_i_prezime,COUNT(z.id) as broj_servisa
 FROM servis AS s, usluga_servis AS u, zaposlenik AS z
@@ -206,7 +216,7 @@ GROUP BY z.id
 ORDER BY broj_servisa
 DESC LIMIT 3;
 
--- Zaposlenici(prva 3) sa najvišom kumulativnom cijenom svih obavljenih servisa servisa.
+-- Zaposlenici(prva 3) sa najvišom kumulativnom cijenom svih obavljenih servisa servisa. -----------------------------------------------------------
 
 SELECT CONCAT(z.ime ,' ', z.prezime)as Ime_i_prezime ,SUM(u.cijena) AS ukupno_po_servisu
 FROM servis AS s, usluga_servis AS u, zaposlenik AS z
@@ -215,7 +225,7 @@ GROUP BY z.id
 ORDER BY ukupno_po_servisu DESC
 LIMIT 3;
 
--- Pogled pomoću kojeg saznajemo
+-- Pogled pomoću kojeg saznajemo ukupnu cijenu odrađenih usluga svakog zaposlenika ------------------------------------------------------------------
 
 CREATE VIEW servisirano AS
 SELECT CONCAT(z.ime ,' ', z.prezime)as Ime_i_prezime, u.naziv,SUM(u.cijena) AS ukupno_po_servisu
@@ -224,14 +234,24 @@ WHERE z.id=id_zaposlenik AND u.id=id_usluga_servis
 GROUP BY z.id
 ORDER BY ukupno_po_servisu DESC;
 
--- Prosjek servisa po zaposlenicima
+-- Prosjek servisa po zaposlenicima ------------------------------------------------------------------------------------------------------------------
+
 SELECT AVG(ukupno_po_servisu) FROM servisirano;
 -- Zaposlenici koji su obavili manje servisa od prosjeka
 SELECT * FROM servisirano WHERE ukupno_po_servisu <(SELECT AVG(ukupno_po_servisu) FROM servisirano);
 -- Zaposlenici koji su obavili više servisa od prosjeka
 SELECT * FROM servisirano WHERE ukupno_po_servisu >(SELECT AVG(ukupno_po_servisu) FROM servisirano);
 
--- neven kraj upita
+
+-- stvara pogled koji prikazuje nedostupne aute za servis kojima je kategorija P i S
+
+CREATE VIEW nedostupniAuti_za_servis AS
+SELECT * FROM auto WHERE dostupnost='NE' AND servis_prodaja='S'
+UNION 
+SELECT * FROM auto WHERE dostupnost='DA' AND servis_prodaja='P';
+
+
+-- -----------------------------------------------------------------------NEVEN KRAJ---------------------------------------------------------------------
 
 -- TIN UPITI
 ## Top 5 modela auta sa najviše utrošenih djelova na servisima u zadnjih 6 mjeseci?
