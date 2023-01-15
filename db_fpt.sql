@@ -1252,9 +1252,6 @@ DELIMITER //
 
 CREATE PROCEDURE update_dostupnost_svih_autax()
 BEGIN
-    DECLARE p_auto_id INT;
-    DECLARE p_datum_povratka_date DATETIME;
-
     UPDATE auto
     SET dostupnost = 'DA'
     WHERE id IN (
