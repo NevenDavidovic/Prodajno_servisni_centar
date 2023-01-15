@@ -1323,7 +1323,7 @@ END//
 DELIMITER ;
 
 -- Update dostupnost auta u da korištenjem samo kriterija id_auto -----------------------------------------------------------------------------------------------
-
+DELIMITER //
 CREATE PROCEDURE update_dostupnost_auta (IN p_auto_id INT)
 BEGIN
 UPDATE auto
