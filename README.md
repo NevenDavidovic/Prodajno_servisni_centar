@@ -23,27 +23,27 @@ Korisničko sučelje administracija nudi sljedeće mogućnosti:
 
 ### Administracija
 
-*Naslovna stranica*
+*Naslovna stranica*\
 Mogućnost konverzije valute na cijeloj aplikaciji.
 
 ![](https://i.imgur.com/CT6jKgD.png)
 
-*Na ruti /administracija/ispis-svih-automobila*
+*Na ruti /administracija/ispis-svih-automobila*\
 Mogućnost konverzije snage motora svih automobila.
 
 ![](https://i.imgur.com/BVFUVhe.png)
 
-*Kod automobila koji su dostupni za prodaju*
+*Kod automobila koji su dostupni za prodaju*\
 Mogućnost dodavanja dodatne opreme automobilima.
 
 ![](https://i.imgur.com/7g5pnPJ.png)
 
-*Na ruti /administracija/promet-dana/*
+*Na ruti /administracija/promet-dana/*\
 Mogućnost kalkulacije dnevnih prometa (ukupnog, za prodaju i za servis).
 
 ![](https://i.imgur.com/P5CRb2m.png)
 
-*Na ruti /administracija/statistika*
+*Na ruti /administracija/statistika*\
 Mogućnost pregleda statističkih podataka prikazanih u grafovima.
 
 ![](https://i.imgur.com/ZX1wDFO.png)
