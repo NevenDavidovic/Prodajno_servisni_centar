@@ -17,7 +17,19 @@ Korisničko sučelje administracija nudi sljedeće mogućnosti:
 
 ### Prodaja
 
+Korisničko sučelje prodaja nudi sljedeće mogućnosti:
+
+* **dodavanje podataka** (računa, klijenata)
+* **ispis podataka** (klijenata, računa, automobila)
+* **ažuriranje podataka** (klijenata)
+* **brisanje podataka** (računa)
+
 ### Servis
+
+* **dodavanje podataka** (klijenta, narudžbenice, dijela, servisa, automobila)
+* **ispis podataka** (klijenta, narudžbenice, dijela, servisa, automobila)
+* **ažuriranje podataka** (narudžbenice, dijelova, servisa)
+* **brisanje podataka** (narudžbenice, dijelova, servisa)
 
 ## Specifične funkcionalnosti web aplikacije
 
@@ -65,7 +77,7 @@ Mogućnost pregleda statističkih podataka prikazanih u grafovima.
 4. Kako bi aktivirali environment upišite:
 `.\myVenv\Scripts\activate`
 5. Kako bi instalirali sve potrebno za rad web aplikacije upišite: 
-`pip install requirements.txt`
+`pip install -r requirements.txt`
 
 ### Upute za lokalno pokretanje web aplikacije
 
