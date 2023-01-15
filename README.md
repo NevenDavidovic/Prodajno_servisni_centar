@@ -28,7 +28,7 @@ Korisničko sučelje prodaja nudi sljedeće mogućnosti:
 
 * **dodavanje podataka** (klijenta, narudžbenice, dijela, servisa, automobila)
 * **ispis podataka** (klijenta, narudžbenice, dijela, servisa, automobila)
-* **ažuriranje podataka** (narudžbenice, dijelova, servisa)
+* **ažuriranje podataka** (klijenta, dijela)
 * **brisanje podataka** (narudžbenice, dijelova, servisa)
 
 ## Specifične funkcionalnosti web aplikacije
