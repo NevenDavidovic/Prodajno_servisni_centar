@@ -26,14 +26,14 @@ Korisničko sučelje prodaja nudi sljedeće mogućnosti:
 
 ### Servis
 
+Korisničko sučelje servis nudi sljedeće mogućnosti:
+
 * **dodavanje podataka** (klijenta, narudžbenice, dijela, servisa, automobila)
 * **ispis podataka** (klijenta, narudžbenice, dijela, servisa, automobila)
 * **ažuriranje podataka** (klijenta, dijela)
 * **brisanje podataka** (narudžbenice, dijelova, servisa)
 
 ## Specifične funkcionalnosti web aplikacije
-
-### Administracija
 
 *Naslovna stranica*\
 Mogućnost konverzije valute na cijeloj aplikaciji.
