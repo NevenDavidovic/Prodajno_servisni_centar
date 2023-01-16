@@ -45,7 +45,7 @@ Mogućnost konverzije snage motora svih automobila.
 
 ![](https://i.imgur.com/BVFUVhe.png)
 
-*Kod automobila koji su dostupni za prodaju*\
+*Kod automobila koji su dostupni za prodaju unutar administracije*\
 Mogućnost dodavanja dodatne opreme automobilima.
 
 ![](https://i.imgur.com/7g5pnPJ.png)
