@@ -133,3 +133,18 @@ form {
 #uputa {
     color: #f3f3f3;
 }
+
+@media (prefers-color-scheme: light) {
+    #startend {
+        margin-top: 3vw;
+        padding-bottom: 3vw;
+        border-bottom: 2px solid #212529;
+        text-align: right;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    #uputa {
+        color: #212529;
+    }
+}

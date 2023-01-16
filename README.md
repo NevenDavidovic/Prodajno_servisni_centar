@@ -4,6 +4,8 @@
 
 **Prodajno servisni centar automobila** je web aplikacija nastala za potrebe projekta unutar kolegija Baze podataka 2. Simulira rad unutar tri korisnička sučelja (administracija, prodaja i servis).
 
+*Aplikacija dolazi u light i dark modeu (ovisno o postavkama vašeg preglednika).*
+
 ## Osnovne funkcionalnosti web aplikacije
 
 ### Administracija
