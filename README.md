@@ -61,11 +61,13 @@ Mogućnost pregleda statističkih podataka prikazanih u grafovima.
 ![](https://i.imgur.com/ZX1wDFO.png)
 
 *Na ruti /prodaja/kreiranje-racuna*\
-Posebni popusti na unesenu cijenu za zaposlenike i prijašnje klijente
+Posebni popusti na unesenu cijenu za zaposlenike i prijašnje klijente.
+
 ![](https://i.imgur.com/C3i9JOd.png)
 
 *Na ruti /servis/azuriranje-dijelova*\
-Procedure za ažuriranje dijelova
+Mogućnost ažuriranja dijelova.
+
 ![](https://i.imgur.com/wbbFfzM.png)
 
 ## Lokalno pokretanje web aplikacije
